@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router'; 
 
 @Component({
@@ -14,5 +14,8 @@ export class AcceuilComponent {
 
   redirectGest(): void {
     this.router.navigate(['/gestionnaire']);
+  }
+  redirectAch(): void {
+    this.router.navigate(['/acheteur'])
   }
 }
