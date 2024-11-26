@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router'; 
+//import { VendeurDetailsComponent } from '../../components/vendeur-details/vendeur-details.component';
 
 @Component({
   selector: 'app-acceuil',
