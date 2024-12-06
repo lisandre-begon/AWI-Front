@@ -1,0 +1,45 @@
+.acheteurs-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .acheteurs-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  
+  .acheteurs-list .btn {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .acheteur-form {
+    margin-top: 20px;
+  }
+  
+  .acheteur-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .actions {
+    margin-top: 20px;
+  }
+  
+  .add-new-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

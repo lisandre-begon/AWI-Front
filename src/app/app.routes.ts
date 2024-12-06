@@ -10,6 +10,7 @@ import {StockComponent} from './pages/stock/stock.component';
 import {VentesComponent} from './pages/ventes/ventes.component';
 import {TransacComponent} from './pages/transac/transac.component';
 import {BilanComponent} from './pages/bilan/bilan.component';
+import {ListAchComponent} from './pages/list-ach/list-ach.component';
 
 export const routes: Routes = [
     {path: 'acceuil', component: AcceuilComponent},
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {path: 'acheteur', component: AcheteurComponent},
     {path: 'liste-vendeurs', component: VendeursComponent},
     {path: 'depot', component: DepotComponent},
+    {path: 'acheteurs', component: ListAchComponent},
     {path: 'stock', component: StockComponent},
     {path: 'ventes', component: VentesComponent},
     {path: 'transactions', component: TransacComponent},

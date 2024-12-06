@@ -30,4 +30,10 @@ export class GestionnaireComponent {
   redirectBilan(): void {
     this.router.navigate(['/bilan'])
   }
+  redirectListAch(): void {
+    this.router.navigate(['/acheteurs'])
+  }
+  redirectAcceuil(): void {
+    this.router.navigate(['/acceuil'])
+  }
 }
