@@ -35,15 +35,25 @@
   justify-content: space-around;
   align-items: center;
   padding: 1em 0em 1em 1em;
-  background-color: #d75630;
+  /*background-color: #d75630;*/
   cursor: pointer; 
   box-shadow: 4px 6px 0px #2f2b28;
   border: 4px solid;
   border-radius: 15px;
+  position: relative;
+  overflow: hidden;
   z-index: 100;
-  pointer-events: auto;
+  transition: box-shadow 250ms, transform 250ms, filter 50ms;
 }
-/*
+
+.ach{
+  background-color: #f4dce8;
+}
+
+.gest{
+  background-color: #d75630;
+}
+
 .boutons .bouton:hover {
   transform: translate(2px, 2px);
   box-shadow: 2px 3px 0px #2f2b28;
@@ -53,20 +63,29 @@
     filter: saturate(0.75);
   }
 
-.boutons .bouton:after{
+.boutons .bouton::after{
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #f4dce8;
+ /* background-color: #f4dce8;*/
   z-index: -1; 
   transform: translateX(-100%);
   transition: transform 250ms;
 
 }
 
-.boutons .bouton:hover:after {
+.gest::after{
+  background-color: #f4dce8;
+}
+
+.ach::after{
+  background-color: #d75630;
+}
+
+.boutons .bouton:hover::after {
   transform: translateX(0);
 }
+
 
 .bgContainer {
   position: relative;
@@ -74,10 +93,9 @@
   justify-content: start;
   align-items: center;
   overflow: hidden;
-  max-width: 30%;  adjust this if the button text is not proper 
+  max-width: 30%;  /*adjust this if the button text is not proper */
   font-size: 2em;
   font-weight: 600;
-
 }
 
 .bgContainer span {
@@ -101,8 +119,16 @@
   transition: transform 250ms, background-color 250ms;
   z-index: 100;
 
-} */
-/* .arrowContainer::after {
+} 
+
+.gest .arrowContainer {
+  background-color: #f4dce8;
+}
+.ach .arrowContainer {
+  background-color: #d75630;
+}
+
+ .arrowContainer::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -111,8 +137,15 @@
   transform: translateX(-100%);
   z-index: -1;
   transition: transform 250ms ease-in-out;
-} */
-/* 
+} 
+
+.ach .arrowContainer::after {
+  background-color: #f4dce8;
+}
+.ach .arrowContainer::after {
+  background-color: #d75630;
+}
+
 .boutons .bouton:hover .arrowContainer::after {
   transform: translateX(0);
 }
@@ -121,7 +154,7 @@
 }
 .boutons .bouton:active .arrowContainer {
   transform: translateX(8px);
-} */
-/* .arrowContainer svg {
+} 
+.arrowContainer svg {
   vertical-align: middle;
-} */
+} 
