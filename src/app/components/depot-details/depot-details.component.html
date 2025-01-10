@@ -1,0 +1,93 @@
+<div class="depot-detail-container">
+    <!-- Formulaire pour créer ou modifier un dépôt -->
+    <form [formGroup]="depotForm" (ngSubmit)="saveDepot()" class="depot-form">
+      <h2>{{ selectedDepot ? 'Modifier le dépôt' : 'Créer un nouveau dépôt' }}</h2>
+  
+      <div>
+        <label for="gestionnaire">Gestionnaire :</label>
+        <input id="gestionnaire" formControlName="gestionnaire" type="number" />
+      </div>
+  
+      <div>
+        <label for="proprietaire">Propriétaire :</label>
+        <input id="proprietaire" formControlName="proprietaire" type="number" />
+      </div>
+  
+      <div>
+        <label for="date_transaction">Date de la transaction :</label>
+        <input
+          id="date_transaction"
+          formControlName="date_transaction"
+          type="date"
+        />
+      </div>
+  
+      <div>
+        <label for="remise">Remise :</label>
+        <input id="remise" formControlName="remise" type="number" />
+      </div>
+  
+      <div>
+        <label for="prix_total">Prix total :</label>
+        <input id="prix_total" formControlName="prix_total" type="number" />
+      </div>
+  
+      <div>
+        <label for="frais">Frais :</label>
+        <input id="frais" formControlName="frais" type="number" />
+      </div>
+  
+      <div>
+        <label for="jeux">Jeux (IDs séparés par des virgules) :</label>
+        <input
+           id="jeux"
+            formControlName="jeux"
+           type="text"
+           (change)="updateJeux($event)"
+  />
+      </div>
+  
+      <div class="form-buttons">
+        <button type="submit" [disabled]="depotForm.invalid">
+          {{ selectedDepot ? 'Modifier' : 'Créer' }}
+        </button>
+        <button type="button" (click)="clearSelection()">Annuler</button>
+      </div>
+    </form>
+  
+    <!-- Liste des dépôts existants -->
+    <div class="depot-list">
+      <h2>Liste des dépôts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Gestionnaire</th>
+            <th>Propriétaire</th>
+            <th>Date</th>
+            <th>Remise</th>
+            <th>Prix total</th>
+            <th>Frais</th>
+            <th>Jeux</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let depot of depots">
+            <td>{{ depot.id }}</td>
+            <td>{{ depot.gestionnaire }}</td>
+            <td>{{ depot.proprietaire }}</td>
+            <td>{{ depot.date_transaction | date }}</td>
+            <td>{{ depot.remise }}</td>
+            <td>{{ depot.prix_total }}</td>
+            <td>{{ depot.frais }}</td>
+            <td>{{ depot.jeux.join(', ') }}</td>
+            <td>
+              <button (click)="selectDepotById(depot.id)">Modifier</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -1,15 +1,18 @@
 interface TGestionnaire{
 
-    id_gestionnaire: number;
+    id: string;
+    pseudo : string;
     mdp : string;
 }
 
     export class Gestionnaire implements TGestionnaire {
-        public id_gestionnaire: number;
+        public id: string;
+        pseudo : string;
         mdp : string;
     
-        constructor(id_g: number, mdp: string){
-            this.id_gestionnaire = id_g;
+        constructor(id_g: number,pseudo : string, mdp: string){
+            this.id = id_g;
+            this.pseudo = pseudo;
             this.mdp = mdp;
         }
     }

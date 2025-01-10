@@ -1,32 +1,47 @@
-enum statuts{
-    depot,
-    vente,
-    pasEncoreVendu,
-}
+enum Statuts {
+    depot = "depot",
+    vente = "vente",
+  }
 
 interface TTransaction {
-    statut: statuts;
-    gestionnaire: number;
-    proprietaire: number;
-    acheteur: number;
+    id : string;
+    statut: Statuts;
+    gestionnaire: string;
+    proprietaire: string | null; 
+    acheteur: string | null;
     date_transaction: Date;
     remise: number;
     prix_total: number;
     frais: number;
-    jeux: number[];
+    jeux: string[]; 
 }
 
 export class Transaction implements TTransaction {
-    statut: statuts;
-    gestionnaire: number;
-    proprietaire: number;
-    acheteur: number;
+    id: string;
+    statut: Statuts;
+    gestionnaire: string;
+    proprietaire: string | null;
+    acheteur: string | null;
     date_transaction: Date;
     remise: number;
     prix_total: number;
     frais: number;
-    jeux: number[];
-    constructor(statut: statuts, gestionnaire: number, proprietaire: number, acheteur: number, date_transaction: Date, remise: number, prix_total: number, frais: number, jeux: number[]){
+    jeux: string[];
+
+    constructor(
+        id: string,
+        statut: Statuts,
+        gestionnaire: string,
+        proprietaire: string| null,
+        acheteur: string | null,
+        date_transaction: Date,
+        remise: number,
+        prix_total: number,
+        frais: number,
+        jeux: string[]
+    
+    ) {
+        this.id = id;
         this.statut = statut;
         this.gestionnaire = gestionnaire;
         this.proprietaire = proprietaire;
@@ -37,5 +52,4 @@ export class Transaction implements TTransaction {
         this.frais = frais;
         this.jeux = jeux;
     }
-   
 }

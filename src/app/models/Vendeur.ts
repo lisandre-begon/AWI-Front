@@ -1,24 +1,24 @@
 interface TVendeur{
 
-    id_vendeur: number;
+    id: string;
     nom : string;
     prenom : string;
     email: string | null;
     telephone: string;
-    solde: number;
+    soldes: number;
 }
 
     export class Vendeur implements TVendeur {
-        public id_vendeur: number;
+        public id: string;
         nom : string;
         prenom : string;
         email: string | null;
         telephone: string;
-        solde: number = 0;
-        constructor(id_vendeur: number, nom: string, prenom: string, 
-            email : string, telephone : string, solde: number 
+        soldes: number = 0;
+        constructor(id: string, nom: string, prenom: string, 
+            email : string, telephone : string, soldes: number 
         ){
-            this.id_vendeur = id_vendeur; 
+            this.id = id; 
             this.nom = nom;
             this.prenom = prenom;
             this.telephone = telephone;
@@ -26,7 +26,7 @@ interface TVendeur{
                 this.email = email;
             }
             else{this.email = null;}
-            this.solde = solde;
+            this.soldes = soldes;
 
         }
         private validateEmail(email : string) : boolean {

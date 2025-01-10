@@ -1,99 +1,89 @@
-import { Component,Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
 import { Jeu } from '../../models/Jeu';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormControl, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { JeuService } from '../../service/jeu.service';
-
-enum Statuts{
-  enVente,
-  pasEncoreEnVente,
-  vendu
-}
 
 @Component({
   selector: 'app-jeu-details',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './jeu-details.component.html',
-  styleUrl: './jeu-details.component.css'
+  styleUrls: ['./jeu-details.component.css']
 })
 export class JeuDetailsComponent implements OnInit, OnChanges {
-
-  // etiquette : number;
-  // intitule : string;
-  // editeur : string;
-  // statut: Statuts ;
-  // dateDepot: Date;
-  // dateVente : Date;
-  // prix: number;
-
-  stat : Statuts = Statuts.enVente;
-  @Input() jeu: Jeu = new Jeu(0, '', '', this.stat, new Date(), new Date(), 0);
+  @Input() jeu: Jeu = new Jeu(0, '', '', '', 'enVente', new Date(), null, 0, 0, []);
   @Output() formSubmitted = new EventEmitter<void>();
 
+  // Liste des jeux à afficher
   Jeux: Jeu[] = [];
-  //isCreatingNew: boolean = false;
-  constructor(private route : ActivatedRoute, private servce : JeuService ) {}
 
   VendeurForm = new FormGroup({
-    etiquette: new FormControl(),
-    intitule: new FormControl(''),
-    editeur: new FormControl(''),
-    statut: new FormControl(this.stat),
-    dateDepot: new FormControl(new Date()),
-    dateVente: new FormControl(new Date()),
-    prix: new FormControl(0)    
+    etiquette: new FormControl<number | null>(null),
+    vendeur: new FormControl<string | null>(''),
+    intitule: new FormControl<string | null>(''),
+    editeur: new FormControl<string | null>(''),
+    statut: new FormControl<string | null>('enVente'),
+    dateDepot: new FormControl<Date | null>(new Date()),
+    dateVente: new FormControl<Date | null>(null),
+    prix: new FormControl<number | null>(0),
+    quantites: new FormControl<number | null>(0),
+    categorie: new FormControl<string[] | null>([])
   });
 
+  constructor(private route: ActivatedRoute, private service: JeuService) {}
+
+  ngOnInit(): void {
+    // Charge les jeux disponibles dans le service
+    this.Jeux = this.service.getJeux();
+
+    // Récupère un jeu spécifique via l'URL si fourni
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('etiquette');
+      if (id) {
+        this.jeu = this.service.getJeuByEtiquette(Number(id));
+        this.ngOnChanges();
+      }
+    });
+  }
+
+  ngOnChanges(): void {
+    if (this.jeu) {
+      this.VendeurForm.setValue({
+        etiquette: this.jeu.etiquette,
+        vendeur: this.jeu.vendeur,
+        intitule: this.jeu.intitule,
+        editeur: this.jeu.editeur,
+        statut: this.jeu.statut,
+        dateDepot: this.jeu.dateDepot,
+        dateVente: this.jeu.dateVente,
+        prix: this.jeu.prix,
+        quantites: this.jeu.quantites,
+        categorie: this.jeu.categorie
+      });
+    }
+  }
+
+  // Méthode pour sélectionner un jeu et afficher ses détails
   selectJeu(jeu: Jeu): void {
     this.jeu = jeu;
-    this.ngOnChanges(); 
+    this.ngOnChanges();
   }
 
   updateJeu(): void {
-    if (this.jeu){
-      this.jeu.etiquette = this.VendeurForm.get('etiquette')?.value;
+    if (this.jeu) {
+      this.jeu.etiquette = this.VendeurForm.get('etiquette')?.value ?? 0;
+      this.jeu.vendeur = this.VendeurForm.get('vendeur')?.value ?? '';
       this.jeu.intitule = this.VendeurForm.get('intitule')?.value ?? '';
       this.jeu.editeur = this.VendeurForm.get('editeur')?.value ?? '';
-      this.jeu.statut = this.VendeurForm.get('statut')?.value ?? Statuts.enVente;
+      this.jeu.statut = this.VendeurForm.get('statut')?.value ?? 'enVente';
       this.jeu.dateDepot = this.VendeurForm.get('dateDepot')?.value ?? new Date();
-      this.jeu.dateVente = this.VendeurForm.get('dateVente')?.value ?? new Date();
-      this.jeu.prix = this.VendeurForm.get('prix')?.value?? 0;
+      this.jeu.dateVente = this.VendeurForm.get('dateVente')?.value ?? null;
+      this.jeu.prix = this.VendeurForm.get('prix')?.value ?? 0;
+      this.jeu.quantites = this.VendeurForm.get('quantites')?.value ?? 0;
+      this.jeu.categorie = this.VendeurForm.get('categorie')?.value ?? [];
       this.formSubmitted.emit();
     }
   }
-
-  displayDetails() {
-    if (this.jeu) {
-      return  `
-      <u>Nom du jeu :</u> ${this.jeu.intitule} <u> Editeur :</u> ${this.jeu.editeur}
-      /n <u> Prix :</u> ${this.jeu.prix}`;
-    }else{
-      return 'Aucun jeu sélectioné';  }
-  } 
-  ngOnInit(): void {
-    this.Jeux = this.servce.getJeux();
-
-    this.route.paramMap.subscribe(params => {const idg  = params.get('etiquette')
-    if (idg){
-      this.jeu = this.servce.getJeuByEtiquette(parseInt(idg));
-    }
-    });
-  }
-  ngOnChanges(): void {
-    if (this.jeu){
-      this.VendeurForm.setValue({
-      etiquette: this.jeu.etiquette,
-      intitule: this.jeu.intitule,
-      editeur: this.jeu.editeur,
-      statut: this.jeu.statut,
-      dateDepot: this.jeu.dateDepot,
-      dateVente: this.jeu.dateVente,
-      prix: this.jeu.prix,
-          });
-      }
-  }
-
 }
