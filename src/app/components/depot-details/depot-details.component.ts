@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Validators, FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TransactionService } from '../../service/transaction.service'
+import { TransactionService } from '../../service/transaction.service';
+import { VendeursService } from '../../service/vendeur-service.service';
 import { stat } from 'fs';
 
 
@@ -34,10 +35,12 @@ enum Statuts {
 export class DepotDetailComponent implements OnInit, OnChanges {
   @Input() depots: Transaction[] = []; // Liste des dépôts
   @Input() selectedDepotId: string | null = null; // ID du dépôt sélectionné
+  vendeurs: any[] = [];
   depotForm: FormGroup;
+  showDetails: boolean = false;
   selectedDepot: Transaction | null = null;
 
-  constructor(private transactionService: TransactionService, private fb: FormBuilder) {
+  constructor(private transactionService: TransactionService, private fb: FormBuilder, private vendeurService: VendeursService) {
     this.depotForm = this.fb.group({
       id: [null, Validators.required],
       gestionnaire: [null, Validators.required],
@@ -52,6 +55,7 @@ export class DepotDetailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.loadDepots();
+    this.vendeurs = this.vendeurService.getVendeurs();
     if (this.selectedDepotId !== null) {
       this.selectDepotById(this.selectedDepotId);
     }
@@ -92,6 +96,13 @@ export class DepotDetailComponent implements OnInit, OnChanges {
     this.depotForm.get('jeux')?.setValue(parsedValues);
   }
 
+  modifyDepot(): void {
+    if (this.selectedDepot) {
+      this.updateForm(this.selectedDepot);
+    }
+    this.clearSelection();
+  }
+
   updateForm(depot: Transaction): void {
     this.depotForm.patchValue({
       gestionnaire: depot.gestionnaire,
@@ -117,29 +128,25 @@ export class DepotDetailComponent implements OnInit, OnChanges {
     });
   }
 
-  saveDepot(): void {
-    if (this.depotForm.invalid) {
-      alert('Veuillez remplir correctement le formulaire.');
-      return;
+  selectDepot(depot: Transaction): void {
+      this.selectedDepot = depot;
+      this.showDetails = true;
+      this.updateForm(depot);
     }
 
+  saveDepot(): void {
+    // if (this.depotForm.invalid) {
+    //   alert('Veuillez remplir correctement le formulaire.');
+    //   return;
+    // }
+
     const depotData = this.depotForm.value;
-    if (this.selectedDepot) {
-      // Modification d'un dépôt existant
-      this.selectedDepot.gestionnaire = depotData.gestionnaire;
-      this.selectedDepot.proprietaire = depotData.proprietaire;
-      this.selectedDepot.date_transaction = depotData.date_transaction;
-      this.selectedDepot.remise = depotData.remise;
-      this.selectedDepot.prix_total = depotData.prix_total;
-      this.selectedDepot.frais = depotData.frais;
-      this.selectedDepot.jeux = depotData.jeux;
-      alert('Dépôt modifié avec succès.');
-    } else {
+    
       // Création d'un nouveau dépôt
       const newDepot = new Transaction( 
         (Math.max(...this.depots.map(d => parseInt(d.id, 10) || 0)) + 1).toString(),
         Statuts.depot,
-        depotData.gestionnaire,
+        "1a",
         depotData.proprietaire,
         null,
         depotData.date_transaction,
@@ -150,9 +157,13 @@ export class DepotDetailComponent implements OnInit, OnChanges {
       );
       this.transactionService.addTransaction(newDepot);
       alert('Nouveau dépôt créé avec succès.');
-    }
 
     this.clearSelection();
     this.loadDepots();
+  }
+
+  onVendeursChange(event: Event): void {
+    const selectedVendeur = (event.target as HTMLSelectElement).value;
+    console.log('Vendeur sélectionné :', selectedVendeur);
   }
 }

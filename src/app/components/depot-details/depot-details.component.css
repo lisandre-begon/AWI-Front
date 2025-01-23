@@ -1,0 +1,223 @@
+/* Styles généraux */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.depot-detail-container {
+  max-width: 1000px;
+  margin: 10px auto;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-bottom: 1px solid #4CAF50;
+  padding-bottom: 5px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
+  padding: 8px;
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li:hover {
+  background-color: #e9f5e9;
+  border-color: #4CAF50;
+}
+
+.details-btn {
+  padding: 4px 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.details-btn:hover {
+  background-color: #45a049;
+}
+
+/* Formulaire principal */
+form.depot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+label {
+  font-weight: bold;
+  color: #555;
+  font-size: 13px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 3px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 13px;
+  background-color: #f9f9f9;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 3px rgba(76, 175, 80, 0.4);
+}
+
+input[type="text"]:hover,
+input[type="date"]:hover,
+input[type="number"]:hover,
+select:hover {
+  border-color: #4CAF50;
+}
+
+.form-buttons,
+.form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:not(:disabled) {
+  background-color: #4CAF50;
+  color: white;
+}
+
+button:not(:disabled):hover {
+  background-color: #45a049;
+}
+
+.close-btn {
+  background-color: #f44336;
+}
+
+.close-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Liste des dépôts */
+.depots-list {
+  margin-bottom: 15px;
+}
+
+.depots-list h2 {
+  font-size: 16px;
+  color: #444;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.depots-list ul {
+  padding: 0;
+}
+
+.depots-list li {
+  margin: 5px 0;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.depots-list li:hover {
+  background-color: #e6ffe6;
+  border-color: #4CAF50;
+}
+
+.depots-list .btn {
+  font-size: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.depots-list .btn:hover {
+  background-color: #45a049;
+}
+
+/* Section des détails */
+.acheteur-form {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.acheteur-form h2 {
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #333;
+  font-size: 13px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  font-size: 13px;
+  margin-top: 3px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}

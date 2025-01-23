@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = ''; //à remplir
+  private apiUrl = 'http://localhost:5000'; //à remplir
 
   constructor(private http: HttpClient) {}
 
@@ -14,4 +14,10 @@ export class ApiService {
   getMessage(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/message`);
   }
+
+  getAllvendeur(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/vendeur`);
+  }
+
+
 }
