@@ -19,8 +19,8 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/api/vendeur/`);
   }
 
-  getVendeurById(): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/vendeur/:id`);
+  getVendeurById(id : String): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/vendeur/:${id}`);
    }
 
 
