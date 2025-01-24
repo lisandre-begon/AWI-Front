@@ -10,14 +10,18 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // Méthode pour récupérer un message depuis le backend
+  // Exemple : Pour voir comment ça marche 
   getMessage(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/message`);
   }
 
   getAllvendeur(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/vendeur`);
+    return this.http.get<any>(`${this.apiUrl}/api/vendeur/`);
   }
+
+  getVendeurById(): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/vendeur/:id`);
+   }
 
 
 }
