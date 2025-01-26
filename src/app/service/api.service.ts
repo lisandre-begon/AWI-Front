@@ -1,86 +1,150 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Vendeur } from '../models/Vendeur';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:5000'; //à remplir
+  private readonly apiUrl = 'http://localhost:5000/api'; //Ca evite de remettre  api a chaque fois
 
   constructor(private http: HttpClient) {}
 
-  // Exemple : Pour voir comment ça marche 
-  getMessage(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/message`);
+  //J'ai mis data pour chaque car vaut mieux voir ensemble comment on envoie les données
+
+
+  // Acheteur
+  createAcheteur(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/acheteur/`, data);
   }
 
-  //Reccuperer les vendeurs : 
-  getAllVendeur(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/vendeur/`);
+  getAcheteurById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/acheteur/${id}`);
   }
 
-  getVendeurById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/vendeur/:${id}`);
-   }
-
-   //Create Vendeur : 
-
-  createVendeur(vendeur : Vendeur ):void{}
-
-   //Reccuperer les acheteurs : 
-  getAllAcheteurs(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/acheteur/`);
+  getAllAcheteurs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/acheteur/`);
   }
 
-  getAcheteurById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/acheteur/:${id}`);
-   }
-
-   //Reccuperer les jeux : 
-  getAllJeu(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/jeu/`);
+  updateAcheteur(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/acheteur/${id}`, data);
   }
 
-  getJeuById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/jeu/:${id}`);
-   }
-
-   //Reccuperer les gestionnaires :
-  getAllgest(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/gestionnaire/`);
+  deleteAcheteur(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/acheteur/${id}`);
   }
 
-  getGestById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/gestionnaire/:${id}`);
-   }
-
-   //Reccuperer les typeJeu : 
-  getAllTypeJeu(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/typejeu/`);
+  // Categorie 
+  createCategorie(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/categorie`, data);
   }
 
-  getTypeJeuById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/typejeu/:${id}`);
-   }
-
-   //Reccuperer les catégorie : 
-  getAllCategorie(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/categorie/`);
+  getAllCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/categorie`);
   }
 
-  getCategorieById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/categorie/:${id}`);
-   }
-
-
-   //Reccuperer les transactions : 
-  getAllTransaction(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/transaction/`);
+  // Gestionnaire 
+  createGestionnaire(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/gestionnaire`, data);
   }
 
-  getTransactionById(id : String): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/transaction/:${id}`);
-   }
+  getGestionnaireById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gestionnaire/${id}`);
+  }
+
+  getAllGestionnaires(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/gestionnaire`);
+  }
+
+  updateGestionnaire(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/gestionnaire/${id}`, data);
+  }
+
+  deleteGestionnaire(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/gestionnaire/${id}`);
+  }
+
+  // Jeu
+  createJeu(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/jeu`, data);
+  }
+
+  getJeuById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/jeu/${id}`);
+  }
+
+  getAllJeux(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/jeu`);
+  }
+
+  updateJeu(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
+  }
+
+  deleteJeu(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/jeu/${id}`);
+  }
+
+  // Transaction
+  createTransaction(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/transaction`, data);
+  }
+
+  getTransactionById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transaction/${id}`);
+  }
+
+  getAllTransactions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/transaction`);
+  }
+
+  updateTransaction(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/transaction/${id}`, data);
+  }
+
+  deleteTransaction(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/transaction/${id}`);
+  }
+
+  // TypeJeu 
+  createTypeJeu(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/typeJeu`, data);
+  }
+
+  getTypeJeuById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/typeJeu/${id}`);
+  }
+
+  getAllTypeJeux(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/typeJeu`);
+  }
+
+  updateTypeJeu(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/typeJeu/${id}`, data);
+  }
+
+  deleteTypeJeu(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/typeJeu/${id}`);
+  }
+
+  // Vendeur
+  createVendeur(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vendeur`, data);
+  }
+
+  getVendeurById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/vendeur/${id}`);
+  }
+
+  getAllVendeurs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/vendeur`);
+  }
+
+  updateVendeur(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/vendeur/${id}`, data);
+  }
+
+  deleteVendeur(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/vendeur/${id}`);
+  }
 }
