@@ -1,2 +1,37 @@
-<p>coucou acheteur</p>
+<div *ngIf="isLoading" class="loading">Loading acheteurs...</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
+<div *ngIf="!isLoading && !errorMessage">
+  <!-- List of Acheteurs -->
+  <h2>Liste des Acheteurs</h2>
+  <ul>
+    <li *ngFor="let acheteur of acheteurs">
+      <span>{{ acheteur.nom }} {{ acheteur.prenom }}</span>
+      <button (click)="editAcheteur(acheteur)">Modifier</button>
+      <button (click)="deleteAcheteur(acheteur._id)">Supprimer</button>
+    </li>
+  </ul>
+
+  <!-- Form to Create or Update Acheteur -->
+  <div>
+    <h3 *ngIf="isEditing">Modifier Acheteur</h3>
+    <h3 *ngIf="!isEditing">Créer un Nouvel Acheteur</h3>
+
+    <form [formGroup]="acheteurForm" (ngSubmit)="isEditing ? updateAcheteur() : createAcheteur()">
+      <label for="nom">Nom:</label>
+      <input id="nom" formControlName="nom" type="text">
+
+      <label for="prenom">Prénom:</label>
+      <input id="prenom" formControlName="prenom" type="text">
+
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email">
+
+      <label for="adresse">Adresse:</label>
+      <input id="adresse" formControlName="adresse" type="text">
+
+      <button type="submit">{{ isEditing ? 'Mettre à Jour' : 'Créer' }}</button>
+      <button type="button" (click)="isEditing = false; acheteurForm.reset();">Annuler</button>
+    </form>
+  </div>
+</div>
