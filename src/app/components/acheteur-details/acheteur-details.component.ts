@@ -1,4 +1,3 @@
-// Updated acheteur-details.component.ts - Matches Vendeur Page Structure
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
@@ -77,6 +76,23 @@ export class AcheteurDetailsComponent implements OnInit {
       },
       (error) => {
         this.errorMessage = 'Erreur lors de la création de l\'acheteur';
+      }
+    );
+  }
+
+  deleteAcheteur(id: string) {
+    if (!confirm('Voulez-vous vraiment supprimer cet acheteur ?')) return;
+    this.apiService.deleteAcheteur(id).subscribe(
+      () => {
+        alert('Acheteur supprimé avec succès');
+        this.fetchAcheteurs();
+        if (this.selectedAcheteur && this.selectedAcheteur._id === id) {
+          this.selectedAcheteur = null;
+          this.acheteurForm.reset();
+        }
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors de la suppression de l\'acheteur';
       }
     );
   }
