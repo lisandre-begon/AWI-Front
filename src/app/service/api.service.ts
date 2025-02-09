@@ -147,4 +147,8 @@ export class ApiService {
   deleteVendeur(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/vendeur/${id}`);
   }
+
+  resetSolde(id: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/vendeur/solde/${id}`, {});
+  }
 }
