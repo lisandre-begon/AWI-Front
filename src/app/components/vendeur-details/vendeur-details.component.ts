@@ -1,110 +1,101 @@
-import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
-import { Vendeur } from '../../models/Vendeur'; 
+// Updated vendeur-details.component.ts - Added Delete Functionality
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormControl, FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { VendeursService } from '../../service/vendeur-service.service';
 
 @Component({
   selector: 'app-vendeur-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './vendeur-details.component.html',
-  styleUrls: ['./vendeur-details.component.css']
+  styleUrls: ['./vendeur-details.component.css'],
+  imports: [CommonModule, ReactiveFormsModule]
 })
-export class VendeurDetailsComponent implements OnInit, OnChanges {
-
-  @Input() vendeur: Vendeur = new Vendeur('', '', '', '', '', 0);
-  @Output() formSubmitted = new EventEmitter<void>();
-
-  vendeurs: Vendeur[] = [];
+export class VendeurDetailsComponent implements OnInit {
+  vendeurs: any[] = [];
+  selectedVendeur: any = null;
   isCreatingNew: boolean = false;
-  message: string = '';
+  vendeurForm: FormGroup;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private route: ActivatedRoute, private VendeursService: VendeursService) {}
-
-  vendeurForm = new FormGroup({
-    id: new FormControl(''),
-    nom: new FormControl(''),
-    prenom: new FormControl(''),
-    email: new FormControl(''),
-    telephone: new FormControl(''),
-    solde: new FormControl(0)
-  });
-
-  ngOnInit(): void {
-    this.vendeurs = this.VendeursService.getVendeurs();
-
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.vendeur = this.VendeursService.getVendeurById(id);
-        this.ngOnChanges();
-      }
+  constructor(private apiService: ApiService, private fb: FormBuilder) {
+    this.vendeurForm = this.fb.group({
+      nom: [''],
+      prenom: [''],
+      email: [''],
+      telephone: [''],
+      solde: [''],
     });
   }
 
-  ngOnChanges(): void {
-    if (this.vendeur) {
-      this.vendeurForm.setValue({
-        id: this.vendeur.id,
-        nom: this.vendeur.nom,
-        prenom: this.vendeur.prenom,
-        email: this.vendeur.email ?? '',
-        telephone: this.vendeur.telephone,
-        solde: this.vendeur.soldes
-      });
-    }
+  ngOnInit(): void {
+    this.fetchVendeurs();
   }
 
-  updateVendeur(): void {
-    if (this.vendeur) {
-      this.vendeur.id = this.vendeurForm.get('id')?.value ?? '';
-      this.vendeur.nom = this.vendeurForm.get('nom')?.value ?? '';
-      this.vendeur.prenom = this.vendeurForm.get('prenom')?.value ?? '';
-      this.vendeur.email = this.vendeurForm.get('email')?.value ?? null;
-      this.vendeur.telephone = this.vendeurForm.get('telephone')?.value ?? '';
-      this.vendeur.soldes = this.vendeurForm.get('soldes')?.value ?? 0;
-
-      this.VendeursService.updateVendeur(this.vendeur);
-      this.formSubmitted.emit();
-      this.message = `Le vendeur ${this.vendeur.nom} ${this.vendeur.prenom} a été mis à jour avec succès.`;
-    }
-  }
-
-  addNewVendeur(): void {
-    const newId = (Math.max(...this.vendeurs.map(a => parseInt(a.id, 10) || 0)) + 1).toString();
-    const newVendeur = new Vendeur(
-      newId,
-      this.vendeurForm.get('nom')?.value ?? '',
-      this.vendeurForm.get('prenom')?.value ?? '',
-      this.vendeurForm.get('email')?.value ?? '',
-      this.vendeurForm.get('telephone')?.value ?? '',
-      this.vendeurForm.get('solde')?.value ?? 0
+  fetchVendeurs() {
+    this.isLoading = true;
+    this.apiService.getAllVendeurs().subscribe(
+      (data) => {
+        this.vendeurs = data;
+        this.isLoading = false;
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors du chargement des vendeurs';
+        this.isLoading = false;
+      }
     );
+  }
 
-    this.VendeursService.addVendeur(newVendeur);
-    this.vendeurs = this.VendeursService.getVendeurs();
+  selectVendeur(vendeur: any) {
+    this.selectedVendeur = vendeur;
     this.isCreatingNew = false;
-    this.vendeurForm.reset();
-    this.message = `Le vendeur ${newVendeur.nom} ${newVendeur.prenom} a été ajouté avec succès.`;
+    this.vendeurForm.patchValue(vendeur);
   }
 
-  selectVendeur(vendeur: Vendeur): void {
-    this.vendeur = vendeur;
-    this.ngOnChanges();
+  updateVendeur() {
+    if (!this.selectedVendeur) return;
+    const updatedVendeur = this.vendeurForm.value;
+    this.apiService.updateVendeur(this.selectedVendeur._id, updatedVendeur).subscribe(
+      () => {
+        alert('Vendeur mis à jour avec succès');
+        this.fetchVendeurs();
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors de la mise à jour du vendeur';
+      }
+    );
   }
 
-  displayDetails(): string {
-    if (this.vendeur) {
-      return `
-        <u>Nom :</u> ${this.vendeur.nom} 
-        <u>Prénom :</u> ${this.vendeur.prenom} 
-        <u>Email :</u> ${this.vendeur.email ?? 'Non renseigné'} 
-        <u>Téléphone :</u> ${this.vendeur.telephone} 
-        <u>Solde :</u> ${this.vendeur.soldes}`;
-    }
-    return 'Aucun vendeur sélectionné';
+  addNewVendeur() {
+    const newVendeur = this.vendeurForm.value;
+    this.apiService.createVendeur(newVendeur).subscribe(
+      () => {
+        alert('Nouveau vendeur ajouté');
+        this.isCreatingNew = false;
+        this.fetchVendeurs();
+        this.vendeurForm.reset();
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors de la création du vendeur';
+      }
+    );
+  }
+
+  deleteVendeur(id: string) {
+    if (!confirm('Voulez-vous vraiment supprimer ce vendeur ?')) return;
+    this.apiService.deleteVendeur(id).subscribe(
+      () => {
+        alert('Vendeur supprimé avec succès');
+        this.fetchVendeurs();
+        if (this.selectedVendeur && this.selectedVendeur._id === id) {
+          this.selectedVendeur = null;
+          this.vendeurForm.reset();
+        }
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors de la suppression du vendeur';
+      }
+    );
   }
 }
