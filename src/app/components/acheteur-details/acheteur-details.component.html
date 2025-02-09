@@ -1,81 +1,57 @@
-<div class="acheteur-details-container">
-  <!-- Liste des acheteurs -->
-  <div class="acheteurs-list">
-    <h2>Liste des Acheteurs</h2>
-    <ul>
-      <li *ngFor="let acheteur of acheteurs">
-        <span>{{ acheteur.nom }} {{ acheteur.prenom }}</span>
-        <button class="btn details-btn" (click)="selectAcheteur(acheteur); showDetails = true;">
-          Afficher les Détails
-        </button>
-      </li>
-    </ul>
-  </div>
+<div class="acheteurs-list">
+  <h2>Liste des Acheteurs</h2>
+  <ul>
+    <li *ngFor="let acheteur of acheteurs">
+      {{ acheteur.nom }} {{ acheteur.prenom }}
+      <button (click)="selectAcheteur(acheteur)" class="btn btn-info btn-sm">
+        Voir les détails
+      </button>
+    </li>
+  </ul>
 
-  <!-- Formulaire d'acheteur -->
-  <div class="acheteur-form" *ngIf="showDetails"> 
-    <h2>Détails de l'Acheteur</h2>
+  <!-- Button to Show Form for Creating a New Acheteur -->
+  <button (click)="isCreatingNew = !isCreatingNew" class="btn btn-success btn-sm">
+    {{ isCreatingNew ? 'Annuler' : 'Ajouter un Acheteur' }}
+  </button>
 
-    <form [formGroup]="AcheteurForm" (ngSubmit)="updateAcheteur()">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input id="nom" formControlName="nom" type="text" />
-      </div>
-
-      <div class="form-group">
-        <label for="prenom">Prénom</label>
-        <input id="prenom" formControlName="prenom" type="text" />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" formControlName="email" type="email" />
-      </div>
-
-      <div class="form-group">
-        <label for="adresse">Adresse</label>
-        <input id="adresse" formControlName="adresse" type="text" />
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn save-btn">Enregistrer</button>
-        <button type="button" class="btn close-btn" (click)="showDetails = false;">Fermer</button>
-      </div>
-    </form>
-  </div>
-
-  <div class="actions">
-    <button class="btn add-new-btn" (click)="isCreatingNew = true; showDetails = true; AcheteurForm.reset();">
-      Créer un Nouvel Acheteur
-    </button>
-  </div>
-
-    <!-- Formulaire pour créer un nouveau vendeur -->
+  <!-- Form to Create a New Acheteur -->
   <div *ngIf="isCreatingNew" class="new-acheteur-form">
     <h3>Créer un nouvel acheteur</h3>
-    <form [formGroup]="AcheteurForm" (ngSubmit)="addNewAcheteur()">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input id="nom" type="text" formControlName="nom" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="prenom">Prénom</label>
-        <input id="prenom" type="text" formControlName="prenom" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="telephone">Adresse</label>
-        <input id="adrese" type="adresse" formControlName="adresse" class="form-control" />
-      </div>
-
-      <button type="submit" class="btn add-new-btn">Créer</button>
+    <form [formGroup]="acheteurForm" (ngSubmit)="addNewAcheteur()">
+      <label for="nom">Nom</label>
+      <input id="nom" type="text" formControlName="nom" class="form-control" />
+      
+      <label for="prenom">Prénom</label>
+      <input id="prenom" type="text" formControlName="prenom" class="form-control" />
+      
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" class="form-control" />
+      
+      <label for="adresse">Adresse</label>
+      <input id="adresse" type="text" formControlName="adresse" class="form-control" />
+      
+      <button type="submit" class="btn btn-primary">Créer</button>
     </form>
   </div>
+</div>
 
+<!-- Acheteur Details Section -->
+<div class="acheteur-details mt-4" *ngIf="!isCreatingNew">
+  <h2>Détails de l'Acheteur</h2>
+
+  <form [formGroup]="acheteurForm" (ngSubmit)="updateAcheteur()">
+    <label for="nom">Nom</label>
+    <input id="nom" type="text" formControlName="nom" class="form-control" />
+    
+    <label for="prenom">Prénom</label>
+    <input id="prenom" type="text" formControlName="prenom" class="form-control" />
+    
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" class="form-control" />
+    
+    <label for="adresse">Adresse</label>
+    <input id="adresse" type="text" formControlName="adresse" class="form-control" />
+    
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+  </form>
 </div>
