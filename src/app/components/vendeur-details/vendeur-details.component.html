@@ -6,82 +6,62 @@
       <button (click)="selectVendeur(vendeur)" class="btn btn-info btn-sm">
         Voir les détails
       </button>
+      <button (click)="deleteVendeur(vendeur._id)" class="btn btn-danger btn-sm">
+        Supprimer
+      </button>
     </li>
   </ul>
 
-  <!-- Bouton pour afficher le formulaire de création -->
+  <!-- Button to Show Form for Creating a New Vendeur -->
   <button (click)="isCreatingNew = !isCreatingNew" class="btn btn-success btn-sm">
     {{ isCreatingNew ? 'Annuler' : 'Ajouter un Vendeur' }}
   </button>
 
-  <!-- Formulaire pour créer un nouveau vendeur -->
+  <!-- Form to Create a New Vendeur -->
   <div *ngIf="isCreatingNew" class="new-vendeur-form">
     <h3>Créer un nouveau vendeur</h3>
     <form [formGroup]="vendeurForm" (ngSubmit)="addNewVendeur()">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input id="nom" type="text" formControlName="nom" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="prenom">Prénom</label>
-        <input id="prenom" type="text" formControlName="prenom" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="telephone">Téléphone</label>
-        <input id="telephone" type="tel" formControlName="telephone" class="form-control" />
-      </div>
-
-      <div class="form-group">
-        <label for="solde">Solde</label>
-        <input id="solde" type="number" formControlName="solde" class="form-control" />
-      </div>
-
+      <label for="nom">Nom</label>
+      <input id="nom" type="text" formControlName="nom" class="form-control" />
+      
+      <label for="prenom">Prénom</label>
+      <input id="prenom" type="text" formControlName="prenom" class="form-control" />
+      
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" class="form-control" />
+      
+      <label for="telephone">Téléphone</label>
+      <input id="telephone" type="tel" formControlName="telephone" class="form-control" />
+      
+      <label for="solde">Solde</label>
+      <input id="solde" type="number" formControlName="solde" class="form-control" />
+      
       <button type="submit" class="btn btn-primary">Créer</button>
     </form>
   </div>
 </div>
 
+<!-- Vendeur Details Section -->
 <div class="vendeur-details mt-4" *ngIf="!isCreatingNew">
   <h2>Détails du Vendeur</h2>
 
   <form [formGroup]="vendeurForm" (ngSubmit)="updateVendeur()">
-    <div class="form-group">
-      <label for="id">ID</label>
-      <input id="id" type="number" formControlName="id" class="form-control" readonly />
-    </div>
-
-    <div class="form-group">
-      <label for="nom">Nom</label>
-      <input id="nom" type="text" formControlName="nom" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="prenom">Prénom</label>
-      <input id="prenom" type="text" formControlName="prenom" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="telephone">Téléphone</label>
-      <input id="telephone" type="tel" formControlName="telephone" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="solde">Solde</label>
-      <input id="solde" type="number" formControlName="solde" class="form-control" />
-    </div>
-
+    <label for="nom">Nom</label>
+    <input id="nom" type="text" formControlName="nom" class="form-control" />
+    
+    <label for="prenom">Prénom</label>
+    <input id="prenom" type="text" formControlName="prenom" class="form-control" />
+    
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" class="form-control" />
+    
+    <label for="telephone">Téléphone</label>
+    <input id="telephone" type="tel" formControlName="telephone" class="form-control" />
+    
+    <label for="solde">Solde</label>
+    <input id="solde" type="number" formControlName="solde" class="form-control" />
+    
     <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    <button (click)="deleteVendeur(selectedVendeur._id)" class="btn btn-danger">Supprimer</button>
   </form>
 </div>

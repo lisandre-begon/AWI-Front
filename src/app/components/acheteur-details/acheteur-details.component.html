@@ -6,6 +6,9 @@
       <button (click)="selectAcheteur(acheteur)" class="btn btn-info btn-sm">
         Voir les détails
       </button>
+      <button (click)="deleteAcheteur(acheteur._id)" class="btn btn-danger btn-sm">
+        Supprimer
+      </button>
     </li>
   </ul>
 
@@ -53,5 +56,6 @@
     <input id="adresse" type="text" formControlName="adresse" class="form-control" />
     
     <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    <button (click)="deleteAcheteur(selectedAcheteur._id)" class="btn btn-danger">Supprimer</button>
   </form>
 </div>
