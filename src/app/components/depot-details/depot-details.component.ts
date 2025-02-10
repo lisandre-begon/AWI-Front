@@ -1,169 +1,160 @@
-import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { Transaction } from '../../models/transaction';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Validators, FormBuilder } from '@angular/forms';
-import { ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { TransactionService } from '../../service/transaction.service';
-import { VendeursService } from '../../service/vendeur-service.service';
-import { stat } from 'fs';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from '../../service/api.service';
+//import { AuthService } from '../../service/auth.service';
 
-
-
-enum Statuts {
-  depot = "depot",
-  vente = "vente",
-}
-//modele
-// id : string;
-// statut: Statuts;
-// gestionnaire: string;
-// proprietaire?: string; 
-// acheteur?: string;
-// date_transaction: Date;
-// remise: number;
-// prix_total: number;
-// frais: number;
-// jeux: string[]; 
 @Component({
   selector: 'app-depot-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './depot-details.component.html',
-  styleUrl: './depot-details.component.css'
+  styleUrls: ['./depot-details.component.css'],
+  imports: [CommonModule, ReactiveFormsModule]
 })
-export class DepotDetailComponent implements OnInit, OnChanges {
-  @Input() depots: Transaction[] = []; // Liste des dépôts
-  @Input() selectedDepotId: string | null = null; // ID du dépôt sélectionné
+export class DepotDetailsComponent implements OnInit {
+  depots: any[] = [];
   vendeurs: any[] = [];
+  typeJeux: any[] = [];
+  categories: any[] = [];
+  newJeux: any[] = [];
   depotForm: FormGroup;
+  jeuForm: FormGroup;
+  gestionnaire: string = '';
   showDetails: boolean = false;
-  selectedDepot: Transaction | null = null;
+  selectedDepot: any = null;
+  totalPrix: number = 0;
 
-  constructor(private transactionService: TransactionService, private fb: FormBuilder, private vendeurService: VendeursService) {
+  constructor(
+    private fb: FormBuilder,
+    private apiService: ApiService,
+    //private authService: AuthService
+  ) {
     this.depotForm = this.fb.group({
-      id: [null, Validators.required],
-      gestionnaire: [null, Validators.required],
-      proprietaire: [null, Validators.required],
-      date_transaction: [new Date(), Validators.required],
-      remise: [0, [Validators.required, Validators.min(0)]],
-      prix_total: [0, [Validators.required, Validators.min(0)]],
-      frais: [0, [Validators.required, Validators.min(0)]],
-      jeux: [[], Validators.required],
+      proprietaire: [''],
+      date_transaction: [''],
+      remise: [0],
+      prix_total: [0],
+      frais: [0]
+    });
+
+    this.jeuForm = this.fb.group({
+      typeJeuId: [''],
+      prix: [0],
+      quantite: [0],
+      categories: [[]]
     });
   }
 
   ngOnInit(): void {
     this.loadDepots();
-    this.vendeurs = this.vendeurService.getVendeurs();
-    if (this.selectedDepotId !== null) {
-      this.selectDepotById(this.selectedDepotId);
-    }
+    this.loadVendeurs();
+    this.loadTypeJeux();
+    this.loadCategories();
+    //this.gestionnaire = this.authService.getUsername();
+    this.gestionnaire = 'cacaman';
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedDepotId'] && this.selectedDepotId !== null) {
-      this.selectDepotById(this.selectedDepotId);
-    }
-    if (changes['depots']) {
-      this.loadDepots();
-    }
-  }
-
-  loadDepots(): void {
-    this.depots = this.transactionService.getDepots();
-  }
-
-  selectDepotById(depotId: string): void {
-    const depot = this.transactionService.getTransactionById(depotId);
-    if (depot) {
-      this.selectedDepot = depot;
-      this.updateForm(depot);
-    }
-  }
-
-
-  updateJeux(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-  
-    // Parse the comma-separated string into an array of numbers
-    const parsedValues = value
-      .split(',')
-      .map(id => parseInt(id.trim(), 10))
-      .filter(id => !isNaN(id)); // Remove invalid numbers
-  
-    this.depotForm.get('jeux')?.setValue(parsedValues);
-  }
-
-  modifyDepot(): void {
-    if (this.selectedDepot) {
-      this.updateForm(this.selectedDepot);
-    }
-    this.clearSelection();
-  }
-
-  updateForm(depot: Transaction): void {
-    this.depotForm.patchValue({
-      gestionnaire: depot.gestionnaire,
-      proprietaire: depot.proprietaire,
-      date_transaction: depot.date_transaction,
-      remise: depot.remise,
-      prix_total: depot.prix_total,
-      frais: depot.frais,
-      jeux: depot.jeux,
+  loadDepots() {
+    this.apiService.getFilteredTransactions({ statut: 'depot' }).subscribe(data => {
+      this.depots = data;
     });
   }
 
-  clearSelection(): void {
-    this.selectedDepot = null;
-    this.depotForm.reset({
-      gestionnaire: null,
-      proprietaire: null,
-      date_transaction: new Date(),
-      remise: 0,
-      prix_total: 0,
-      frais: 0,
-      jeux: [],
+  loadVendeurs() {
+    this.apiService.getAllVendeurs().subscribe(data => {
+      this.vendeurs = data.map(vendeur => ({ id: vendeur._id, name: `${vendeur.nom} ${vendeur.prenom}` }));
     });
   }
 
-  selectDepot(depot: Transaction): void {
-      this.selectedDepot = depot;
-      this.showDetails = true;
-      this.updateForm(depot);
+  loadTypeJeux() {
+    this.apiService.getAllTypeJeux().subscribe(data => {
+      this.typeJeux = data.map(typeJeu => ({ id: typeJeu._id, name: `${typeJeu.intitule} (${typeJeu.editeur})` }));
+    });
+  }
+
+  loadCategories() {
+    this.apiService.getAllCategories().subscribe(data => {
+      this.categories = data.map(category => ({ id: category._id, name: category.name }));
+    });
+  }
+
+  addJeuToDepot(jeuData: any) {
+    console.log('Adding game:', jeuData);
+    this.newJeux.push(jeuData);
+    this.calculateTotalPrix();
+  }
+
+  removeJeu(index: number) {
+    this.newJeux.splice(index, 1);
+    this.calculateTotalPrix();
+  }
+
+  calculateTotalPrix() {
+    this.totalPrix = this.newJeux.reduce((sum, jeu) => sum + (jeu.prix * jeu.quantite), 0);
+  }
+
+  saveDepot() {
+    if (!this.depotForm.value.proprietaire) {
+      alert('Veuillez sélectionner un vendeur.');
+      return;
     }
-
-  saveDepot(): void {
-    // if (this.depotForm.invalid) {
-    //   alert('Veuillez remplir correctement le formulaire.');
-    //   return;
-    // }
-
-    const depotData = this.depotForm.value;
     
-      // Création d'un nouveau dépôt
-      const newDepot = new Transaction( 
-        (Math.max(...this.depots.map(d => parseInt(d.id, 10) || 0)) + 1).toString(),
-        Statuts.depot,
-        "1a",
-        depotData.proprietaire,
-        null,
-        depotData.date_transaction,
-        depotData.remise,
-        depotData.prix_total,
-        depotData.frais,
-        depotData.jeux
-      );
-      this.transactionService.addTransaction(newDepot);
-      alert('Nouveau dépôt créé avec succès.');
+    const jeuxCreation = this.newJeux.map(jeu => {
+      return this.apiService.createJeu({
+        proprietaire: this.depotForm.value.proprietaire,
+        typeJeuId: jeu.typeJeuId,
+        prix: jeu.prix,
+        categories: jeu.categories,
+        quantites: jeu.quantite,
+        statut: 'disponible'
+      }).toPromise();
+    });
 
-    this.clearSelection();
-    this.loadDepots();
+    Promise.all(jeuxCreation).then(createdJeux => {
+      const jeuxForDepot = createdJeux.map(jeu => ({
+        jeuId: jeu._id,
+        quantite: jeu.quantites,
+        prix_unitaire: jeu.prix
+      }));
+
+      const depotData = {
+        gestionnaire: this.gestionnaire,
+        statut: 'depot',
+        proprietaire: this.depotForm.value.proprietaire,
+        date_transaction: new Date().toISOString(),
+        prix_total: this.totalPrix,
+        frais: this.depotForm.value.frais,
+        remise: this.depotForm.value.remise,
+        jeux: jeuxForDepot
+      };
+
+      this.apiService.createTransaction(depotData).subscribe(() => {
+        this.loadDepots();
+        this.newJeux = [];
+        this.depotForm.reset();
+        this.totalPrix = 0;
+      });
+    });
   }
 
-  onVendeursChange(event: Event): void {
-    const selectedVendeur = (event.target as HTMLSelectElement).value;
-    console.log('Vendeur sélectionné :', selectedVendeur);
+  showDepotDetails(depot: any) {
+    this.selectedDepot = depot;
+    this.showDetails = true;
+  }
+
+  getTypeJeuName(typeJeuId: string): string {
+    console.log('Getting name for typeJeuId:', typeJeuId);
+    const typeJeu = this.typeJeux.find(t => t.id === typeJeuId);
+    console.log('Found typeJeu:', typeJeu);
+    return typeJeu ? typeJeu.name : 'Type inconnu';
+  }
+
+  getCategoriesNames(categoryIds: string[]): string {
+    const categoryNames = categoryIds.map(id => {
+      const category = this.categories.find(cat => cat.id === id);
+      return category ? category.name : null;
+    }).filter(name => name);
+    return categoryNames.length ? categoryNames.join(', ') : 'Aucune';
   }
 }
