@@ -3,29 +3,27 @@
 
   <!-- Liste des jeux -->
   <ul>
-    <li *ngFor="let jeu of Jeux">
-      <span>{{ jeu.intitule }} - {{ jeu.editeur }} ({{ jeu.prix | currency }})</span>
-      <button (click)="selectJeu(jeu)">Afficher les détails</button>
+    <li *ngFor="let jeu of jeux" (click)="selectJeu(jeu)" class="clickable">
+      <span>{{ jeu.intitule }} - {{ jeu.statut }} ({{ jeu.prix }})</span>
+      <button (click)="deleteJeu(); $event.stopPropagation();" class="btn btn-danger btn-sm">Supprimer</button>
     </li>
   </ul>
 
   <!-- Détails du jeu sélectionné -->
-  <div *ngIf="jeu" class="jeu-details">
+  <div *ngIf="selectedJeu" class="jeu-details">
     <h3>Détails du jeu sélectionné</h3>
-    <p><strong>Nom :</strong> {{ jeu.intitule }}</p>
-    <p><strong>Éditeur :</strong> {{ jeu.editeur }}</p>
-    <p><strong>Vendeur :</strong> {{ jeu.vendeur }}</p>
-    <p><strong>Statut :</strong> {{ jeu.statut }}</p>
-    <p><strong>Date de dépôt :</strong> {{ jeu.dateDepot | date }}</p>
-    <p><strong>Date de vente :</strong> {{ jeu.dateVente ? (jeu.dateVente | date) : 'Non vendu' }}</p>
-    <p><strong>Prix :</strong> {{ jeu.prix | currency }}</p>
-    <p><strong>Quantités :</strong> {{ jeu.quantites }}</p>
-    <p><strong>Catégories :</strong> {{ jeu.categorie.join(', ') }}</p>
+    <p><strong>Nom :</strong> {{ selectedJeu.intitule }}</p>
+    <p><strong>Éditeur :</strong> {{ selectedJeu.editeur }}</p>
+    <p><strong>Vendeur :</strong> {{ selectedJeu.vendeur }}</p>
+    <p><strong>Statut :</strong> {{ selectedJeu.statut }}</p>
+    <p><strong>Date de dépôt :</strong> {{ selectedJeu.dateDepot }}</p>
+    <p><strong>Prix :</strong> {{ selectedJeu.prix }}</p>
+    <p><strong>Quantités :</strong> {{ selectedJeu.quantites }}</p>
+    <p><strong>Catégories :</strong> {{ selectedJeu.categories.join(', ') }}</p>
 
     <!-- Formulaire de modification -->
-    <form [formGroup]="VendeurForm" (ngSubmit)="updateJeu()">
+    <form [formGroup]="jeuForm" (ngSubmit)="updateJeu()">
       <h4>Modifier le jeu</h4>
-
       <label>
         Nom :
         <input type="text" formControlName="intitule" />
@@ -37,27 +35,12 @@
       </label>
       <br />
       <label>
-        Vendeur :
-        <input type="text" formControlName="vendeur" />
-      </label>
-      <br />
-      <label>
         Statut :
         <select formControlName="statut">
-          <option value="enVente">En vente</option>
-          <option value="pasEncoreEnVente">Pas encore en vente</option>
+          <option value="disponible">Disponible</option>
+          <option value="pas disponible">Pas disponible</option>
           <option value="vendu">Vendu</option>
         </select>
-      </label>
-      <br />
-      <label>
-        Date de dépôt :
-        <input type="date" formControlName="dateDepot" />
-      </label>
-      <br />
-      <label>
-        Date de vente :
-        <input type="date" formControlName="dateVente" />
       </label>
       <br />
       <label>
@@ -72,10 +55,11 @@
       <br />
       <label>
         Catégories :
-        <input type="text" formControlName="categorie" placeholder="Séparer par des virgules" />
+        <input type="text" formControlName="categories" placeholder="Séparer par des virgules" />
       </label>
       <br />
       <button type="submit">Mettre à jour</button>
+      <button type="button" (click)="deleteJeu()" class="btn btn-danger">Supprimer</button>
     </form>
   </div>
 </div>
