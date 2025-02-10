@@ -4,7 +4,7 @@
   <!-- Liste des jeux -->
   <ul>
     <li *ngFor="let jeu of jeux" (click)="selectJeu(jeu)" class="clickable">
-      <span>{{ jeu.intitule }} - {{ jeu.editeur }} ({{ jeu.prix | currency }})</span>
+      <span>{{ jeu.intitule }} - {{ jeu.statut }} ({{ jeu.prix }})</span>
       <button (click)="deleteJeu(); $event.stopPropagation();" class="btn btn-danger btn-sm">Supprimer</button>
     </li>
   </ul>
@@ -16,8 +16,8 @@
     <p><strong>Éditeur :</strong> {{ selectedJeu.editeur }}</p>
     <p><strong>Vendeur :</strong> {{ selectedJeu.vendeur }}</p>
     <p><strong>Statut :</strong> {{ selectedJeu.statut }}</p>
-    <p><strong>Date de dépôt :</strong> {{ selectedJeu.dateDepot | date }}</p>
-    <p><strong>Prix :</strong> {{ selectedJeu.prix | currency }}</p>
+    <p><strong>Date de dépôt :</strong> {{ selectedJeu.dateDepot }}</p>
+    <p><strong>Prix :</strong> {{ selectedJeu.prix }}</p>
     <p><strong>Quantités :</strong> {{ selectedJeu.quantites }}</p>
     <p><strong>Catégories :</strong> {{ selectedJeu.categories.join(', ') }}</p>
 
