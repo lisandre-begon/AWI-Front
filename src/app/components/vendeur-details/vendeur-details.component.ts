@@ -25,7 +25,7 @@ export class VendeurDetailsComponent implements OnInit {
       prenom: [''],
       email: [''],
       telephone: [''],
-      solde: [''],
+      soldes: [''],
     });
   }
 
