@@ -4,10 +4,10 @@
     background-color : #2f2b28;
 }
 .login {
-    background-color: #dcf0e0;
+    background-color:rgb(255, 255, 255);
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.913);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.37);
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
@@ -47,7 +47,7 @@ h1 {
 }
 
 .back-button {
-    background-color: #a0d6d2;
+    background-color:rgb(215, 239, 219);
     color: white;
 }
 
@@ -75,5 +75,5 @@ button:hover {
 
 /* Animation de focus pour les champs */
 mat-form-field input:focus {
-    border-color: #f4dce8;
+    border-color:rgb(244, 234, 239);
 }
