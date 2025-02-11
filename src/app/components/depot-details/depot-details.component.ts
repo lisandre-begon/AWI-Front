@@ -48,11 +48,12 @@ export class DepotDetailsComponent implements OnInit {
     
     // Initialize jeu form
     this.jeuForm = this.fb.group({
-      typeJeuId: [null],
-      prix: [0],
-      quantites: [1],
+      typeJeuId: [null, Validators.required],
+      prix_unitaire: [null, [Validators.required, Validators.min(1)]],  // Ensure valid price
+      quantites: [1, Validators.required],
       categories: [[]]
     });
+    
   }
 
   ngOnInit(): void {
@@ -109,28 +110,30 @@ export class DepotDetailsComponent implements OnInit {
   // Called when the user clicks "Ajouter Jeu"
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
-    jeuData.proprietaire = this.depotForm.value.proprietaire; // Assign the selected owner
+  
+    // Ensure `prix_unitaire` is set and converted properly
+    if (!jeuData.prix_unitaire || jeuData.prix_unitaire <= 0) {
+      alert("Veuillez entrer un prix valide.");
+      return;
+    }
+  
+    // Convert `prix_unitaire` to `prix` for backend compatibility
+    jeuData.proprietaire = this.depotForm.value.proprietaire;
+    jeuData.prix = parseFloat(jeuData.prix_unitaire); // Fix naming issue
+    delete jeuData.prix_unitaire; // Remove incorrect key
   
     console.log("🛠 Creating game:", jeuData);
   
-    // Call API to create the game first
     this.apiService.createJeu(jeuData).subscribe(
       (res: any) => {
         console.log("✅ Game created successfully:", res);
-        
-        // Store the game in newJeux with its ID
-        const createdGame = {
-          jeuId: res.jeu._id,  // Use the ID returned from the API
+        this.newJeux.push({
+          jeuId: res.jeu._id,
           quantite: jeuData.quantites,
-          prix: jeuData.prix,
-          proprietaire: jeuData.proprietaire
-        };
-  
-        this.newJeux.push(createdGame);
+          prix_unitaire: jeuData.prix
+        });
         this.calculateTotalPrix();
-        
-        // Reset the game form
-        this.jeuForm.reset({ typeJeuId: null, prix: 0, quantites: 1, categories: [] });
+        this.jeuForm.reset({ typeJeuId: null, prix_unitaire: 0, quantites: 1, categories: [] });
       },
       (err) => {
         console.error("❌ Error creating game:", err);
@@ -138,6 +141,7 @@ export class DepotDetailsComponent implements OnInit {
       }
     );
   }
+  
   
 
   // Remove a jeu from the list
