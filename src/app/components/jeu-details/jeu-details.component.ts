@@ -133,6 +133,8 @@ export class JeuDetailsComponent implements OnInit {
   filtrer(): void {
     const body: any = {};
 
+    console.log('🔍 Filtres:', this.proprietaire, this.prix_min, this.prix_max, this.categorie, this.intitule, this.statut, this.editeur, this.quantites);
+
     if (this.proprietaire !== "") body.proprietaire = this.proprietaire;
     if (this.prix_min !== "") body.prix_min = this.prix_min;
     if (this.prix_max !== "") body.prix_max = this.prix_max;
@@ -142,9 +144,11 @@ export class JeuDetailsComponent implements OnInit {
     if (this.editeur !== "") body.editeur = this.editeur;
     if (this.quantites !== "") body.quantites = this.quantites;
 
+    console.log('body', body);
+
     this.apiService.getFilteredJeux({ body }).subscribe(data => {
       this.jeux = data;
-      console.log('Filtered jeux:', this.jeux);
     });
+    console.log('Filtered jeux:', this.jeux);
   }
 }

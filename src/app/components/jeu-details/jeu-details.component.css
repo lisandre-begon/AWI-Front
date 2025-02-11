@@ -11,7 +11,7 @@ body {
   
   .annonce{
     background-color: #95120d;
-    color: #181314;
+    color: #fdf6f7;
     padding: 10px;
     text-align: center;
     border-radius: 5px;
@@ -19,7 +19,7 @@ body {
   }
 
   .jeu-details-container {
-    background: white;
+    background: #fdf6f7;
     padding: 20px;
     margin-top: 40px;
     border-radius: 10px;
