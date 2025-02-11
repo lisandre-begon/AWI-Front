@@ -59,7 +59,7 @@ export class DepotDetailsComponent implements OnInit {
     this.loadCategories();
     // Normally, you would get the gestionnaire from the AuthService:
     // this.gestionnaire = this.authService.getUsername();
-    this.gestionnaire = 'cacaman';
+    this.gestionnaire = '67aa28a2a260b786b8a52f20';
   }
 
   // Load depot transactions (statut === "depot")
@@ -154,8 +154,8 @@ export class DepotDetailsComponent implements OnInit {
     Promise.all(jeuxCreation).then(createdJeux => {
       // Map the created jeux for inclusion in the depot.
       const jeuxForDepot = createdJeux.map(jeu => ({
-        jeuId: jeu._id,               // assume API returns the created jeu with _id
-        quantite: jeu.quantites,      // note: depot expects 'quantite' (singular)
+        jeuId: jeu._id,
+        quantite: jeu.quantites,      
         prix_unitaire: jeu.prix
       }));
 
