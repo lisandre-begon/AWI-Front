@@ -1,109 +1,78 @@
 <div class="depot-detail-container">
-
-    <!-- Liste des depots -->
-    <div class="depots-list">
-      <h2>Liste des Depots</h2>
-      <ul>
-        <li *ngFor="let depot of depots">
-          <span>{{ depot.id }} {{ depot.proprietaire }}</span>
-          <button class="btn details-btn" (click)="selectDepot(depot); showDetails = true;">
-            Afficher les Détails
-          </button>
-        </li>
-      </ul>
-    </div>
-
-  <!-- Formulaire pour créer un dépôt -->
-  <form [formGroup]="depotForm" (ngSubmit)="saveDepot()" class="depot-form">
-    <h2>Créer un nouveau dépôt </h2>
-
-    <div>
-      <label for="proprietaire">Vendeur :</label>
-      <select id="proprietaire" formControlName="proprietaire">
-        <option *ngFor="let vendeur of vendeurs" [value]="vendeur">
-          {{ vendeur }}
-        </option>
-      </select>
-    </div>
-
-    <div>
-      <label for="date_transaction">Date de la transaction :</label>
-      <input id="date_transaction" formControlName="date_transaction" type="date" />
-    </div>
-
-    <div>
-      <label for="remise">Remise :</label>
-      <input id="remise" formControlName="remise" type="number" />
-    </div>
-
-    <div>
-      <label for="prix_total">Prix total :</label>
-      <input id="prix_total" formControlName="prix_total" type="number" />
-    </div>
-
-    <div>
-      <label for="frais">Frais :</label>
-      <input id="frais" formControlName="frais" type="number" />
-    </div>
-
-    <div>
-      <label for="jeux">Jeux (IDs séparés par des virgules) :</label>
-      <input id="jeux" formControlName="jeux" type="text" (change)="updateJeux($event)" />
-    </div>
-
-    <div class="form-buttons">
-      <button type="submit">
-         Créer
-      </button>
-      <button type="button" (click)="clearSelection()">Annuler</button>
-    </div>
-  </form>
-
-  <!-- Formulaire de détails d'un dépôt -->
-
-    <div class="acheteur-form" *ngIf="showDetails"> 
-      <h2>Détails du dépot</h2>
+    <!-- List of Depots -->
+    <h2>Liste des Dépôts</h2>
+    <ul>
+      <li *ngFor="let depot of depots" (click)="showDepotDetails(depot)" class="clickable">
+        <span>
+          {{ depot.proprietaire }} -
+          {{ depot.date_transaction | date:'short' }} -
+          {{ depot.prix_total }}€
+        </span>
+      </li>
+    </ul>
   
-      <form [formGroup]="depotForm" (ngSubmit)="modifyDepot()">
-  
-        <div class="form-group">
-          <label for="prenom">Vendeur</label>
-          <select id="proprietaire" formControlName="proprietaire" >
-          <option *ngFor="let vendeur of vendeurs" [value]="vendeur[1]">
-            {{ vendeur[0] }}
+    <!-- Form to Create a New Depot -->
+    <h2>Créer un Nouveau Dépôt</h2>
+    <form [formGroup]="depotForm" (ngSubmit)="saveDepot()">
+      <!-- Vendeur Selection -->
+      <div>
+        <label for="proprietaire">Vendeur :</label>
+        <select id="proprietaire" formControlName="proprietaire">
+          <option [ngValue]="null" disabled selected>-- Sélectionnez un vendeur --</option>
+          <option *ngFor="let vendeur of vendeurs" [ngValue]="vendeur.id">
+            {{ vendeur.name }}
           </option>
         </select>
-        </div>
+      </div>
+      <!-- Frais and Remise -->
+      <div>
+        <label for="frais">Frais :</label>
+        <input type="number" id="frais" formControlName="frais" />
+      </div>
+      <div>
+        <label for="remise">Remise :</label>
+        <input type="number" id="remise" formControlName="remise" />
+      </div>
   
-        <div class="form-group">
-          <label for="email">date transaction</label>
-          <input id="email" formControlName="date_transaction" type="date" />
-        </div>
+      <!-- Section to Add Jeux -->
+      <h3>Ajouter des Jeux</h3>
+      <div [formGroup]="jeuForm">
+        <label for="typeJeuId">Type de Jeu :</label>
+        <select id="typeJeuId" formControlName="typeJeuId">
+          <option [ngValue]="null" disabled selected>-- Sélectionnez un type de jeu --</option>
+          <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
+            {{ typeJeu.name }}
+          </option>
+        </select>
+        <label for="prix_unitaire">Prix Unitaire :</label>
+        <input type="number" id="prix_unitaire" formControlName="prix_unitaire" step="0.01" />
+        <label for="quantites">Quantité :</label>
+        <input type="number" id="quantites" formControlName="quantites" />
+        <label for="categories">Catégories :</label>
+        <select id="categories" formControlName="categories" multiple>
+          <option *ngFor="let cat of categories" [ngValue]="cat.id">
+            {{ cat.name }}
+          </option>
+        </select>
+        <button type="button" (click)="addJeuToDepot()">Ajouter Jeu</button>
+      </div>
   
-        <div class="form-group">
-          <label for="adresse">Remise</label>
-          <input id="adresse" formControlName="remise" type="number" />
-        </div>
-
-        <div class="form-group">
-          <label for="adresse">Prix total</label>
-          <input id="adresse" formControlName="prix_total" type="number" />
-        </div>
+      <!-- Display List of Jeux Added -->
+      <h3>Jeux Ajoutés</h3>
+      <ul>
+        <li *ngFor="let jeu of newJeux; let i = index">
+          {{ getTypeJeuName(jeu.typeJeuId) }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantites }}
+          <br />
+          Catégories:
+          <span *ngFor="let catId of jeu.categories; let last = last">
+            {{ getCategoryName(catId) }}<span *ngIf="!last">, </span>
+          </span>          
+          <button type="button" (click)="removeJeu(i)">Supprimer</button>
+        </li>
+      </ul>
   
-        <div class="form-group">
-          <label for="adresse">Frais</label>
-          <input id="adresse" formControlName="frais" type="number" />
-        </div>
-
-        <div class="form-group">
-          <label for="adresse">Jeux</label>
-          <input id="jeux" formControlName="jeux" type="text" (change)="updateJeux($event)" />
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn save-btn">Enregistrer</button>
-          <button type="button" class="btn close-btn" (click)="showDetails = false;">Fermer</button>
-        </div>
-      </form>
-    </div>
-</div>
+      <h3>Total Prix: {{ totalPrix }}€</h3>
+      <button type="submit">Créer Dépôt</button>
+    </form>
+  </div>
+  

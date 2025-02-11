@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { DepotDetailComponent } from '../../components/depot-details/depot-details.component'
+import { DepotDetailsComponent } from '../../components/depot-details/depot-details.component'
 
 @Component({
   selector: 'app-depot',
   standalone: true,
-  imports: [DepotDetailComponent],
+  imports: [DepotDetailsComponent],
   templateUrl: './depot.component.html',
   styleUrl: './depot.component.css'
 })

@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
+=======
+import { environment } from '../../environments/environment';
+>>>>>>> refs/remotes/origin/main
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly apiUrl = 'http://localhost:5000/api'; //Ca evite de remettre  api a chaque fois
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -79,6 +83,10 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/jeu`);
   }
 
+  getFilteredJeux(data: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
+  }
+
   updateJeu(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
   }
@@ -128,6 +136,10 @@ export class ApiService {
 
   getAllTransactions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/transaction`);
+  }
+
+  getFilteredTransactions(data: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/transaction/filtered`, { params: data });
   }
 
   updateTransaction(id: string, data: any): Observable<any> {
