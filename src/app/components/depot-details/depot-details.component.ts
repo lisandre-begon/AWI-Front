@@ -153,7 +153,7 @@ export class DepotDetailsComponent implements OnInit {
   // Calculate the total price from the jeux added
   calculateTotalPrix() {
     this.totalPrix = this.newJeux.reduce((sum, jeu) => {
-      return sum + (Number(jeu.prix) * Number(jeu.quantites));
+      return sum + (Number(jeu.prix_unitaire) * Number(jeu.quantites));
     }, 0);
   }
 
