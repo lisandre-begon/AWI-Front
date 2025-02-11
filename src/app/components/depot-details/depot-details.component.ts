@@ -69,9 +69,15 @@ export class DepotDetailsComponent implements OnInit {
 
   loadTypeJeux() {
     this.apiService.getAllTypeJeux().subscribe(data => {
-      this.typeJeux = data.map(typeJeu => ({ id: typeJeu._id, name: typeJeu.intitule }));
+      console.log('Raw typeJeux data:', data);
+      this.typeJeux = data.map(typeJeu => ({
+        id: typeJeu._id ? typeJeu._id.toString() : null,  // Convert ObjectId to string
+        name: `${typeJeu.intitule} (${typeJeu.editeur})`
+      }));
+      console.log('Mapped typeJeux:', this.typeJeux);
     });
   }
+  
 
   loadCategories() {
     this.apiService.getAllCategories().subscribe(data => {
