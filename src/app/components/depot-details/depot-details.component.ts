@@ -49,7 +49,7 @@ export class DepotDetailsComponent implements OnInit {
     // Initialize jeu form
     this.jeuForm = this.fb.group({
       typeJeuId: [null],
-      prix_unitaire: [0],
+      prix: [0],
       quantites: [1],
       categories: [[]]
     });
@@ -122,7 +122,7 @@ export class DepotDetailsComponent implements OnInit {
         const createdGame = {
           jeuId: res.jeu._id,  // Use the ID returned from the API
           quantite: jeuData.quantites,
-          prix: jeuData.prix_unitaire,
+          prix: jeuData.prix,
           proprietaire: jeuData.proprietaire
         };
   
@@ -130,7 +130,7 @@ export class DepotDetailsComponent implements OnInit {
         this.calculateTotalPrix();
         
         // Reset the game form
-        this.jeuForm.reset({ typeJeuId: null, prix_unitaire: 0, quantites: 1, categories: [] });
+        this.jeuForm.reset({ typeJeuId: null, prix: 0, quantites: 1, categories: [] });
       },
       (err) => {
         console.error("❌ Error creating game:", err);
