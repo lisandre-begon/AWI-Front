@@ -110,28 +110,38 @@ export class DepotDetailsComponent implements OnInit {
   // Called when the user clicks "Ajouter Jeu"
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
-  
-    // Ensure `prix_unitaire` is set and converted properly
-    if (!jeuData.prix_unitaire || jeuData.prix_unitaire <= 0) {
-      alert("Veuillez entrer un prix valide.");
-      return;
-    }
-  
-    // Convert `prix_unitaire` to `prix` for backend compatibility
     jeuData.proprietaire = this.depotForm.value.proprietaire;
-    jeuData.prix = parseFloat(jeuData.prix_unitaire); // Fix naming issue
-    delete jeuData.prix_unitaire; // Remove incorrect key
+    jeuData.prix = parseFloat(jeuData.prix_unitaire); 
+    delete jeuData.prix_unitaire;
   
-    console.log("🛠 Creating game:", jeuData);
+    console.log("📤 Creating game:", jeuData);
   
     this.apiService.createJeu(jeuData).subscribe(
       (res: any) => {
         console.log("✅ Game created successfully:", res);
+  
+        if (!res.jeu || !res.jeu._id) {
+          console.error("❌ Error: Game ID missing from response.");
+          alert("Erreur: l'ID du jeu est introuvable.");
+          return;
+        }
+  
+        // Check typeJeuId before adding
+        const typeJeu = this.typeJeux.find(t => t.id === jeuData.typeJeuId);
+        if (!typeJeu) {
+          console.error("❌ Error: typeJeuId not found in typeJeux list.");
+          return;
+        }
+  
         this.newJeux.push({
           jeuId: res.jeu._id,
           quantite: jeuData.quantites,
-          prix_unitaire: jeuData.prix
+          prix_unitaire: jeuData.prix,
+          typeJeuId: jeuData.typeJeuId
         });
+  
+        console.log("🛠 Updated newJeux:", this.newJeux);
+  
         this.calculateTotalPrix();
         this.jeuForm.reset({ typeJeuId: null, prix_unitaire: 0, quantites: 1, categories: [] });
       },
@@ -142,7 +152,6 @@ export class DepotDetailsComponent implements OnInit {
     );
   }
   
-  
 
   // Remove a jeu from the list
   removeJeu(index: number) {
@@ -150,12 +159,20 @@ export class DepotDetailsComponent implements OnInit {
     this.calculateTotalPrix();
   }
 
-  // Calculate the total price from the jeux added
   calculateTotalPrix() {
+    console.log("🔍 Calculating total price with:", this.newJeux);
+  
     this.totalPrix = this.newJeux.reduce((sum, jeu) => {
-      return sum + (Number(jeu.prix_unitaire) * Number(jeu.quantites));
+      if (!jeu.prix_unitaire || !jeu.quantite) {
+        console.error("❌ Error: Invalid game data for price calculation", jeu);
+        return sum; // Skip invalid games
+      }
+      return sum + (Number(jeu.prix_unitaire) * Number(jeu.quantite));
     }, 0);
+  
+    console.log("💰 Total calculated price:", this.totalPrix);
   }
+  
 
   saveDepot() {
     // Vérifier que le propriétaire est bien sélectionné
@@ -208,7 +225,6 @@ export class DepotDetailsComponent implements OnInit {
     const found = this.typeJeux.find(t => t.id === typeJeuId);
     return found ? found.name : 'Type inconnu';
   }
-
   // (Optional) Display details for a selected depot.
   showDepotDetails(depot: any) {
     this.selectedDepot = depot;
