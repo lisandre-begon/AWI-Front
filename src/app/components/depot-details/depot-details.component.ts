@@ -135,62 +135,52 @@ export class DepotDetailsComponent implements OnInit {
     }, 0);
   }
 
-  // saveDepot() method using bson-objectid synchronously.
-  async saveDepot() {
-    const proprietaire = this.depotForm.value.proprietaire;
-    if (!proprietaire) {
-      alert('Veuillez sélectionner un vendeur.');
+  saveDepot() {
+    // Vérifier que le propriétaire est bien sélectionné
+    if (!this.depotForm.value.proprietaire) {
+      console.error("❌ Erreur : Le propriétaire n'est pas sélectionné.");
       return;
     }
-
-    try {
-      // Build the array of promises to create each jeu.
-      const jeuxCreation = this.newJeux.map(jeu => {
-        const newJeu = {
-          proprietaire: new ObjectId(proprietaire),
-          typeJeuId: new ObjectId(jeu.typeJeuId),
-          statut: 'disponible',
-          prix: parseFloat(jeu.prix_unitaire),
-          quantites: parseInt(jeu.quantites, 10) || 1,
-          categories: jeu.categories.map((catId: string) => new ObjectId(catId)),
-          createdAt: new Date(),
-        };
-        return this.apiService.createJeu(newJeu).toPromise();
-      });
-
-      const createdJeux = await Promise.all(jeuxCreation);
-
-      // Map the created jeux for inclusion in the depot.
-      const jeuxForDepot = createdJeux.map(jeu => ({
-        jeuId: new ObjectId(jeu._id),
-        quantite: jeu.quantites,
-        prix_unitaire: jeu.prix
-      }));
-
-    // Compose the depot object.
-    const newDepot = {
-      statut: 'depot',
-      // Convert gestionnaire and proprietaire to strings.
-      gestionnaire: new ObjectId(this.gestionnaire).toString(),
-      proprietaire: new ObjectId(proprietaire).toString(),
-      date_transaction: new Date(),
-      prix_total: this.totalPrix,
-      remise: this.depotForm.value.remise || 0,
-      frais: this.depotForm.value.frais,
-      jeux: jeuxForDepot // Send the array as-is.
-    };
-
-      this.apiService.createTransaction(newDepot).subscribe(() => {
-        this.loadDepots();
-        this.newJeux = [];
-        this.depotForm.reset();
-        this.totalPrix = 0;
-      });
-    } catch (err) {
-      console.error('Erreur lors de la création des jeux :', err);
+  
+    // Vérifier que des jeux ont été ajoutés
+    if (this.newJeux.length === 0) {
+      console.error("❌ Erreur : Aucun jeu n'a été ajouté au dépôt.");
+      return;
     }
+  
+    // Construire l'objet à envoyer au backend
+    const depotData = {
+      statut: 'depot',
+      gestionnaire: this.gestionnaire, // ID du gestionnaire connecté
+      proprietaire: this.depotForm.value.proprietaire, // ID du propriétaire du dépôt
+      frais: this.depotForm.value.frais || 0, // Vérifie que les frais sont bien définis
+      remise: this.depotForm.value.remise || 0, // Si aucune remise, mettre 0
+      prix_total: this.totalPrix, // Calculé à partir des jeux ajoutés
+      jeux: this.newJeux.map(jeu => ({
+        jeuId: jeu.jeuId, // Vérifie que chaque jeu a bien un ID
+        quantite: jeu.quantites, // Vérifie la quantité
+        prix_unitaire: jeu.prix_unitaire // Vérifie le prix unitaire
+      }))
+    };
+  
+    // Afficher les données avant de les envoyer pour vérification
+    console.log("📤 Données envoyées :", JSON.stringify(depotData, null, 2));
+  
+    // Envoyer les données au backend via l'API
+    this.apiService.createTransaction(depotData).subscribe(
+      (res) => {
+        console.log("✅ Dépôt créé avec succès :", res);
+        alert("Dépôt créé avec succès !");
+        this.depotForm.reset(); // Réinitialiser le formulaire après succès
+        this.newJeux = []; // Vider la liste des jeux ajoutés
+      },
+      (err) => {
+        console.error("❌ Erreur lors de la création du dépôt :", err);
+        alert("Erreur lors de la création du dépôt. Vérifiez les données.");
+      }
+    );
   }
-
+  
   // Returns the display name for a given typeJeuId.
   getTypeJeuName(typeJeuId: string): string {
     const found = this.typeJeux.find(t => t.id === typeJeuId);
