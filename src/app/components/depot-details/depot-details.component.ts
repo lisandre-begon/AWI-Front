@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
-import { ObjectId } from 'bson';
+// Remove the top-level import of ObjectId to avoid top-level await issues.
+// import { ObjectId } from 'bson';
 // import { AuthService } from '../../service/auth.service';  // Uncomment when AuthService is implemented
 
 @Component({
@@ -25,14 +26,13 @@ export class DepotDetailsComponent implements OnInit {
   // Reactive forms for depot and for one jeu
   depotForm: FormGroup;
   jeuForm: FormGroup;
-  // Gestionnaire (username of the logged-in account)
+  // Gestionnaire (username or id of the logged-in account)
   // private authService: AuthService, // Uncomment when AuthService is available
   gestionnaire: string = '';
   totalPrix: number = 0;
   selectedDepot: any;
   showDetails: boolean = false;
 
-  // Inject ApiService, FormBuilder, and later AuthService when available.
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService
@@ -82,8 +82,7 @@ export class DepotDetailsComponent implements OnInit {
     });
   }
 
-  // Load typeJeux and map to { id, name }  
-  // Here we assume the API returns objects with an _id.
+  // Load typeJeux and map to { id, name }
   loadTypeJeux() {
     this.apiService.getAllTypeJeux().subscribe(data => {
       console.log('Raw typeJeux data:', data);
@@ -108,8 +107,8 @@ export class DepotDetailsComponent implements OnInit {
   // Called when the user clicks "Ajouter Jeu"
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
-    //We add the proprietaire to the jeuData
-    jeuData.proprietaire = this.depotForm.value.proprietaire; 
+    // Add the proprietaire from the depot form to jeuData
+    jeuData.proprietaire = this.depotForm.value.proprietaire;
     console.log('Adding game:', jeuData);
     if (!jeuData.typeJeuId) {
       alert('Veuillez sélectionner un type de jeu.');
@@ -135,45 +134,46 @@ export class DepotDetailsComponent implements OnInit {
   }
 
   // Called when the depot form is submitted
-  saveDepot() {
+  async saveDepot() {
     const proprietaire = this.depotForm.value.proprietaire;
     if (!proprietaire) {
       alert('Veuillez sélectionner un vendeur.');
       return;
     }
 
-    const jeuxCreation = this.newJeux.map(jeu => {
-      // Build the new jeu object with proper ObjectId conversions.
-      const newJeu = {
-        // Convert the vendor id to ObjectId.
-        proprietaire: new ObjectId(proprietaire),
-        // Convert the typeJeu id to ObjectId.
-        typeJeuId: new ObjectId(jeu.typeJeuId),
-        statut: 'disponible',
-        // Convert prices and quantities appropriately.
-        prix: parseFloat(jeu.prix_unitaire),
-        quantites: parseInt(jeu.quantites, 10) || 1,
-        // Convert each category id to an ObjectId.
-        categories: jeu.categories.map((catId: string) => new ObjectId(catId)),
-        createdAt: new Date(),
-      };
-    
-      // Call the API to create the jeu and return a promise.
-      return this.apiService.createJeu(newJeu).toPromise();
-    });
+    try {
+      // Dynamically import ObjectId from bson to avoid top-level await issues.
+      const { ObjectId } = await import('bson');
 
-    Promise.all(jeuxCreation).then(createdJeux => {
+      const jeuxCreation = this.newJeux.map(jeu => {
+        // Build the new jeu object with proper ObjectId conversions.
+        const newJeu = {
+          proprietaire: new ObjectId(proprietaire),
+          typeJeuId: new ObjectId(jeu.typeJeuId),
+          statut: 'disponible',
+          prix: parseFloat(jeu.prix_unitaire),
+          quantites: parseInt(jeu.quantites, 10) || 1,
+          categories: jeu.categories.map((catId: string) => new ObjectId(catId)),
+          createdAt: new Date(),
+        };
+        // Call the API to create the jeu and return a promise.
+        return this.apiService.createJeu(newJeu).toPromise();
+      });
+
+      const createdJeux = await Promise.all(jeuxCreation);
+
       // Map the created jeux for inclusion in the depot.
       const jeuxForDepot = createdJeux.map(jeu => ({
-        jeuId: jeu._id,
-        quantite: jeu.quantites,      
+        // Convert jeu._id to ObjectId (if necessary) or use it as is if it's already a valid string.
+        jeuId: new ObjectId(jeu._id),
+        quantite: jeu.quantites,
         prix_unitaire: jeu.prix
       }));
 
       // Compose the depot object.
       const newDepot = {
         statut: 'depot',
-        gestionnaire: new ObjectId(this.gestionnaire), // if this.gestionnaire is a valid 24-character hex string
+        gestionnaire: new ObjectId(this.gestionnaire),
         proprietaire: new ObjectId(proprietaire),
         date_transaction: new Date(),
         prix_total: this.totalPrix,
@@ -185,7 +185,6 @@ export class DepotDetailsComponent implements OnInit {
           prix_unitaire: jeu.prix_unitaire,
         })),
       };
-      
 
       this.apiService.createTransaction(newDepot).subscribe(() => {
         // Refresh the depot list and clear the forms.
@@ -194,9 +193,9 @@ export class DepotDetailsComponent implements OnInit {
         this.depotForm.reset();
         this.totalPrix = 0;
       });
-    }).catch(err => {
+    } catch (err) {
       console.error('Erreur lors de la création des jeux :', err);
-    });
+    }
   }
 
   // Returns the display name for a given typeJeuId.
@@ -215,5 +214,4 @@ export class DepotDetailsComponent implements OnInit {
     const found = this.categories.find(c => c.id === catId);
     return found ? found.name : 'Catégorie inconnue';
   }
-  
 }
