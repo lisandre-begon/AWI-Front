@@ -70,10 +70,11 @@ export class DepotDetailsComponent implements OnInit {
   loadTypeJeux() {
     this.apiService.getAllTypeJeux().subscribe(data => {
       console.log('Raw typeJeux data:', data);
-      this.typeJeux = data.map(typeJeu => ({
-        id: typeJeu._id ? typeJeu._id.toString() : null,  // Convert ObjectId to string
+      this.typeJeux = data.map((typeJeu, index) => ({
+        id: typeJeu._id ? typeJeu._id.toString() : index.toString(),
         name: `${typeJeu.intitule} (${typeJeu.editeur})`
       }));
+      
       console.log('Mapped typeJeux:', this.typeJeux);
     });
   }
@@ -150,15 +151,9 @@ export class DepotDetailsComponent implements OnInit {
   }
 
   getTypeJeuName(typeJeuId: string): string {
-    console.log('getTypeJeuName called with:', typeJeuId);
-    console.log('Available typeJeux:', this.typeJeux);
-    
-    const foundType = this.typeJeux.find(t => String(t.id).trim() === String(typeJeuId).trim());
-    
-    console.log('Found typeJeu:', foundType);
+    const foundType = this.typeJeux.find(t => String(t.id) === String(typeJeuId));
     return foundType ? foundType.name : 'Type inconnu';
-  }
-  
+  }  
 
   getCategoriesNames(categoryIds: string[]): string {
     const categoryNames = categoryIds.map(id => {
