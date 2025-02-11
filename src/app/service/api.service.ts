@@ -80,9 +80,9 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/jeu`);
   }
 
-  // getFilteredJeux(data: any): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
-  // }
+  getFilteredJeux(data: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
+  }
 
   updateJeu(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
@@ -92,6 +92,7 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/jeu/${id}`);
   }
 
+ 
   getFiltredJeu(
     proprietaire: String = "", 
     prix_min: String = "", 
@@ -121,7 +122,6 @@ export class ApiService {
       observe: 'response'
     }).pipe(map(response => response.body as any[]));
   }
-  
 
   // Transaction
   createTransaction(data: any): Observable<any> {
@@ -168,6 +168,8 @@ export class ApiService {
   deleteTypeJeu(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/typeJeu/${id}`);
   }
+
+
 
 
 
