@@ -3,6 +3,9 @@
 .body {
     background-color : #2f2b28;
     height: 100vh;
+    display : flex;
+    flex-direction: center;
+    align-content : center;
 }
 .login {
     background-color:#f4dce8;
@@ -76,5 +79,5 @@ button:hover {
 
 /* Animation de focus pour les champs */
 mat-form-field input:focus {
-    border-color:rgb(244, 234, 239);
+    border-color:rgb(248, 212, 230);
 }
