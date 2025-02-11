@@ -30,7 +30,7 @@ export class AcceuilComponent implements OnInit {
 
   calculateTimeRemaining(targetDate: Date): string {
     const now = new Date();
-    const target = targetDate;
+    const target : Date = targetDate;
   
     let months = target.getMonth() - now.getMonth();
     let days = target.getDate() - now.getDate();
