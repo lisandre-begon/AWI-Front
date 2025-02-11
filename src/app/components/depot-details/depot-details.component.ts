@@ -72,10 +72,12 @@ export class DepotDetailsComponent implements OnInit {
   // Load vendeurs and map to { id, name }
   loadVendeurs() {
     this.apiService.getAllVendeurs().subscribe(data => {
+      console.log('Raw vendeurs data:', data);
       this.vendeurs = data.map(vendeur => ({
         id: vendeur._id,  // Assuming the vendeur object has _id
         name: `${vendeur.nom} ${vendeur.prenom}`
       }));
+      console.log('Mapped vendeurs:', this.vendeurs);
     });
   }
 
@@ -106,7 +108,7 @@ export class DepotDetailsComponent implements OnInit {
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
     //We add the proprietaire to the jeuData
-    jeuData.proprietaire = this.depotForm.value.proprietaire;
+    jeuData.proprietaire = this.depotForm.value.proprietaire; 
     console.log('Adding game:', jeuData);
     if (!jeuData.typeJeuId) {
       alert('Veuillez sélectionner un type de jeu.');
