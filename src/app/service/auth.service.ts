@@ -3,12 +3,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:5000/api/gestionnaire';
+  private readonly apiUrl = environment.apiUrl + '/api/gestionnaire';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );
