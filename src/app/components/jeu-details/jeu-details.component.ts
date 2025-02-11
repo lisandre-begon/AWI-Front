@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class JeuDetailsComponent implements OnInit {
   jeux: any[] = [];
   vendeurs: any[] = [];
+  categories: any[] = [];
   typeJeux: any[] = [];
   selectedJeu: any = null;
   jeuForm: FormGroup;
@@ -39,6 +40,15 @@ export class JeuDetailsComponent implements OnInit {
     this.fetchJeux();
   }
 
+ // Load categories and map to { id, name }
+ loadCategories() {
+  this.apiService.getAllCategories().subscribe(data => {
+    this.categories = data.map(category => ({
+      id: category._id ? category._id.toString() : category.name,
+      name: category.name
+    }));
+  });
+}  
   loadVendeurs() {
     this.apiService.getAllVendeurs().subscribe(data => {
       this.vendeurs = data.map(vendeur => ({
@@ -121,24 +131,19 @@ export class JeuDetailsComponent implements OnInit {
 
   // Méthode appelée lorsqu'on clique sur "Filtrer"
   filtrer(): void {
-    // Appel à l'API avec les filtres actuels
-    this.apiService.getFiltredJeu(
-      this.proprietaire,
-      this.prix_min,
-      this.prix_max,
-      this.categorie,
-      this.intitule,
-      this.statut,
-      this.editeur,
-      this.quantites
-    ).subscribe(
-      (result) => {
-        this.jeux = result;  // Met à jour les jeux filtrés
-      },
-      (error) => {
-        console.error('Erreur de filtrage', error);
-      }
-    );
-  
+    const body: any = {};
+
+    if (this.proprietaire !== "") body.proprietaire = this.proprietaire;
+    if (this.prix_min !== "") body.prix_min = this.prix_min;
+    if (this.prix_max !== "") body.prix_max = this.prix_max;
+    if (this.categorie !== "") body.categorie = this.categorie;
+    if (this.intitule !== "") body.intitule = this.intitule;
+    if (this.statut !== "") body.statut = this.statut;
+    if (this.editeur !== "") body.editeur = this.editeur;
+    if (this.quantites !== "") body.quantites = this.quantites;
+
+    this.apiService.getFilteredJeux({ body }).subscribe(data => {
+      this.jeux = data;
+    });
   }
 }
