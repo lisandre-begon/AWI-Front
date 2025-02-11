@@ -9,13 +9,23 @@ body {
     min-height: 100vh;
   }
   
+  .annonce{
+    background-color: #95120d;
+    color: #fdf6f7;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
   .jeu-details-container {
-    background: white;
+    background: #fdf6f7;
     padding: 20px;
+    margin-top: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 600px;
-    width: 150px;
+    width: 500px;
   }
   
   h2, h3 {
@@ -52,7 +62,6 @@ body {
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s ease;
   }
   
   button:hover {
