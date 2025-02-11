@@ -80,9 +80,15 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/jeu`);
   }
 
-  getFilteredJeux(data: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
-   }
+  // getFilteredJeux(data: any): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
+  //  }
+
+   getFiltredJeu(filtres: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { 
+      body: filtres
+    }).pipe(map(response => response.body as any[]));
+  }
 
   updateJeu(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
