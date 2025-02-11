@@ -9,24 +9,28 @@ import { environment } from '../../environments/environment';
 })
 export class SessionService {
 
+<<<<<<< HEAD
   private readonly apiUrl = environment.apiUrl;
+=======
+private readonly apiUrl = environment.apiUrl;
+>>>>>>> refs/remotes/origin/main
 
   constructor(private http : HttpClient) { }
 
   getNextPlannedSession(): Observable<Session>{
-    return this.http.get<Session>(this.apiUrl + '/api/nextsession');
+    return this.http.get<Session>(this.apiUrl + '/nextsession');
   }
 
   isSessionActive(): Observable<Boolean>{
-    return this.http.get<{isActive : boolean}>(this.apiUrl + '/api/activeSession').pipe(map((response) => response.isActive));
+    return this.http.get<{isActive : boolean}>(this.apiUrl + '/activeSession').pipe(map((response) => response.isActive));
   }
 
   getSessionPlanifie(): Observable<Session>{
-    return this.http.get<Session>(this.apiUrl + '/api/planified');
+    return this.http.get<Session>(this.apiUrl + '/planified');
   }
 
   getSessionEnCours(): Observable<Session>{
-    return this.http.get<Session>(this.apiUrl + '/api/encours');
+    return this.http.get<Session>(this.apiUrl + '/encours');
   }
 
   addSession(session : Session): Observable<Session>{
@@ -34,10 +38,10 @@ export class SessionService {
   }
 
   deleteSession(idSession : string): Observable<Session>{
-    return this.http.delete<Session>(this.apiUrl + '/api/' + idSession)
+    return this.http.delete<Session>(this.apiUrl + '/' + idSession)
   }
 
   getAllSession(): Observable<Session[]>{
-    return this.http.get<Session[]>(this.apiUrl + '/api/');
+    return this.http.get<Session[]>(this.apiUrl + '/');
   }
 }

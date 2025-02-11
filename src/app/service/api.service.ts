@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
-=======
 import { environment } from '../../environments/environment';
->>>>>>> refs/remotes/origin/main
 
 @Injectable({
   providedIn: 'root',
