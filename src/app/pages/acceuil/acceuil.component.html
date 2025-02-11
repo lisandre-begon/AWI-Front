@@ -5,7 +5,7 @@
   <div class="session">
       <span class="label">Date de début : </span><span class="value">{{session.dateDebut}}</span>
       <br>
-      <span class="label">Date restant : </span><span class="value">{{this.date1}}</span>
+      <span class="label">Temps restant : </span><span class="value">{{this.time}}</span>
   </div>
 </div>
 <div class="boutons">
@@ -29,8 +29,8 @@
         </svg>
         </div>  
 </div>
-<div class="bouton ach" >
-    <div class="bgContainer" (click)='redirectAch()'>
+<div class="bouton ach" (click)='redirectAch()'>
+    <div class="bgContainer" >
       <span>Acheteur</span>
       <span>Acheteur</span>
       </div>
