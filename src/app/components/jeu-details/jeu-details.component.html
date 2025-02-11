@@ -1,65 +1,77 @@
 <div class="jeu-details-container">
   <h2>Liste des Jeux</h2>
 
-  <!-- Liste des jeux -->
-  <ul>
-    <li *ngFor="let jeu of jeux" (click)="selectJeu(jeu)" class="clickable">
-      <span>{{ jeu.intitule }} - {{ jeu.statut }} ({{ jeu.prix }})</span>
-      <button (click)="deleteJeu(); $event.stopPropagation();" class="btn btn-danger btn-sm">Supprimer</button>
-    </li>
-  </ul>
 
-  <!-- Détails du jeu sélectionné -->
-  <div *ngIf="selectedJeu" class="jeu-details">
-    <h3>Détails du jeu sélectionné</h3>
-    <p><strong>Nom :</strong> {{ selectedJeu.intitule }}</p>
-    <p><strong>Éditeur :</strong> {{ selectedJeu.editeur }}</p>
-    <p><strong>Vendeur :</strong> {{ selectedJeu.vendeur }}</p>
-    <p><strong>Statut :</strong> {{ selectedJeu.statut }}</p>
-    <p><strong>Date de dépôt :</strong> {{ selectedJeu.dateDepot }}</p>
-    <p><strong>Prix :</strong> {{ selectedJeu.prix }}</p>
-    <p><strong>Quantités :</strong> {{ selectedJeu.quantites }}</p>
-    <p><strong>Catégories :</strong> {{ selectedJeu.categories.join(', ') }}</p>
-
-    <!-- Formulaire de modification -->
-    <form [formGroup]="jeuForm" (ngSubmit)="updateJeu()">
-      <h4>Modifier le jeu</h4>
-      <label>
-        Nom :
-        <input type="text" formControlName="intitule" />
-      </label>
-      <br />
-      <label>
-        Éditeur :
-        <input type="text" formControlName="editeur" />
-      </label>
-      <br />
-      <label>
-        Statut :
-        <select formControlName="statut">
-          <option value="disponible">Disponible</option>
-          <option value="pas disponible">Pas disponible</option>
-          <option value="vendu">Vendu</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        Prix :
-        <input type="number" formControlName="prix" />
-      </label>
-      <br />
-      <label>
-        Quantités :
-        <input type="number" formControlName="quantites" />
-      </label>
-      <br />
-      <label>
-        Catégories :
-        <input type="text" formControlName="categories" placeholder="Séparer par des virgules" />
-      </label>
-      <br />
-      <button type="submit">Mettre à jour</button>
-      <button type="button" (click)="deleteJeu()" class="btn btn-danger">Supprimer</button>
-    </form>
+  <div class="filter-container">
+    <h2>Filtrer les jeux</h2>
+  
+    <!-- Filtre par propriétaire -->
+    <div>
+      <label for="proprietaire">Propriétaire :</label>
+      <input type="text" id="proprietaire" [(ngModel)]="proprietaire" placeholder="Entrez le propriétaire">
+    </div>
+  
+    <!-- Filtre par prix minimum -->
+    <div>
+      <label for="prix_min">Prix minimum :</label>
+      <input type="number" id="prix_min" [(ngModel)]="prix_min" placeholder="Prix min">
+    </div>
+  
+    <!-- Filtre par prix maximum -->
+    <div>
+      <label for="prix_max">Prix maximum :</label>
+      <input type="number" id="prix_max" [(ngModel)]="prix_max" placeholder="Prix max">
+    </div>
+  
+    <!-- Filtre par catégorie -->
+    <div>
+      <label for="categorie">Catégorie :</label>
+      <input type="text" id="categorie" [(ngModel)]="categorie" placeholder="Catégorie">
+    </div>
+  
+    <!-- Filtre par intitulé -->
+    <div>
+      <label for="intitule">Intitulé :</label>
+      <input type="text" id="intitule" [(ngModel)]="intitule" placeholder="Intitulé">
+    </div>
+  
+    <!-- Filtre par statut -->
+    <div>
+      <label for="statut">Statut :</label>
+      <select id="statut" [(ngModel)]="statut">
+        <option value="">Sélectionner un statut</option>
+        <option value="disponible">Disponible</option>
+        <option value="épuisé">Épuisé</option>
+        <option value="en attente">En attente</option>
+      </select>
+    </div>
+  
+    <!-- Filtre par éditeur -->
+    <div>
+      <label for="editeur">Éditeur :</label>
+      <input type="text" id="editeur" [(ngModel)]="editeur" placeholder="Éditeur">
+    </div>
+  
+    <!-- Filtre par quantités -->
+    <div>
+      <label for="quantites">Quantités :</label>
+      <input type="number" id="quantites" [(ngModel)]="quantites" placeholder="Quantités">
+    </div>
+  
+    <!-- Bouton pour filtrer -->
+    <button (click)="filtrer()">Filtrer</button>
+  
+    <!-- Résultats des jeux filtrés -->
+    <div *ngIf="jeux.length > 0">
+      <h3>Résultats</h3>
+      <ul>
+        <li *ngFor="let jeu of jeux">
+          {{ jeu.intitule }} - {{ jeu.prix }} €
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="jeux.length === 0">
+      <p>Aucun jeu trouvé avec ces filtres.</p>
+    </div>
   </div>
-</div>
+  

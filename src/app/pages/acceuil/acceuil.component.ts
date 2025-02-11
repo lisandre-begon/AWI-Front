@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router'; 
 import {SessionService} from '../../service/session.service';
 import {Session} from '../../models/session';
@@ -11,11 +11,11 @@ import {Session} from '../../models/session';
   templateUrl: './acceuil.component.html',
   styleUrl: './acceuil.component.css'
 })
-export class AcceuilComponent {
+export class AcceuilComponent implements OnInit {
 
   private router = inject(Router); 
 
-  constructor(private SessionService: SessionService) { }
+  constructor(private sessionService: SessionService) { }
 
   date1 : Date = new Date();
   date2 : Date = new Date();
@@ -28,7 +28,7 @@ export class AcceuilComponent {
   }
 
   getcurrentsession(): void {
-    this.SessionService.getSessionEnCours().subscribe((data) => {
+    this.sessionService.getSessionEnCours().subscribe((data) => {
       this.session = data;
     },
     (error) => {
@@ -37,7 +37,7 @@ export class AcceuilComponent {
   }
 
   redirectGest(): void {
-    this.router.navigate(['/gestionnaire']);
+    this.router.navigate(['/login']);
   }
   redirectAch(): void {
     this.router.navigate(['/acheteur'])

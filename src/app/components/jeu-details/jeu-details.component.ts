@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule  } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './jeu-details.component.html',
   styleUrls: ['./jeu-details.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class JeuDetailsComponent implements OnInit {
   jeux: any[] = [];
@@ -82,5 +82,38 @@ export class JeuDetailsComponent implements OnInit {
         this.errorMessage = 'Erreur lors de la suppression du jeu';
       }
     );
+  }
+
+  // Propriétés pour stocker les valeurs des filtres
+  proprietaire: string = "";
+  prix_min: string = "";
+  prix_max: string = "";
+  categorie: string = "";
+  intitule: string = "";
+  statut: string = "";
+  editeur: string = "";
+  quantites: string ="";
+
+  // Méthode appelée lorsqu'on clique sur "Filtrer"
+  filtrer(): void {
+    // Appel à l'API avec les filtres actuels
+    this.apiService.getFiltredJeu(
+      this.proprietaire,
+      this.prix_min,
+      this.prix_max,
+      this.categorie,
+      this.intitule,
+      this.statut,
+      this.editeur,
+      this.quantites
+    ).subscribe(
+      (result) => {
+        this.jeux = result;  // Met à jour les jeux filtrés
+      },
+      (error) => {
+        console.error('Erreur de filtrage', error);
+      }
+    );
+  
   }
 }

@@ -8,7 +8,7 @@ import { Session }  from '../models/session';
 })
 export class SessionService {
 
-  private readonly apiUrl = 'http://localhost:5000/api';
+  private readonly apiUrl = 'http://localhost:5000/api/session';
 
   constructor(private http : HttpClient) { }
 

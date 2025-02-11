@@ -11,6 +11,7 @@ import {VentesComponent} from './pages/ventes/ventes.component';
 import {TransacComponent} from './pages/transac/transac.component';
 import {BilanComponent} from './pages/bilan/bilan.component';
 import {ListAchComponent} from './pages/list-ach/list-ach.component';
+import {LoginpageComponent} from './pages/login/loginpage.component';
 
 export const routes: Routes = [
     {path: 'acceuil', component: AcceuilComponent},
@@ -23,6 +24,7 @@ export const routes: Routes = [
     {path: 'ventes', component: VentesComponent},
     {path: 'transactions', component: TransacComponent},
     {path: 'bilan', component: BilanComponent},
+    {path: 'login', component: LoginpageComponent},
     {path: '', redirectTo: '/acceuil', pathMatch: 'full'},
     {path: '**', component: PageNotFoundComponent}
 ];

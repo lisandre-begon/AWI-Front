@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +87,36 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/jeu/${id}`);
   }
 
+  getFiltredJeu(
+    proprietaire: String = "", 
+    prix_min: String = "", 
+    prix_max: String = "",
+    categorie: String = "", 
+    intitule: String = "", 
+    statut: String = "", 
+    editeur: String = "",
+    quantites: String = ""
+  ): Observable<any[]> {
+  
+    // On crée un objet pour les filtres à envoyer
+    const body: any = {};
+  
+    // On ajoute les filtres au body seulement s'ils ne sont pas null
+    if (proprietaire !== "") body.proprietaire = proprietaire;
+    if (prix_min !== "") body.prix_min = prix_min;
+    if (prix_max !== "") body.prix_max = prix_max;
+    if (categorie !== "") body.categorie = categorie;
+    if (intitule !== "") body.intitule = intitule;
+    if (statut !== "") body.statut = statut;
+    if (editeur !== "") body.editeur = editeur;
+    if (quantites !== "") body.quantites = quantites;
+  
+    // On envoie la requête HTTP avec les filtres dans le body
+    return this.http.get<any[]>(`${this.apiUrl}/filtered`, { observe: 'response' })
+  .pipe(map(response => response.body as any[]));
+  }
+  
+
   // Transaction
   createTransaction(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/transaction`, data);
@@ -127,6 +159,8 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/typeJeu/${id}`);
   }
 
+
+
   // Vendeur
   createVendeur(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/vendeur`, data);
@@ -151,4 +185,6 @@ export class ApiService {
   resetSolde(id: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/vendeur/solde/${id}`, {});
   }
+
+
 }

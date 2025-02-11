@@ -27,8 +27,40 @@ img{
 }
 
 .logo{
-  width: 20%;
-  height: 20%;
+  width: 80px;
+  height: 80px;
+}
+
+.session-container {
+  background-color: #f4dce8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(228, 212, 221, 0.1);
+  padding: 20px 30px;
+  width: 300px;
+  text-align: left;
+}
+
+.session {
+  font-size: 16px;
+  color: #34495e;
+}
+
+/* Label pour les dates */
+.label {
+  font-weight: bold;
+  color: #2980b9;
+}
+
+/* Valeur des dates */
+.value {
+  color: #2ecc71;
+}
+
+/* Ajout d'une petite bordure en bas pour un effet propre */
+.session-container hr {
+  border: none;
+  border-top: 1px solid #ecf0f1;
+  margin-top: 15px;
 }
 
 .Bienvenue{
@@ -118,7 +150,7 @@ img{
 }
 
 .ach .bgContainer {
-  max-width: 29%;
+  max-width: 38%;
 }
 
 .bgContainer span {
