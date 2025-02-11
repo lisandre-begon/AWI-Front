@@ -144,7 +144,7 @@ export class JeuDetailsComponent implements OnInit {
 
     this.apiService.getFilteredJeux({ body }).subscribe(data => {
       this.jeux = data;
-      conosole.log('Filtered jeux:', this.jeux);
+      console.log('Filtered jeux:', this.jeux);
     });
   }
 }
