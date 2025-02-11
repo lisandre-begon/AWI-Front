@@ -30,7 +30,7 @@ export class AcceuilComponent implements OnInit {
 
   calculateTimeRemaining(targetDate: Date): string {
     const now = new Date();
-    const target = targetDate;
+    const target : Date = targetDate;
   
     let months = target.getMonth() - now.getMonth();
     let days = target.getDate() - now.getDate();
@@ -58,8 +58,6 @@ export class AcceuilComponent implements OnInit {
   getcurrentsession(): void {
     this.sessionService.getSessionEnCours().subscribe((data) => {
       this.session = data;
-      this.time = this.calculateTimeRemaining(data.dateFin)
-      console.log(data.dateDebut + " " + data.dateFin);
     },
     (error) => {
       this.errorMessage = 'Erreur lors du chargement des acheteurs';
