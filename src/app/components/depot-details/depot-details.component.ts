@@ -105,6 +105,8 @@ export class DepotDetailsComponent implements OnInit {
   // Called when the user clicks "Ajouter Jeu"
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
+    //We add the proprietaire to the jeuData
+    jeuData.proprietaire = this.depotForm.value.proprietaire;
     console.log('Adding game:', jeuData);
     if (!jeuData.typeJeuId) {
       alert('Veuillez sélectionner un type de jeu.');
