@@ -206,11 +206,12 @@ export class DepotDetailsComponent implements OnInit {
       remise: this.depotForm.value.remise || 0,
       prix_total: this.totalPrix,
       jeux: this.newJeux.map(jeu => ({
-        jeuId: jeu.jeuId,
-        quantite: jeu.quantites,
-        prix_unitaire: jeu.prix
+          jeuId: jeu.jeuId,
+          quantite: jeu.quantites,   // ✅ Send correct field
+          prix_unitaire: jeu.prix     // ✅ Send correct field
       }))
     };
+  
     
   
     // Afficher les données avant de les envoyer pour vérification
