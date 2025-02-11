@@ -9,9 +9,9 @@ import { environment } from '../../environments/environment';
 })
 export class SessionService {
 
-  private readonly apiUrl = environment.apiUrl;
+  private readonly apiUrl = environment.apiUrl + '/session';
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient) {}
 
   getNextPlannedSession(): Observable<Session>{
     return this.http.get<Session>(this.apiUrl + '/nextsession');
