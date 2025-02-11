@@ -4,11 +4,12 @@ body {
   background-color: #f9f9f9;
   margin: 0;
   padding: 0;
+
 }
 
 .depot-detail-container {
   max-width: 1000px;
-  margin: 10px auto;
+  margin: auto;
   padding: 15px;
   background-color: #fff;
   border-radius: 5px;
