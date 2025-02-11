@@ -156,6 +156,16 @@ export class DepotDetailsComponent implements OnInit {
   // Remove a jeu from the list
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);
+    //we delete the game from the database
+    this.apiService.deleteJeu(this.newJeux[index].jeuId).subscribe(
+      (res: any) => {
+        console.log("✅ Game deleted successfully:", res);
+      },
+      (err) => {
+        console.error("❌ Error deleting game:", err);
+        alert("Erreur lors de la suppression du jeu.");
+      }
+    );
     this.calculateTotalPrix();
   }
 
@@ -190,17 +200,18 @@ export class DepotDetailsComponent implements OnInit {
     // Construire l'objet à envoyer au backend
     const depotData = {
       statut: 'depot',
-      gestionnaire: this.gestionnaire, // ID du gestionnaire connecté
-      proprietaire: this.depotForm.value.proprietaire, // ID du propriétaire du dépôt
-      frais: this.depotForm.value.frais || 0, // Vérifie que les frais sont bien définis
-      remise: this.depotForm.value.remise || 0, // Si aucune remise, mettre 0
-      prix_total: this.totalPrix, // Calculé à partir des jeux ajoutés
+      gestionnaire: this.gestionnaire,
+      proprietaire: this.depotForm.value.proprietaire,
+      frais: this.depotForm.value.frais || 0,
+      remise: this.depotForm.value.remise || 0,
+      prix_total: this.totalPrix,
       jeux: this.newJeux.map(jeu => ({
-        jeuId: jeu.jeuId, // Vérifie que chaque jeu a bien un ID
-        quantite: jeu.quantites, // Vérifie la quantité
-        prix_unitaire: jeu.prix // Vérifie le prix unitaire
+        jeuId: jeu.jeuId,
+        quantite: jeu.quantites,
+        prix_unitaire: jeu.prix
       }))
     };
+    
   
     // Afficher les données avant de les envoyer pour vérification
     console.log("📤 Données envoyées :", JSON.stringify(depotData, null, 2));
