@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
-// Remove the top-level import of ObjectId to avoid top-level await issues.
-import { ObjectId } from 'bson';
+// Instead of using 'bson', we use 'bson-objectid' to avoid top-level await issues.
+import ObjectId from 'bson-objectid';
 // import { AuthService } from '../../service/auth.service';  // Uncomment when AuthService is implemented
 
 @Component({
@@ -133,7 +133,7 @@ export class DepotDetailsComponent implements OnInit {
     }, 0);
   }
 
-  // Updated saveDepot() method using bson-objectid synchronously.
+  // saveDepot() method using bson-objectid synchronously.
   async saveDepot() {
     const proprietaire = this.depotForm.value.proprietaire;
     if (!proprietaire) {
@@ -175,7 +175,7 @@ export class DepotDetailsComponent implements OnInit {
         remise: this.depotForm.value.remise || 0,
         frais: this.depotForm.value.frais,
         jeux: jeuxForDepot.map(jeu => ({
-          jeuId: new ObjectId(jeu.jeuId),
+          jeuId: jeu.jeuId,
           quantite: jeu.quantite,
           prix_unitaire: jeu.prix_unitaire,
         })),
