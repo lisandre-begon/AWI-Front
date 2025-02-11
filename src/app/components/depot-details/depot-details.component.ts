@@ -239,4 +239,10 @@ export class DepotDetailsComponent implements OnInit {
     const found = this.categories.find(c => c.id === catId);
     return found ? found.name : 'Catégorie inconnue';
   }
+
+  getGestionnaireName(gestionnaireId: string): string {
+    const gestionnaire = this.vendeurs.find(v => v.id === gestionnaireId);
+    return gestionnaire ? gestionnaire.name : 'Inconnu';
+  }
+  
 }
