@@ -116,9 +116,10 @@ export class ApiService {
     if (editeur !== "") body.editeur = editeur;
     if (quantites !== "") body.quantites = quantites;
   
-    // On envoie la requête HTTP avec les filtres dans le body
-    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { observe: 'response' })
-  .pipe(map(response => response.body as any[]));
+    return this.http.request<any[]>('GET', `${this.apiUrl}/jeu/filtered`, {
+      body: body, // Ajout du body ici
+      observe: 'response'
+    }).pipe(map(response => response.body as any[]));
   }
   
 
