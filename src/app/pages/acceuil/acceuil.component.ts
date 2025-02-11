@@ -25,7 +25,7 @@ export class AcceuilComponent implements OnInit {
 
   ngOnInit(): void {
     this.getcurrentsession();
-    date1 = calculateTimeRemaining(this.session.dateFin);
+    this.date1 = this.calculateTimeRemaining(this.session.dateFin);
   }
 
   calculateTimeRemaining(targetDate: string): string {
