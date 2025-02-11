@@ -19,18 +19,19 @@ export class AcceuilComponent implements OnInit {
 
   date1 : Date = new Date();
   date2 : Date = new Date();
+  time : String = "";
 
   session: Session = new Session( this.date1, this.date2, 12, "encours" , "0a");
   errorMessage: string = '';
 
   ngOnInit(): void {
     this.getcurrentsession();
-    this.date1 = this.calculateTimeRemaining(this.session.dateFin);
+    this.time = this.calculateTimeRemaining(this.session.dateFin);
   }
 
-  calculateTimeRemaining(targetDate: string): string {
+  calculateTimeRemaining(targetDate: Date): string {
     const now = new Date();
-    const target = new Date(targetDate);
+    const target = targetDate;
   
     let months = target.getMonth() - now.getMonth();
     let days = target.getDate() - now.getDate();
