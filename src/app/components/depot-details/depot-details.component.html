@@ -8,7 +8,6 @@
         </span>
       </li>
     </ul>
-
     <div *ngIf="showDetails">
         <h2>Détails du Dépôt</h2>
         <p><strong>Propriétaire:</strong> {{ selectedDepot.proprietaire }}</p>
@@ -16,18 +15,15 @@
         <p><strong>Prix Total:</strong> {{ selectedDepot.prix_total }}€</p>
         <p><strong>Frais:</strong> {{ selectedDepot.frais }}€</p>
         <p><strong>Remise:</strong> {{ selectedDepot.remise }}€</p>
-      
         <h3>Jeux dans ce dépôt:</h3>
         <ul>
-          <li *ngFor="let jeu of selectedDepot.jeux">
-            {{ getTypeJeuName(jeu.jeuId) }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
-          </li>
-        </ul>
-      
+            <li *ngFor="let jeu of selectedDepot.jeux">
+              <strong>{{ jeu.intitule }}</strong> ({{ jeu.editeur }}) - 
+              {{ jeu.prix_unitaire || 'N/A' }}€ x {{ jeu.quantite || 'N/A' }}
+            </li>
+          </ul>          
         <button (click)="showDetails = false">Fermer</button>
-      </div>
-      
-  
+    </div>
     <!-- Form to Create a New Depot -->
     <h2>Créer un Nouveau Dépôt</h2>
     <form [formGroup]="depotForm" (ngSubmit)="saveDepot()">
