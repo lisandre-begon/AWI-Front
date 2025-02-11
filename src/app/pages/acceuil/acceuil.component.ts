@@ -25,7 +25,35 @@ export class AcceuilComponent implements OnInit {
 
   ngOnInit(): void {
     this.getcurrentsession();
+    date1 = calculateTimeRemaining(this.session.dateFin);
   }
+
+  calculateTimeRemaining(targetDate: string): string {
+    const now = new Date();
+    const target = new Date(targetDate);
+  
+    let months = target.getMonth() - now.getMonth();
+    let days = target.getDate() - now.getDate();
+    let hours = target.getHours() - now.getHours();
+  
+    if (hours < 0) {
+      hours += 24;
+      days -= 1;
+    }
+  
+    if (days < 0) {
+      const prevMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      days += prevMonth.getDate();
+      months -= 1;
+    }
+  
+    if (months < 0) {
+      months += 12;
+    }
+  
+    return `${months} mois, ${days} jours, ${hours} heures`;
+  }
+
 
   getcurrentsession(): void {
     this.sessionService.getSessionEnCours().subscribe((data) => {
