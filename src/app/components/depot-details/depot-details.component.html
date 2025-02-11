@@ -19,7 +19,7 @@
         <ul>
             <li *ngFor="let jeu of selectedDepot.jeux">
               <strong>{{ jeu.intitule }}</strong> ({{ jeu.editeur }}) - 
-              {{ jeu.prix_unitaire || 'N/A' }}€ x {{ jeu.quantite || 'N/A' }}
+              {{ jeu.prix || 'N/A' }}€ x {{ jeu.quantites || 'N/A' }}
             </li>
           </ul>          
         <button (click)="showDetails = false">Fermer</button>
