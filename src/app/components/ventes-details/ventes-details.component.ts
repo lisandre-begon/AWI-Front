@@ -9,7 +9,7 @@ import { ApiService } from '../../service/api.service';
   standalone: true,
   templateUrl: './ventes-details.component.html',
   styleUrls: ['./ventes-details.component.css'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule]  // ✅ Fixes issues
+  imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class VenteDetailsComponent implements OnInit {
   ventes: any[] = [];
@@ -25,10 +25,10 @@ export class VenteDetailsComponent implements OnInit {
     this.venteForm = this.fb.group({
       acheteur: [null, Validators.required],
       frais: [0, Validators.required],
-      remise: [0],
-      jeux: this.fb.array([]),
+      remise: [0]
     });
   }
+  
 
   ngOnInit(): void {
     this.loadVentes();
@@ -41,7 +41,7 @@ export class VenteDetailsComponent implements OnInit {
     this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => {
       this.ventes = data;
     });
-  }
+  }  
 
   loadAcheteurs() {
     this.apiService.getAllAcheteurs().subscribe(data => {
@@ -86,6 +86,11 @@ export class VenteDetailsComponent implements OnInit {
       return sum + (Number(jeu.prix_unitaire) * Number(jeu.quantite));
     }, 0);
   }
+
+  showVenteDetails(vente: any) {
+    this.selectedVente = vente;
+    this.showDetails = true;
+  }  
 
   saveVente() {
     if (!this.venteForm.value.acheteur) {
