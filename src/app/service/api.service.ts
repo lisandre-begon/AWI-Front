@@ -80,9 +80,9 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/jeu`);
   }
 
-  getFilteredJeux(data: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
-  }
+  // getFilteredJeux(data: any): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
+  // }
 
   updateJeu(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
@@ -117,7 +117,7 @@ export class ApiService {
     if (quantites !== "") body.quantites = quantites;
   
     // On envoie la requête HTTP avec les filtres dans le body
-    return this.http.get<any[]>(`${this.apiUrl}/filtered`, { observe: 'response' })
+    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { observe: 'response' })
   .pipe(map(response => response.body as any[]));
   }
   
