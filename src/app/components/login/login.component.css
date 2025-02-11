@@ -1,9 +1,13 @@
 /* Conteneur principal */
+
+.body {
+    background-color : #2f2b28;
+}
 .login {
-    background-color: #ffffff;
+    background-color: #dcf0e0;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.913);
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
@@ -13,7 +17,7 @@
 /* Titre */
 h1 {
     font-size: 24px;
-    color: #2c3e50;
+    color: #d75630;
     margin-bottom: 20px;
 }
 
@@ -30,7 +34,7 @@ h1 {
 
 /* Erreur message */
 .error {
-    color: #e74c3c;
+    color: #d75630;
     font-size: 14px;
     margin-bottom: 20px;
 }
@@ -43,12 +47,12 @@ h1 {
 }
 
 .back-button {
-    background-color: #95a5a6;
+    background-color: #a0d6d2;
     color: white;
 }
 
 .submit-button {
-    background-color: #2980b9;
+    background-color: #509031;
     color: white;
 }
 
@@ -71,5 +75,5 @@ button:hover {
 
 /* Animation de focus pour les champs */
 mat-form-field input:focus {
-    border-color: #2980b9;
+    border-color: #f4dce8;
 }
