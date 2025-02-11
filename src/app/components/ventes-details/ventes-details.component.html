@@ -18,11 +18,12 @@
 
   <h3>Jeux sélectionnés</h3>
   <ul>
-    <li *ngFor="let jeu of selectedGames">
+    <li *ngFor="let jeu of selectedGames; let i = index">
       {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
       <button type="button" (click)="removeGame(i)">Supprimer</button>
     </li>
   </ul>
+  
 
   <h3>Total Prix: {{ totalPrix }}€</h3>
   <button type="submit">Valider la Vente</button>

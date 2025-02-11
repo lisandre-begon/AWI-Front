@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-vente-details',
+  standalone: true,
   templateUrl: './ventes-details.component.html',
-  styleUrls: ['./ventes-details.component.css']
+  styleUrls: ['./ventes-details.component.css'],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule]  // ✅ Fixes issues
 })
 export class VenteDetailsComponent implements OnInit {
   ventes: any[] = [];
@@ -31,6 +35,7 @@ export class VenteDetailsComponent implements OnInit {
     this.loadAcheteurs();
     this.loadAvailableGames();
   }
+
 
   loadVentes() {
     this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => {
