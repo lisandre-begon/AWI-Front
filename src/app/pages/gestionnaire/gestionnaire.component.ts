@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router'; 
-
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-gestionnaire',
@@ -11,6 +11,11 @@ import { ActivatedRoute, Router} from '@angular/router';
 })
 export class GestionnaireComponent {
   private router = inject(Router); 
+  constructor(private authService: AuthService) {}
+
+  deconnexion(): void {
+    this.authService.logout();
+  }
 
   redirectdepot(): void {
     this.router.navigate(['/depot']);
