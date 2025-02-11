@@ -68,6 +68,6 @@ export class AcceuilComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   redirectAch(): void {
-    this.router.navigate(['/acheteur'])
+    this.router.navigate(['/stock'])
   }
 }
