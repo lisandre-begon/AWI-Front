@@ -15,19 +15,14 @@ import ObjectId from 'bson-objectid';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class DepotDetailsComponent implements OnInit {
-  // Data for the depot list
   depots: any[] = [];
-  // Dropdown data arrays
+
   vendeurs: any[] = [];
   typeJeux: any[] = [];
   categories: any[] = [];
-  // Array to store jeux to be added to the new depot
   newJeux: any[] = [];
-  // Reactive forms for depot and for one jeu
   depotForm: FormGroup;
   jeuForm: FormGroup;
-  // Gestionnaire (username or id of the logged-in account)
-  // private authService: AuthService, // Uncomment when AuthService is available
   gestionnaire: string = '';
   totalPrix: number = 0;
   selectedDepot: any;
