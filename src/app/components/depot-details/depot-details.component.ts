@@ -69,7 +69,7 @@ export class DepotDetailsComponent implements OnInit {
 
   loadTypeJeux() {
     this.apiService.getAllTypeJeux().subscribe(data => {
-      this.typeJeux = data.map(typeJeu => ({ id: typeJeu._id, name: `${typeJeu.intitule} (${typeJeu.editeur})` }));
+      this.typeJeux = data.map(typeJeu => ({ id: typeJeu._id, name: typeJeu.intitule }));
     });
   }
 

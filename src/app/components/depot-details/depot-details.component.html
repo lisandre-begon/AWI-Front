@@ -19,7 +19,7 @@
       <div [formGroup]="jeuForm">
           <label>Type de Jeu :</label>
           <select formControlName="typeJeuId">
-            <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">{{ typeJeu.name }}</option>
+            <option *ngFor="let typeJeu of typeJeux" [value]="typeJeu.id">{{ typeJeu.name }}</option>
           </select>
           
           
