@@ -4,18 +4,30 @@ import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root',
 })
+
+
+
 export class ApiService {
   private readonly apiUrl = environment.apiUrl;
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) {}
 
   //J'ai mis data pour chaque car vaut mieux voir ensemble comment on envoie les données
 
 
+  
   // Acheteur
   createAcheteur(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/acheteur/`, data);
@@ -81,9 +93,8 @@ export class ApiService {
   }
 
   getFilteredJeux(data: any): Observable<any[]> {
-    console.log("data envoyé", data)
-    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
-   }
+    return this.http.post<any[]>(`${this.apiUrl}/jeu/filtered`, data, this.httpOptions);
+  }
 
 
   updateJeu(id: string, data: any): Observable<any> {
@@ -139,8 +150,9 @@ export class ApiService {
   }
 
   getFilteredTransactions(data: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/transaction/filtered`, { params: data });
+    return this.http.post<any[]>(`${this.apiUrl}/transaction/filtered`, data, this.httpOptions);
   }
+
 
   updateTransaction(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/transaction/${id}`, data);
