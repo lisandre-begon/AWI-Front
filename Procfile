@@ -1,1 +1,1 @@
-web: serve -s dist/awi-front
+web: serve -s dist/awi-front/browser
