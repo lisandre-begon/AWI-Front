@@ -122,7 +122,7 @@ export class DepotDetailsComponent implements OnInit {
         const createdGame = {
           jeuId: res.jeu._id,  // Use the ID returned from the API
           quantite: jeuData.quantites,
-          prix_unitaire: jeuData.prix_unitaire,
+          prix: jeuData.prix_unitaire,
           proprietaire: jeuData.proprietaire
         };
   
@@ -149,7 +149,7 @@ export class DepotDetailsComponent implements OnInit {
   // Calculate the total price from the jeux added
   calculateTotalPrix() {
     this.totalPrix = this.newJeux.reduce((sum, jeu) => {
-      return sum + (Number(jeu.prix_unitaire) * Number(jeu.quantites));
+      return sum + (Number(jeu.prix) * Number(jeu.quantites));
     }, 0);
   }
 
@@ -177,7 +177,7 @@ export class DepotDetailsComponent implements OnInit {
       jeux: this.newJeux.map(jeu => ({
         jeuId: jeu.jeuId, // Vérifie que chaque jeu a bien un ID
         quantite: jeu.quantites, // Vérifie la quantité
-        prix_unitaire: jeu.prix_unitaire // Vérifie le prix unitaire
+        prix_unitaire: jeu.prix // Vérifie le prix unitaire
       }))
     };
   
