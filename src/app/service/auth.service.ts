@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = environment.apiUrl + '/api/gestionnaire';
+  private readonly apiUrl = environment.apiUrl + '/gestionnaire';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );
