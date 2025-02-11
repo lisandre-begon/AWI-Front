@@ -7,8 +7,13 @@
   
     <!-- Filtre par propriétaire -->
     <div>
-      <label for="proprietaire">Propriétaire :</label>
-      <input type="text" id="proprietaire" [(ngModel)]="proprietaire" placeholder="Entrez le propriétaire">
+      <label for="proprietaire">Vendeur :</label>
+      <select id="proprietaire" formControlName="proprietaire">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un vendeur --</option>
+        <option *ngFor="let vendeur of vendeurs" [ngValue]="vendeur.id">
+          {{ vendeur.name }}
+        </option>
+      </select>
     </div>
   
     <!-- Filtre par prix minimum -->
@@ -31,8 +36,12 @@
   
     <!-- Filtre par intitulé -->
     <div>
-      <label for="intitule">Intitulé :</label>
-      <input type="text" id="intitule" [(ngModel)]="intitule" placeholder="Intitulé">
+      <select id="intitule" formControlName="intitule">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
+        <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
+          {{ typeJeu.intitule }}
+        </option>
+      </select>
     </div>
   
     <!-- Filtre par statut -->
@@ -48,8 +57,12 @@
   
     <!-- Filtre par éditeur -->
     <div>
-      <label for="editeur">Éditeur :</label>
-      <input type="text" id="editeur" [(ngModel)]="editeur" placeholder="Éditeur">
+      <select id="editeur" formControlName="editeur">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
+        <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
+          {{ typeJeu.editeur }}
+        </option>
+      </select>
     </div>
   
     <!-- Filtre par quantités -->

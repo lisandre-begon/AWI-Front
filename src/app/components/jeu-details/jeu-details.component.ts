@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class JeuDetailsComponent implements OnInit {
   jeux: any[] = [];
+  vendeurs: any[] = [];
+  typeJeux: any[] = [];
   selectedJeu: any = null;
   jeuForm: FormGroup;
   isLoading: boolean = false;
@@ -32,7 +34,18 @@ export class JeuDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadVendeurs();
+    this.loadTypeJeux();
     this.fetchJeux();
+  }
+
+  loadVendeurs() {
+    this.apiService.getAllVendeurs().subscribe(data => {
+      this.vendeurs = data.map(vendeur => ({
+        id: vendeur._id,  // Assuming the vendeur object has _id
+        name: `${vendeur.nom} ${vendeur.prenom}`
+      }));
+    });
   }
 
   fetchJeux() {
@@ -47,6 +60,18 @@ export class JeuDetailsComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  loadTypeJeux() {
+    this.apiService.getAllTypeJeux().subscribe(data => {
+      console.log('Raw typeJeux data:', data);
+      this.typeJeux = data.map((typeJeu, index) => ({
+        id: typeJeu._id ? typeJeu._id.toString() : index.toString(),
+        intitule: `${typeJeu.intitule}`,
+        editeur: `${typeJeu.editeur}`
+      }));
+      console.log('Mapped typeJeux:', this.typeJeux);
+    });
   }
 
   selectJeu(jeu: any) {
