@@ -26,7 +26,6 @@ export class AcceuilComponent implements OnInit {
 
   ngOnInit(): void {
     this.getcurrentsession();
-    this.time = this.calculateTimeRemaining(this.session.dateFin);
   }
 
   calculateTimeRemaining(targetDate: Date): string {
@@ -59,6 +58,8 @@ export class AcceuilComponent implements OnInit {
   getcurrentsession(): void {
     this.sessionService.getSessionEnCours().subscribe((data) => {
       this.session = data;
+      this.time = this.calculateTimeRemaining(data.dateFin)
+      console.log(data.dateDebut + " " + data.dateFin);
     },
     (error) => {
       this.errorMessage = 'Erreur lors du chargement des acheteurs';
