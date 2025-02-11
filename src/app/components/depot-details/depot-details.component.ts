@@ -207,8 +207,8 @@ export class DepotDetailsComponent implements OnInit {
       prix_total: this.totalPrix,
       jeux: this.newJeux.map(jeu => ({
           jeuId: jeu.jeuId,
-          quantite: jeu.quantites,   // ✅ Send correct field
-          prix_unitaire: jeu.prix     // ✅ Send correct field
+          quantite: jeu.quantite,   // ✅ Send correct field
+          prix_unitaire: jeu.prix_unitaire     // ✅ Send correct field
       }))
     };
   
