@@ -133,7 +133,7 @@ export class DepotDetailsComponent implements OnInit {
     }, 0);
   }
 
-  // Called when the depot form is submitted
+  // Updated saveDepot() method using bson-objectid synchronously.
   async saveDepot() {
     const proprietaire = this.depotForm.value.proprietaire;
     if (!proprietaire) {
@@ -142,11 +142,8 @@ export class DepotDetailsComponent implements OnInit {
     }
 
     try {
-      // Dynamically import ObjectId from bson to avoid top-level await issues.
-      const { ObjectId } = await import('bson');
-
+      // Build the array of promises to create each jeu.
       const jeuxCreation = this.newJeux.map(jeu => {
-        // Build the new jeu object with proper ObjectId conversions.
         const newJeu = {
           proprietaire: new ObjectId(proprietaire),
           typeJeuId: new ObjectId(jeu.typeJeuId),
@@ -156,7 +153,6 @@ export class DepotDetailsComponent implements OnInit {
           categories: jeu.categories.map((catId: string) => new ObjectId(catId)),
           createdAt: new Date(),
         };
-        // Call the API to create the jeu and return a promise.
         return this.apiService.createJeu(newJeu).toPromise();
       });
 
@@ -164,7 +160,6 @@ export class DepotDetailsComponent implements OnInit {
 
       // Map the created jeux for inclusion in the depot.
       const jeuxForDepot = createdJeux.map(jeu => ({
-        // Convert jeu._id to ObjectId (if necessary) or use it as is if it's already a valid string.
         jeuId: new ObjectId(jeu._id),
         quantite: jeu.quantites,
         prix_unitaire: jeu.prix
@@ -187,7 +182,6 @@ export class DepotDetailsComponent implements OnInit {
       };
 
       this.apiService.createTransaction(newDepot).subscribe(() => {
-        // Refresh the depot list and clear the forms.
         this.loadDepots();
         this.newJeux = [];
         this.depotForm.reset();
