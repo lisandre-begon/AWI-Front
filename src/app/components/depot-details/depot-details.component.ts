@@ -211,6 +211,8 @@ export class DepotDetailsComponent implements OnInit {
         console.log("✅ Dépôt créé avec succès :", res);
         alert("Dépôt créé avec succès !");
         this.depotForm.reset(); // Réinitialiser le formulaire après succès
+        //On reinitialise le prix total
+        this.totalPrix = 0;
         this.newJeux = []; // Vider la liste des jeux ajoutés
       },
       (err) => {
@@ -227,9 +229,11 @@ export class DepotDetailsComponent implements OnInit {
   }
   // (Optional) Display details for a selected depot.
   showDepotDetails(depot: any) {
+    console.log("📌 Depot selected:", depot);
     this.selectedDepot = depot;
     this.showDetails = true;
   }
+  
 
   getCategoryName(catId: string): string {
     const found = this.categories.find(c => c.id === catId);

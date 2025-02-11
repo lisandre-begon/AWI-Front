@@ -4,12 +4,29 @@
     <ul>
       <li *ngFor="let depot of depots" (click)="showDepotDetails(depot)" class="clickable">
         <span>
-          {{ depot.proprietaire }} -
-          {{ depot.date_transaction | date:'short' }} -
-          {{ depot.prix_total }}€
+          {{ depot.proprietaire }} - {{ depot.date_transaction | date:'short' }} - {{ depot.prix_total }}€
         </span>
       </li>
     </ul>
+
+    <div *ngIf="showDetails">
+        <h2>Détails du Dépôt</h2>
+        <p><strong>Propriétaire:</strong> {{ selectedDepot.proprietaire }}</p>
+        <p><strong>Date:</strong> {{ selectedDepot.date_transaction | date:'short' }}</p>
+        <p><strong>Prix Total:</strong> {{ selectedDepot.prix_total }}€</p>
+        <p><strong>Frais:</strong> {{ selectedDepot.frais }}€</p>
+        <p><strong>Remise:</strong> {{ selectedDepot.remise }}€</p>
+      
+        <h3>Jeux dans ce dépôt:</h3>
+        <ul>
+          <li *ngFor="let jeu of selectedDepot.jeux">
+            {{ getTypeJeuName(jeu.jeuId) }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
+          </li>
+        </ul>
+      
+        <button (click)="showDetails = false">Fermer</button>
+      </div>
+      
   
     <!-- Form to Create a New Depot -->
     <h2>Créer un Nouveau Dépôt</h2>
