@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
+import { ObjectId } from 'bson';
 // import { AuthService } from '../../service/auth.service';  // Uncomment when AuthService is implemented
 
 @Component({
@@ -141,17 +142,23 @@ export class DepotDetailsComponent implements OnInit {
       return;
     }
 
-    // For each jeu, create a new jeu via the API.
     const jeuxCreation = this.newJeux.map(jeu => {
+      // Build the new jeu object with proper ObjectId conversions.
       const newJeu = {
-        proprietaire: proprietaire,  // same vendeur id as depot
-        typeJeuId: jeu.typeJeuId,      // string id (to be converted on the backend)
+        // Convert the vendor id to ObjectId.
+        proprietaire: new ObjectId(proprietaire),
+        // Convert the typeJeu id to ObjectId.
+        typeJeuId: new ObjectId(jeu.typeJeuId),
         statut: 'disponible',
+        // Convert prices and quantities appropriately.
         prix: parseFloat(jeu.prix_unitaire),
         quantites: parseInt(jeu.quantites, 10) || 1,
-        categories: jeu.categories,    // array of category ids (strings)
-        createdAt: new Date()
+        // Convert each category id to an ObjectId.
+        categories: jeu.categories.map((catId: string) => new ObjectId(catId)),
+        createdAt: new Date(),
       };
+    
+      // Call the API to create the jeu and return a promise.
       return this.apiService.createJeu(newJeu).toPromise();
     });
 
@@ -166,14 +173,19 @@ export class DepotDetailsComponent implements OnInit {
       // Compose the depot object.
       const newDepot = {
         statut: 'depot',
-        gestionnaire: this.gestionnaire,  // using the fixed username for now
-        proprietaire: proprietaire,
+        gestionnaire: new ObjectId(this.gestionnaire), // if this.gestionnaire is a valid 24-character hex string
+        proprietaire: new ObjectId(proprietaire),
         date_transaction: new Date(),
         prix_total: this.totalPrix,
         remise: this.depotForm.value.remise || 0,
         frais: this.depotForm.value.frais,
-        jeux: jeuxForDepot
+        jeux: jeuxForDepot.map(jeu => ({
+          jeuId: new ObjectId(jeu.jeuId),
+          quantite: jeu.quantite,
+          prix_unitaire: jeu.prix_unitaire,
+        })),
       };
+      
 
       this.apiService.createTransaction(newDepot).subscribe(() => {
         // Refresh the depot list and clear the forms.
