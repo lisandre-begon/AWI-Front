@@ -206,11 +206,12 @@ export class DepotDetailsComponent implements OnInit {
       remise: this.depotForm.value.remise || 0,
       prix_total: this.totalPrix,
       jeux: this.newJeux.map(jeu => ({
-        jeuId: jeu.jeuId,
-        quantite: jeu.quantites,
-        prix_unitaire: jeu.prix
+          jeuId: jeu.jeuId,
+          quantite: jeu.quantite,   // ✅ Send correct field
+          prix_unitaire: jeu.prix_unitaire     // ✅ Send correct field
       }))
     };
+  
     
   
     // Afficher les données avant de les envoyer pour vérification
@@ -255,5 +256,23 @@ export class DepotDetailsComponent implements OnInit {
     const gestionnaire = this.vendeurs.find(v => v.id === gestionnaireId);
     return gestionnaire ? gestionnaire.name : 'Inconnu';
   }
+
+  deleteTransaction(transactionId: string) {
+    if (!confirm("❗ Êtes-vous sûr de vouloir supprimer cette transaction ?")) return;
+  
+    this.apiService.deleteTransaction(transactionId).subscribe(
+      (res) => {
+        console.log("✅ Transaction supprimée :", res);
+        alert("Transaction supprimée avec succès !");
+        this.showDetails = false;  // Hide details after deletion
+        this.loadDepots(); // Refresh the list of depots
+      },
+      (err) => {
+        console.error("❌ Erreur lors de la suppression :", err);
+        alert("Erreur lors de la suppression de la transaction.");
+      }
+    );
+  }
+  
   
 }

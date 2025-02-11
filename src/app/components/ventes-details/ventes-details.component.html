@@ -1,1 +1,56 @@
-<p>ventes-details works!</p>
+<h2>Créer une Vente</h2>
+<form [formGroup]="venteForm" (ngSubmit)="saveVente()">
+  <label for="acheteur">Acheteur :</label>
+  <select id="acheteur" formControlName="acheteur">
+    <option *ngFor="let acheteur of acheteurs" [ngValue]="acheteur.id">
+      {{ acheteur.name }}
+    </option>
+  </select>
+
+  <h3>Jeux disponibles</h3>
+  <ul>
+    <li *ngFor="let jeu of availableGames">
+      {{ jeu.intitule }} ({{ jeu.editeur }}) - {{ jeu.vendeur }} - {{ jeu.prix_unitaire }}€
+      <input type="number" [(ngModel)]="jeu.selectedQuantity" min="1" [max]="jeu.quantites">
+      <button type="button" (click)="addGameToVente(jeu, jeu.selectedQuantity)">Ajouter</button>
+    </li>
+  </ul>
+
+  <h3>Jeux sélectionnés</h3>
+  <ul>
+    <li *ngFor="let jeu of selectedGames; let i = index">
+      {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
+      <button type="button" (click)="removeGame(i)">Supprimer</button>
+    </li>
+  </ul>
+  
+
+  <h3>Total Prix: {{ totalPrix }}€</h3>
+  <button type="submit">Valider la Vente</button>
+</form>
+
+<h2>Liste des Ventes</h2>
+<ul>
+  <li *ngFor="let vente of ventes" (click)="selectedVente = vente; showDetails = true;">
+    {{ vente.acheteur }} - {{ vente.date_transaction | date:'short' }} - {{ vente.prix_total }}€
+  </li>
+</ul>
+
+<div *ngIf="showDetails">
+  <h2>Détails de la Vente</h2>
+  <p><strong>Acheteur:</strong> {{ selectedVente.acheteur }}</p>
+  <p><strong>Gestionnaire:</strong> {{ selectedVente.gestionnaire }}</p>
+  <p><strong>Date:</strong> {{ selectedVente.date_transaction | date:'short' }}</p>
+  <p><strong>Prix Total:</strong> {{ selectedVente.prix_total }}€</p>
+  <p><strong>Frais:</strong> {{ selectedVente.frais }}€</p>
+  <p><strong>Remise:</strong> {{ selectedVente.remise }}€</p>
+
+  <h3>Jeux vendus:</h3>
+  <ul>
+    <li *ngFor="let jeu of selectedVente.jeux">
+      {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
+    </li>
+  </ul>
+
+  <button (click)="deleteTransaction(selectedVente.id)">❌ Supprimer cette Vente</button>
+</div>
