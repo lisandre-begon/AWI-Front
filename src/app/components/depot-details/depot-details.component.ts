@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 // Remove the top-level import of ObjectId to avoid top-level await issues.
-// import { ObjectId } from 'bson';
+import { ObjectId } from 'bson';
 // import { AuthService } from '../../service/auth.service';  // Uncomment when AuthService is implemented
 
 @Component({
