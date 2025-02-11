@@ -9,11 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class SessionService {
 
-<<<<<<< HEAD
-  private readonly apiUrl = 'http://localhost:5000/api/session';
-=======
   private readonly apiUrl = environment.apiUrl;
->>>>>>> refs/remotes/origin/main
 
   constructor(private http : HttpClient) { }
 
