@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "build": "ng build --configuration production",
+    "postbuild": "mv dist/awi-front/browser/index.csr.html dist/awi-front/browser/index.html",
     "start": "serve -s dist/awi-front/browser",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:AWI-Front": "node dist/awi-front/server/server.mjs"
