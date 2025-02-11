@@ -1,3 +1,29 @@
+<h2>Liste des Ventes</h2>
+<ul>
+  <li *ngFor="let vente of ventes" (click)="showVenteDetails(vente)">
+    {{ vente.acheteur }} - {{ vente.date_transaction | date:'short' }} - {{ vente.prix_total }}€
+  </li>
+</ul>
+<div *ngIf="showDetails">
+    <h2>Détails de la Vente</h2>
+    <p><strong>Acheteur:</strong> {{ selectedVente.acheteur }}</p>
+    <p><strong>Gestionnaire:</strong> {{ selectedVente.gestionnaire }}</p>
+    <p><strong>Date:</strong> {{ selectedVente.date_transaction | date:'short' }}</p>
+    <p><strong>Prix Total:</strong> {{ selectedVente.prix_total }}€</p>
+    <p><strong>Frais:</strong> {{ selectedVente.frais }}€</p>
+    <p><strong>Remise:</strong> {{ selectedVente.remise }}€</p>
+  
+    <h3>Jeux vendus:</h3>
+    <ul>
+      <li *ngFor="let jeu of selectedVente.jeux">
+        {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x {{ jeu.quantite }}
+      </li>
+    </ul>
+  
+    <button (click)="deleteTransaction(selectedVente.id)">❌ Supprimer cette Vente</button>
+  </div>
+  
+
 <h2>Créer une Vente</h2>
 <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
   <label for="acheteur">Acheteur :</label>
