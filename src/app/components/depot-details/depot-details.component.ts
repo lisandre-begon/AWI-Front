@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
@@ -40,11 +40,13 @@ export class DepotDetailsComponent implements OnInit {
   ) {
     // Initialize depot form.
     this.depotForm = this.fb.group({
-      proprietaire: [null],
-      frais: [0],
-      remise: [0]
+      proprietaire: [null, Validators.required],  // Vérifier que c'est bien un ObjectId valide
+      frais: [0, Validators.required],
+      remise: [0],
+      jeux: this.fb.array([]),
     });
-    // Initialize jeu form.
+    
+    // Initialize jeu form
     this.jeuForm = this.fb.group({
       typeJeuId: [null],
       prix_unitaire: [0],
