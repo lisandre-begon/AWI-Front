@@ -144,11 +144,15 @@ export class DepotDetailsComponent implements OnInit {
   }
 
   getTypeJeuName(typeJeuId: string): string {
-    console.log('Getting name for typeJeuId:', typeJeuId);
-    const typeJeu = this.typeJeux.find(t => t.id === typeJeuId);
-    console.log('Found typeJeu:', typeJeu);
-    return typeJeu ? typeJeu.name : 'Type inconnu';
+    console.log('getTypeJeuName called with:', typeJeuId);
+    console.log('Available typeJeux:', this.typeJeux);
+    
+    const foundType = this.typeJeux.find(t => String(t.id).trim() === String(typeJeuId).trim());
+    
+    console.log('Found typeJeu:', foundType);
+    return foundType ? foundType.name : 'Type inconnu';
   }
+  
 
   getCategoriesNames(categoryIds: string[]): string {
     const categoryNames = categoryIds.map(id => {
