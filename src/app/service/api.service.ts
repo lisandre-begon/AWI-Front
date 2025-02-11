@@ -16,144 +16,148 @@ export class ApiService {
 
   // Acheteur
   createAcheteur(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/acheteur/`, data);
+    return this.http.post(`${this.apiUrl}/acheteur/`, data);
   }
 
   getAcheteurById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/acheteur/${id}`);
+    return this.http.get(`${this.apiUrl}/acheteur/${id}`);
   }
 
   getAllAcheteurs(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/acheteur/`);
+    return this.http.get<any[]>(`${this.apiUrl}/acheteur/`);
   }
 
   updateAcheteur(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/acheteur/${id}`, data);
+    return this.http.put(`${this.apiUrl}/acheteur/${id}`, data);
   }
 
   deleteAcheteur(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/acheteur/${id}`);
+    return this.http.delete(`${this.apiUrl}/acheteur/${id}`);
   }
 
   // Categorie 
   createCategorie(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/categorie`, data);
+    return this.http.post(`${this.apiUrl}/categorie`, data);
   }
 
   getAllCategories(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/categorie`);
+    return this.http.get<any[]>(`${this.apiUrl}/categorie`);
   }
 
   // Gestionnaire 
   createGestionnaire(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/gestionnaire`, data);
+    return this.http.post(`${this.apiUrl}/gestionnaire`, data);
   }
 
   getGestionnaireById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/gestionnaire/${id}`);
+    return this.http.get(`${this.apiUrl}/gestionnaire/${id}`);
   }
 
   getAllGestionnaires(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/gestionnaire`);
+    return this.http.get<any[]>(`${this.apiUrl}/gestionnaire`);
   }
 
   updateGestionnaire(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/gestionnaire/${id}`, data);
+    return this.http.put(`${this.apiUrl}/gestionnaire/${id}`, data);
   }
 
   deleteGestionnaire(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/gestionnaire/${id}`);
+    return this.http.delete(`${this.apiUrl}/gestionnaire/${id}`);
   }
 
   // Jeu
   createJeu(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/jeu`, data);
+    return this.http.post(`${this.apiUrl}/jeu`, data);
   }
 
   getJeuById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/jeu/${id}`);
+    return this.http.get(`${this.apiUrl}/jeu/${id}`);
   }
 
   getAllJeux(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/jeu`);
+    return this.http.get<any[]>(`${this.apiUrl}/jeu`);
+  }
+
+  getFilteredJeux(data: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
   }
 
   updateJeu(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/jeu/${id}`, data);
+    return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
   }
 
   deleteJeu(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/jeu/${id}`);
+    return this.http.delete(`${this.apiUrl}/jeu/${id}`);
   }
 
   // Transaction
   createTransaction(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/transaction`, data);
+    return this.http.post(`${this.apiUrl}/transaction`, data);
   }
 
   getTransactionById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/transaction/${id}`);
+    return this.http.get(`${this.apiUrl}/transaction/${id}`);
   }
 
   getAllTransactions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/transaction`);
+    return this.http.get<any[]>(`${this.apiUrl}/transaction`);
   }
 
   getFilteredTransactions(data: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/api/transaction/filtered`, data);
+    return this.http.get<any[]>(`${this.apiUrl}/transaction/filtered`, { params: data });
   }
 
   updateTransaction(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/transaction/${id}`, data);
+    return this.http.put(`${this.apiUrl}/transaction/${id}`, data);
   }
 
   deleteTransaction(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/transaction/${id}`);
+    return this.http.delete(`${this.apiUrl}/transaction/${id}`);
   }
 
   // TypeJeu 
   createTypeJeu(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/typeJeu`, data);
+    return this.http.post(`${this.apiUrl}/typeJeu`, data);
   }
 
   getTypeJeuById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/typeJeu/${id}`);
+    return this.http.get(`${this.apiUrl}/typeJeu/${id}`);
   }
 
   getAllTypeJeux(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/typeJeu`);
+    return this.http.get<any[]>(`${this.apiUrl}/typeJeu`);
   }
 
   updateTypeJeu(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/typeJeu/${id}`, data);
+    return this.http.put(`${this.apiUrl}/typeJeu/${id}`, data);
   }
 
   deleteTypeJeu(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/typeJeu/${id}`);
+    return this.http.delete(`${this.apiUrl}/typeJeu/${id}`);
   }
 
   // Vendeur
   createVendeur(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/vendeur`, data);
+    return this.http.post(`${this.apiUrl}/vendeur`, data);
   }
 
   getVendeurById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/vendeur/${id}`);
+    return this.http.get(`${this.apiUrl}/vendeur/${id}`);
   }
 
   getAllVendeurs(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/vendeur`);
+    return this.http.get<any[]>(`${this.apiUrl}/vendeur`);
   }
 
   updateVendeur(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/vendeur/${id}`, data);
+    return this.http.put(`${this.apiUrl}/vendeur/${id}`, data);
   }
 
   deleteVendeur(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/vendeur/${id}`);
+    return this.http.delete(`${this.apiUrl}/vendeur/${id}`);
   }
 
   resetSolde(id: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/vendeur/solde/${id}`, {});
+    return this.http.put(`${this.apiUrl}/vendeur/solde/${id}`, {});
   }
 }
