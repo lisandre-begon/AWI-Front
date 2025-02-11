@@ -165,21 +165,18 @@ export class DepotDetailsComponent implements OnInit {
         prix_unitaire: jeu.prix
       }));
 
-      // Compose the depot object.
-      const newDepot = {
-        statut: 'depot',
-        gestionnaire: new ObjectId(this.gestionnaire),
-        proprietaire: new ObjectId(proprietaire),
-        date_transaction: new Date(),
-        prix_total: this.totalPrix,
-        remise: this.depotForm.value.remise || 0,
-        frais: this.depotForm.value.frais,
-        jeux: jeuxForDepot.map(jeu => ({
-          jeuId: jeu.jeuId,
-          quantite: jeu.quantite,
-          prix_unitaire: jeu.prix_unitaire,
-        })),
-      };
+    // Compose the depot object.
+    const newDepot = {
+      statut: 'depot',
+      // Convert gestionnaire and proprietaire to strings.
+      gestionnaire: new ObjectId(this.gestionnaire).toString(),
+      proprietaire: new ObjectId(proprietaire).toString(),
+      date_transaction: new Date(),
+      prix_total: this.totalPrix,
+      remise: this.depotForm.value.remise || 0,
+      frais: this.depotForm.value.frais,
+      jeux: jeuxForDepot // Send the array as-is.
+    };
 
       this.apiService.createTransaction(newDepot).subscribe(() => {
         this.loadDepots();
