@@ -82,7 +82,7 @@ export class ApiService {
 
   getFilteredJeux(data: any): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/jeu/filtered`, { params: data });
-  }
+   }
 
   updateJeu(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/jeu/${id}`, data);
@@ -92,36 +92,36 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/jeu/${id}`);
   }
 
- 
-  getFiltredJeu(
-    proprietaire: String = "", 
-    prix_min: String = "", 
-    prix_max: String = "",
-    categorie: String = "", 
-    intitule: String = "", 
-    statut: String = "", 
-    editeur: String = "",
-    quantites: String = ""
-  ): Observable<any[]> {
+  // getFiltredJeu(
+  //   proprietaire: String = "", 
+  //   prix_min: String = "", 
+  //   prix_max: String = "",
+  //   categorie: String = "", 
+  //   intitule: String = "", 
+  //   statut: String = "", 
+  //   editeur: String = "",
+  //   quantites: String = ""
+  // ): Observable<any[]> {
   
-    // On crée un objet pour les filtres à envoyer
-    const body: any = {};
+  //   // On crée un objet pour les filtres à envoyer
+  //   const body: any = {};
   
-    // On ajoute les filtres au body seulement s'ils ne sont pas null
-    if (proprietaire !== "") body.proprietaire = proprietaire;
-    if (prix_min !== "") body.prix_min = prix_min;
-    if (prix_max !== "") body.prix_max = prix_max;
-    if (categorie !== "") body.categorie = categorie;
-    if (intitule !== "") body.intitule = intitule;
-    if (statut !== "") body.statut = statut;
-    if (editeur !== "") body.editeur = editeur;
-    if (quantites !== "") body.quantites = quantites;
+  //   // On ajoute les filtres au body seulement s'ils ne sont pas null
+  //   if (proprietaire !== "") body.proprietaire = proprietaire;
+  //   if (prix_min !== "") body.prix_min = prix_min;
+  //   if (prix_max !== "") body.prix_max = prix_max;
+  //   if (categorie !== "") body.categorie = categorie;
+  //   if (intitule !== "") body.intitule = intitule;
+  //   if (statut !== "") body.statut = statut;
+  //   if (editeur !== "") body.editeur = editeur;
+  //   if (quantites !== "") body.quantites = quantites;
   
-    return this.http.request<any[]>('GET', `${this.apiUrl}/jeu/filtered`, {
-      body: body, // Ajout du body ici
-      observe: 'response'
-    }).pipe(map(response => response.body as any[]));
-  }
+  //   return this.http.request<any[]>('GET', `${this.apiUrl}/jeu/filtered`, {
+  //     body: body, // Ajout du body ici
+  //     observe: 'response'
+  //   }).pipe(map(response => response.body as any[]));
+  // }
+  
 
   // Transaction
   createTransaction(data: any): Observable<any> {
@@ -168,8 +168,6 @@ export class ApiService {
   deleteTypeJeu(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/typeJeu/${id}`);
   }
-
-
 
 
 

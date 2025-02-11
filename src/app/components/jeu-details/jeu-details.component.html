@@ -8,7 +8,7 @@
     <!-- Filtre par propriétaire -->
     <div>
       <label for="proprietaire">Vendeur :</label>
-      <select id="proprietaire" formControlName="proprietaire">
+      <select id="proprietaire" [(ngModel)]="proprietaire">
         <option [ngValue]="null" disabled selected>-- Sélectionnez un vendeur --</option>
         <option *ngFor="let vendeur of vendeurs" [ngValue]="vendeur.id">
           {{ vendeur.name }}
@@ -31,12 +31,17 @@
     <!-- Filtre par catégorie -->
     <div>
       <label for="categorie">Catégorie :</label>
-      <input type="text" id="categorie" [(ngModel)]="categorie" placeholder="Catégorie">
+      <select id="proprietaire" [(ngModel)]="categorie">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez une catégorie --</option>
+        <option *ngFor="let categorie of categories" [ngValue]="categorie.id">
+          {{ categorie.name }}
+        </option>
+      </select>
     </div>
   
     <!-- Filtre par intitulé -->
     <div>
-      <select id="intitule" formControlName="intitule">
+      <select id="intitule" [(ngModel)]="intitule">
         <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
         <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
           {{ typeJeu.intitule }}
@@ -50,14 +55,13 @@
       <select id="statut" [(ngModel)]="statut">
         <option value="">Sélectionner un statut</option>
         <option value="disponible">Disponible</option>
-        <option value="épuisé">Épuisé</option>
-        <option value="en attente">En attente</option>
+        <option value="épuisé">Pas disponible</option>
       </select>
     </div>
   
     <!-- Filtre par éditeur -->
     <div>
-      <select id="editeur" formControlName="editeur">
+      <select id="editeur" [(ngModel)]="editeur">
         <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
         <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
           {{ typeJeu.editeur }}
