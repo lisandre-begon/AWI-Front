@@ -9,9 +9,10 @@
 }
 .login {
     background-color:#f4dce8;
+    margin-top: 50px;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.37);
+    box-shadow: 0 4px 12px rgba(97, 91, 91, 0.096);
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
