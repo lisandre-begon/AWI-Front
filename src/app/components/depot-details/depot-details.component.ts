@@ -256,5 +256,23 @@ export class DepotDetailsComponent implements OnInit {
     const gestionnaire = this.vendeurs.find(v => v.id === gestionnaireId);
     return gestionnaire ? gestionnaire.name : 'Inconnu';
   }
+
+  deleteTransaction(transactionId: string) {
+    if (!confirm("❗ Êtes-vous sûr de vouloir supprimer cette transaction ?")) return;
+  
+    this.apiService.deleteTransaction(transactionId).subscribe(
+      (res) => {
+        console.log("✅ Transaction supprimée :", res);
+        alert("Transaction supprimée avec succès !");
+        this.showDetails = false;  // Hide details after deletion
+        this.loadDepots(); // Refresh the list of depots
+      },
+      (err) => {
+        console.error("❌ Erreur lors de la suppression :", err);
+        alert("Erreur lors de la suppression de la transaction.");
+      }
+    );
+  }
+  
   
 }
