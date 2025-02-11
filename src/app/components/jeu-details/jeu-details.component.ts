@@ -120,14 +120,14 @@ export class JeuDetailsComponent implements OnInit {
   }
 
   // Propriétés pour stocker les valeurs des filtres
-  proprietaire: string = "";
-  prix_min: string = "";
-  prix_max: string = "";
-  categorie: string = "";
-  intitule: string = "";
-  statut: string = "";
-  editeur: string = "";
-  quantites: string ="";
+  proprietaire: string = '';
+  prix_min: string = '';
+  prix_max: string = '';
+  categorie: string = '';
+  intitule: string = '';
+  statut: string = '';
+  editeur: string = '';
+  quantites: string ='';
 
   // Méthode appelée lorsqu'on clique sur "Filtrer"
   filtrer(): void {
@@ -135,18 +135,19 @@ export class JeuDetailsComponent implements OnInit {
 
     console.log('🔍 Filtres:', this.proprietaire, this.prix_min, this.prix_max, this.categorie, this.intitule, this.statut, this.editeur, this.quantites);
 
-    if (this.proprietaire !== "") body.proprietaire = this.proprietaire;
-    if (this.prix_min !== "") body.prix_min = this.prix_min;
-    if (this.prix_max !== "") body.prix_max = this.prix_max;
-    if (this.categorie !== "") body.categorie = this.categorie;
-    if (this.intitule !== "") body.intitule = this.intitule;
-    if (this.statut !== "") body.statut = this.statut;
-    if (this.editeur !== "") body.editeur = this.editeur;
-    if (this.quantites !== "") body.quantites = this.quantites;
+    if (this.proprietaire !== '') body.proprietaire = this.proprietaire;
+    if (this.prix_min !== '') body.prix_min = this.prix_min;
+    if (this.prix_max !== '') body.prix_max = this.prix_max;
+    if (this.categorie !== '') body.categorie = this.categorie;
+    if (this.intitule !== '') body.intitule = this.intitule;
+    if (this.statut !== '') body.statut = this.statut;
+    if (this.editeur !== '') body.editeur = this.editeur;
+    if (this.quantites !== '') body.quantites = this.quantites;
 
     console.log('body', body);
 
     this.apiService.getFilteredJeux({ body }).subscribe(data => {
+      console.log('data recu:', data);
       this.jeux = data;
     });
     console.log('Filtered jeux:', this.jeux);
