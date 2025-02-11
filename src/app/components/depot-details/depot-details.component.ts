@@ -109,18 +109,36 @@ export class DepotDetailsComponent implements OnInit {
   // Called when the user clicks "Ajouter Jeu"
   addJeuToDepot() {
     const jeuData = this.jeuForm.value;
-    // Add the proprietaire from the depot form to jeuData
-    jeuData.proprietaire = this.depotForm.value.proprietaire;
-    console.log('Adding game:', jeuData);
-    if (!jeuData.typeJeuId) {
-      alert('Veuillez sélectionner un type de jeu.');
-      return;
-    }
-    this.newJeux.push(jeuData);
-    this.calculateTotalPrix();
-    // Reset the jeu form after adding.
-    this.jeuForm.reset({ typeJeuId: null, prix_unitaire: 0, quantites: 1, categories: [] });
+    jeuData.proprietaire = this.depotForm.value.proprietaire; // Assign the selected owner
+  
+    console.log("🛠 Creating game:", jeuData);
+  
+    // Call API to create the game first
+    this.apiService.createJeu(jeuData).subscribe(
+      (res: any) => {
+        console.log("✅ Game created successfully:", res);
+        
+        // Store the game in newJeux with its ID
+        const createdGame = {
+          jeuId: res.jeu._id,  // Use the ID returned from the API
+          quantite: jeuData.quantites,
+          prix_unitaire: jeuData.prix_unitaire,
+          proprietaire: jeuData.proprietaire
+        };
+  
+        this.newJeux.push(createdGame);
+        this.calculateTotalPrix();
+        
+        // Reset the game form
+        this.jeuForm.reset({ typeJeuId: null, prix_unitaire: 0, quantites: 1, categories: [] });
+      },
+      (err) => {
+        console.error("❌ Error creating game:", err);
+        alert("Erreur lors de la création du jeu.");
+      }
+    );
   }
+  
 
   // Remove a jeu from the list
   removeJeu(index: number) {
