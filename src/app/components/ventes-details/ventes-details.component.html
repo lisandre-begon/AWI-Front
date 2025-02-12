@@ -28,28 +28,62 @@
       <input type="number" id="remise" formControlName="remise" />
     </div>
 
-    <h3>Ajouter des Jeux</h3>
-    <div>
-      <label for="jeu">Jeu :</label>
-      <select id="jeu" (change)="addJeuToVente($event)">
-        <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
-        <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu.etiquette">
-          {{ jeu.intitule }} - {{ jeu.editeur }} - {{ jeu.vendeur }}
-        </option>
-      </select>
-    </div>
-
+    <h3>Liste des Jeux Disponibles</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Intitulé</th>
+          <th>Vendeur</th>
+          <th>Prix Unitaire</th>
+          <th>Quantité</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let jeu of jeuxDisponibles">
+          <td>{{ jeu.intitule }}</td>
+          <td>{{ jeu.vendeur }}</td>
+          <td>{{ jeu.prix }}€</td>
+          <td>
+            <input type="number" [(ngModel)]="jeu.quantiteSelectionnee" min="1" [max]="jeu.quantites" />
+          </td>
+          <td>
+            <button (click)="addJeuToVente(jeu)">Ajouter</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
     <h3>Jeux Ajoutés</h3>
-    <ul>
-      <li *ngFor="let jeu of newJeux; let i = index">
-        {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x 
-        <input type="number" [(ngModel)]="jeu.quantite" (ngModelChange)="updateJeuQuantite(i, $event)" />
-        <button type="button" (click)="removeJeu(i)">Supprimer</button>
-      </li>
-    </ul>
-
-    <h3>Total Prix: {{ totalPrix || 0 }}€</h3>
-
+    <table>
+      <thead>
+        <tr>
+          <th>Intitulé</th>
+          <th>Vendeur</th>
+          <th>Prix Unitaire</th>
+          <th>Quantité</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let jeu of newJeux; let i = index">
+          <td>{{ jeu.intitule }}</td>
+          <td>{{ jeu.vendeur }}</td>
+          <td>{{ jeu.prix }}€</td>
+          <td>
+            <input type="number" [(ngModel)]="jeu.quantite" (ngModelChange)="updateJeuQuantite(i, $event)" min="1" />
+          </td>
+          <td>{{ jeu.prix * jeu.quantite }}€</td>
+          <td>
+            <button (click)="removeJeu(i)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Total Prix: {{ totalPrix }}€</h3>
+    
     <button type="submit">Créer Vente</button>
   </form>
 </div>
