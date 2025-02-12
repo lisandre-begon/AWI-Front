@@ -1,55 +1,55 @@
 <div class="ventes-details-container">
-    <h2>Liste des Ventes</h2>
+  <h2>Liste des Ventes</h2>
+  <ul>
+    <li *ngFor="let vente of ventes" (click)="showVenteDetails(vente)" class="clickable">
+      <span>{{ vente.acheteur }} - {{ vente.date_transaction }} - {{ vente.prix_total }}€</span>
+    </li>
+  </ul>
+
+  <h2>Créer une Nouvelle Vente</h2>
+  <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
+    <div>
+      <label for="acheteur">Acheteur :</label>
+      <select id="acheteur" formControlName="acheteur">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un acheteur --</option>
+        <option *ngFor="let acheteur of acheteurs" [ngValue]="acheteur.id">
+          {{ acheteur.name }}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <label for="frais">Frais :</label>
+      <input type="number" id="frais" formControlName="frais" />
+    </div>
+
+    <div>
+      <label for="remise">Remise :</label>
+      <input type="number" id="remise" formControlName="remise" />
+    </div>
+
+    <h3>Ajouter des Jeux</h3>
+    <div>
+      <label for="jeu">Jeu :</label>
+      <select id="jeu" (change)="addJeuToVente($event)">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
+        <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu.etiquette">
+          {{ jeu.intitule }} - {{ jeu.editeur }} - {{ jeu.vendeur }}
+        </option>
+      </select>
+    </div>
+
+    <h3>Jeux Ajoutés</h3>
     <ul>
-      <li *ngFor="let vente of ventes" (click)="showVenteDetails(vente)" class="clickable">
-        <span>{{ vente.acheteur }} - {{ vente.date_transaction }} - {{ vente.prix_total }}€</span>
+      <li *ngFor="let jeu of newJeux; let i = index">
+        {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ x 
+        <input type="number" [(ngModel)]="jeu.quantite" (ngModelChange)="updateJeuQuantite(i, $event)" />
+        <button type="button" (click)="removeJeu(i)">Supprimer</button>
       </li>
     </ul>
-  
-    <h2>Créer une Nouvelle Vente</h2>
-    <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
-      <div>
-        <label for="acheteur">Acheteur :</label>
-        <select id="acheteur" formControlName="acheteur">
-          <option [ngValue]="null" disabled selected>-- Sélectionnez un acheteur --</option>
-          <option *ngFor="let acheteur of acheteurs" [ngValue]="acheteur.id">
-            {{ acheteur.name }}
-          </option>
-        </select>
-      </div>
-  
-      <div>
-        <label for="frais">Frais :</label>
-        <input type="number" id="frais" formControlName="frais" />
-      </div>
-  
-      <div>
-        <label for="remise">Remise :</label>
-        <input type="number" id="remise" formControlName="remise" />
-      </div>
-  
-      <h3>Ajouter des Jeux</h3>
-      <div>
-        <label for="jeu">Jeu :</label>
-        <select id="jeu" (change)="addJeuToVente($event)">
-            <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
-            <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu._id">
-              {{ jeu.name }}
-            </option>
-          </select>
-      </div>
-  
-      <h3>Jeux Ajoutés</h3>
-      <ul>
-        <li *ngFor="let jeu of newJeux; let i = index">
-          {{ jeu.name }} - {{ jeu.prix_unitaire }}€ x 
-          <input type="number" [(ngModel)]="jeu.quantite" (ngModelChange)="updateJeuQuantite(i, $event)" />
-          <button type="button" (click)="removeJeu(i)">Supprimer</button>
-        </li>
-      </ul>
-  
-      <h3>Total Prix: {{ totalPrix || 0 }}€</h3>
-  
-      <button type="submit">Créer Vente</button>
-    </form>
-  </div>
+
+    <h3>Total Prix: {{ totalPrix || 0 }}€</h3>
+
+    <button type="submit">Créer Vente</button>
+  </form>
+</div>

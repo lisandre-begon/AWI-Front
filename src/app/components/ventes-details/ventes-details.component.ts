@@ -35,7 +35,10 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
+
+    console.log("📌 Jeux Disponibles au chargement:", this.jeuxDisponibles);
   }
+
 
   loadVentes() {
     this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => this.ventes = data);
@@ -43,9 +46,14 @@ export class VentesDetailsComponent implements OnInit {
 
   loadJeuxDisponibles() {
     this.apiService.getFilteredJeux({ statut: 'disponible' }).subscribe(data => {
+      console.log("📥 Réponse reçue:", data);
       this.jeuxDisponibles = data.filter(jeu => jeu.statut === 'disponible');
+      console.log("📥 Jeux Disponibles reçus dans Angular:", this.jeuxDisponibles);
+    }, error => {
+      console.error("❌ Erreur lors du chargement des jeux:", error);
     });
   }
+
 
   loadAcheteurs() {
     this.apiService.getAllAcheteurs().subscribe(data => {
@@ -59,20 +67,30 @@ export class VentesDetailsComponent implements OnInit {
   addJeuToVente(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const jeuId = target.value;
-    const selectedJeu = this.jeuxDisponibles.find(jeu => jeu._id === jeuId);
+    const selectedJeu = this.jeuxDisponibles.find(jeu => jeu.etiquette === jeuId);
     if (selectedJeu) {
       this.newJeux.push({ ...selectedJeu, quantite: 1 });
       this.calculateTotalPrix();
     }
   }
 
+
   updateJeuQuantite(index: number, quantite: string) {
     const parsedQuantite = parseInt(quantite, 10);
-    if (!isNaN(parsedQuantite) && parsedQuantite > 0 && parsedQuantite <= this.jeuxDisponibles.find(j => j._id === this.newJeux[index]._id).quantite) {
-      this.newJeux[index].quantite = parsedQuantite;
+    if (isNaN(parsedQuantite) || parsedQuantite <= 0) return;
+
+    const selectedJeu = this.newJeux[index];
+    if (!selectedJeu) return;
+
+    const jeuDisponible = this.jeuxDisponibles.find(j => j._id === selectedJeu._id);
+    if (!jeuDisponible) return; // Prevents undefined access
+
+    if (parsedQuantite <= jeuDisponible.quantite) {
+        this.newJeux[index].quantite = parsedQuantite;
+        this.calculateTotalPrix();
     }
-    this.calculateTotalPrix();
   }
+
 
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);
