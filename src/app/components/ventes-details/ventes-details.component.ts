@@ -69,26 +69,26 @@ export class VentesDetailsComponent implements OnInit {
         this.newJeux.push({
             etiquette: jeu.etiquette,
             intitule: jeu.intitule,
-            quantites: jeu.quantiteSelectionnee,
-            prix_unitaire: jeu.prix
+            quantite: jeu.quantiteSelectionnee,
+            prix: jeu.prix
         });
-
-        // Reset quantity selection for the available games
-        jeu.quantiteSelectionnee = 1;
 
         this.calculateTotalPrix();
     }
   }
+
 
   updateJeuQuantite(index: number, quantite: string) {
     const parsedQuantite = parseInt(quantite, 10);
     if (isNaN(parsedQuantite) || parsedQuantite <= 0) return;
 
-    if (this.newJeux[index]) {
-        this.newJeux[index].quantite = parsedQuantite;
-        this.calculateTotalPrix();
-    }
+    const selectedJeu = this.newJeux[index];
+    if (!selectedJeu) return;
+
+    selectedJeu.quantite = parsedQuantite;
+    this.calculateTotalPrix();
   }
+
 
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);
