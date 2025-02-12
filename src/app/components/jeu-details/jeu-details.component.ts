@@ -146,10 +146,10 @@ export class JeuDetailsComponent implements OnInit {
 
     console.log('body', body);
 
-    this.apiService.getFilteredJeux({ body }).subscribe(data => {
+    this.apiService.getFilteredJeux(body).subscribe(data => {
       console.log('data recu:', data);
       this.jeux = data;
-    });
+    });    
     console.log('Filtered jeux:', this.jeux);
   }
 }

@@ -38,7 +38,7 @@ export class VentesDetailsComponent implements OnInit {
   }
 
   loadVentes() {
-    this.apiService.getFilteredTransactions({ statut: 'depot' }).subscribe(data => this.ventes = data);
+    this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => this.ventes = data);
   }
 
   loadJeuxDisponibles() {
