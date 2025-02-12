@@ -57,22 +57,38 @@ export class VentesDetailsComponent implements OnInit {
   }
 
   addJeuToVente(event: Event): void {
-    const target = event.target as HTMLSelectElement;
+    const target = event.target as HTMLSelectElement | null;
+    if (!target) return; // Prevents null access
+
     const jeuId = target.value;
     const selectedJeu = this.jeuxDisponibles.find(jeu => jeu._id === jeuId);
-    if (selectedJeu) {
-      this.newJeux.push({ ...selectedJeu, quantite: 1 });
-      this.calculateTotalPrix();
+
+    if (selectedJeu && !this.newJeux.some(j => j._id === jeuId)) {
+        this.newJeux.push({ ...selectedJeu, quantite: 1 });
+        this.calculateTotalPrix();
     }
+
+    // Reset selection after adding
+    target.value = "";
   }
+
 
   updateJeuQuantite(index: number, quantite: string) {
     const parsedQuantite = parseInt(quantite, 10);
-    if (!isNaN(parsedQuantite) && parsedQuantite > 0 && parsedQuantite <= this.jeuxDisponibles.find(j => j._id === this.newJeux[index]._id).quantite) {
-      this.newJeux[index].quantite = parsedQuantite;
+    if (isNaN(parsedQuantite) || parsedQuantite <= 0) return;
+
+    const selectedJeu = this.newJeux[index];
+    if (!selectedJeu) return;
+
+    const jeuDisponible = this.jeuxDisponibles.find(j => j._id === selectedJeu._id);
+    if (!jeuDisponible) return; // Prevents undefined access
+
+    if (parsedQuantite <= jeuDisponible.quantite) {
+        this.newJeux[index].quantite = parsedQuantite;
+        this.calculateTotalPrix();
     }
-    this.calculateTotalPrix();
   }
+
 
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);

@@ -10,12 +10,14 @@
     <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
       <div>
         <label for="acheteur">Acheteur :</label>
-        <select id="acheteur" formControlName="acheteur">
-          <option [ngValue]="null" disabled selected>-- Sélectionnez un acheteur --</option>
-          <option *ngFor="let acheteur of acheteurs" [ngValue]="acheteur.id">
-            {{ acheteur.name }}
+        <select id="jeu" (change)="addJeuToVente($event)">
+          <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
+          <option *ngFor="let jeu of jeuxDisponibles" [value]="jeu._id">
+            {{ jeu.intitule }} - {{ jeu.editeur }} - {{ jeu.vendeur }}
           </option>
         </select>
+      
+      
       </div>
   
       <div>
