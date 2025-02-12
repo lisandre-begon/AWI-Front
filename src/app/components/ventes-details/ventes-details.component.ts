@@ -1,4 +1,3 @@
-// ventes-details.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
@@ -18,16 +17,23 @@ export class VentesDetailsComponent implements OnInit {
   newJeux: any[] = [];
   acheteurs: any[] = [];
   venteForm: FormGroup;
-  gestionnaire: string = '';
+  jeuForm: FormGroup;
   totalPrix: number = 0;
   showDetails: boolean = false;
   selectedVente: any;
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
+    // General vente form
     this.venteForm = this.fb.group({
       acheteur: [null, Validators.required],
       frais: [0, [Validators.required, Validators.min(1)]],
       remise: [0, [Validators.required, Validators.min(0)]]
+    });
+
+    // Form for selecting a game
+    this.jeuForm = this.fb.group({
+      jeuId: [null, Validators.required],
+      quantite: [1, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -35,7 +41,6 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
-    this.gestionnaire = "67aa28a2a260b786b8a52f20"
   }
 
   loadVentes() {
@@ -44,11 +49,7 @@ export class VentesDetailsComponent implements OnInit {
 
   loadJeuxDisponibles() {
     this.apiService.getFilteredJeux({ statut: 'disponible' }).subscribe(data => {
-      console.log("📥 Jeux Disponibles reçus:", data);
-      this.jeuxDisponibles = data.map(jeu => ({
-        ...jeu,
-        quantiteSelectionnee: 1 // Default quantity when displaying games
-      }));
+      this.jeuxDisponibles = data;
     }, error => {
       console.error("❌ Erreur lors du chargement des jeux:", error);
     });
@@ -63,39 +64,33 @@ export class VentesDetailsComponent implements OnInit {
     });
   }
 
-  addJeuToVente(jeu: any) {
-    if (!jeu || jeu.quantiteSelectionnee === undefined || jeu.quantiteSelectionnee < 1) return;
+  addJeuToVente() {
+    if (this.jeuForm.invalid) return;
 
-    // Check if the game is already in newJeux
-    const existingJeu = this.newJeux.find(j => j.etiquette === jeu.etiquette);
-    if (!existingJeu) {
-        // Add the game with the selected quantity
-        this.newJeux.push({
-            etiquette: jeu.etiquette,
-            intitule: jeu.intitule,
-            quantite: jeu.quantiteSelectionnee,  // ✅ Stores the selected quantity correctly
-            prix: jeu.prix
-        });
-    }
+    const jeuId = this.jeuForm.value.jeuId;
+    const quantite = this.jeuForm.value.quantite;
 
-    this.calculateTotalPrix();
-  }
-
-
-
-
-
-  updateJeuQuantite(index: number, quantite: string) {
-    const parsedQuantite = parseInt(quantite, 10);
-    if (isNaN(parsedQuantite) || parsedQuantite <= 0) return;
-
-    const selectedJeu = this.newJeux[index];
+    // Get the selected game from jeuxDisponibles
+    const selectedJeu = this.jeuxDisponibles.find(j => j.etiquette === jeuId);
     if (!selectedJeu) return;
 
-    selectedJeu.quantite = parsedQuantite;
-    this.calculateTotalPrix();
-  }
+    // Check if the game is already in newJeux
+    const existingJeu = this.newJeux.find(j => j.jeuId === jeuId);
+    if (!existingJeu) {
+      this.newJeux.push({
+        jeuId: selectedJeu.etiquette,
+        intitule: selectedJeu.intitule,
+        vendeur: selectedJeu.proprietaire, // Automatically linked
+        prix: selectedJeu.prix, // Automatically linked
+        quantite: quantite
+      });
 
+      this.calculateTotalPrix();
+    }
+
+    // Reset the form after adding a game
+    this.jeuForm.reset({ jeuId: null, quantite: 1 });
+  }
 
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);
@@ -111,22 +106,21 @@ export class VentesDetailsComponent implements OnInit {
     this.selectedVente = vente;
     this.showDetails = true;
   }
-
-
+  
   saveVente() {
     if (this.venteForm.valid && this.newJeux.length > 0) {
       const venteData = {
-        gestionnaireId: this.gestionnaire,
         acheteur: this.venteForm.value.acheteur,
         frais: this.venteForm.value.frais,
         remise: this.venteForm.value.remise,
         prix_total: this.totalPrix,
         jeux: this.newJeux.map(jeu => ({
-          jeuId: jeu.etiquette, 
-          quantite: jeu.quantite, 
+          jeuId: jeu.jeuId,
+          quantite: jeu.quantite,
           prix_unitaire: jeu.prix
         }))
       };
+
       this.apiService.createTransaction({ statut: 'vente', ...venteData }).subscribe(() => {
         this.loadVentes();
         this.newJeux = [];
