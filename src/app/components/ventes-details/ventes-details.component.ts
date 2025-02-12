@@ -116,6 +116,7 @@ export class VentesDetailsComponent implements OnInit {
   saveVente() {
     if (this.venteForm.valid && this.newJeux.length > 0) {
       const venteData = {
+        gestionnaireId: this.gestionnaire,
         acheteur: this.venteForm.value.acheteur,
         frais: this.venteForm.value.frais,
         remise: this.venteForm.value.remise,
