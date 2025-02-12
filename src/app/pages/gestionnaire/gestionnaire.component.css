@@ -22,8 +22,7 @@
 }
 
 button {
-  background-color: #e48b31; /* Orange */
-  color: #2f2b28; /* Noir */
+  color: #f4dce8; /* Noir */
   border: 2px solid #2f2b28; /* Noir */
   border-radius: 8px;
   font-size: 1.2rem;
@@ -47,43 +46,56 @@ button:active {
 
 .depot{
   grid-column-start: 1;
+  margin-left: 80px;
   background-color: #509031;
 }
 
 .vend{
   grid-column-start: 2;
+  margin-left: 80px;
   background-color: #509031;
 }
 
 .listach{
   grid-column-start: 3;
+  margin-left: 80px;
   background-color: #509031;
 }
 
 .stock{
   grid-column-start: 1;
+  margin-left: 80px;
   background-color: #e48b31;
 }
 
 .ventes{
   grid-column-start: 2;
+  margin-left: 80px;
   background-color: #e48b31;
 }
 
 .trans{
   grid-column-start: 3;
+  margin-left: 80px;
   background-color: #e48b31;
 }
 
-/* Attribution des couleurs aux boutons */
-button:nth-child(1) { background-color: #d75630; /* Rouge/orange */ }
-button:nth-child(2) { background-color: #e48b31; /* Orange */ }
-button:nth-child(3) { background-color: #509031; /* Vert */ }
-button:nth-child(4) { background-color: #a0d6d2; /* Bleu clair */ }
-button:nth-child(5) { background-color: #d75630; /* Rouge/orange */ }
-button:nth-child(6) { background-color: #e48b31; /* Orange */ }
-button:nth-child(7) { background-color: #509031; /* Vert */ }
-button:nth-child(8) {
-  background-color: #2f2b28; /* Noir */
-  color: #f4dce8; /* Texte rose */
+.bil{
+  grid-column-start: 1;
+  margin-left: 80px;
+  background-color: #a0d6d2;
 }
+
+.ac{
+  grid-column-start: 2;
+  margin-left: 80px;
+  background-color: #a0d6d2;
+}
+
+.dec{
+  grid-column-start: 3;
+  margin-left: 80px;
+  background-color: #a0d6d2;
+}
+
+

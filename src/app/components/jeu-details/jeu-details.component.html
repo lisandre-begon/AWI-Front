@@ -41,6 +41,7 @@
   
     <!-- Filtre par intitulé -->
     <div>
+      <label for="categorie">Intitulé :</label>
       <select id="intitule" [(ngModel)]="intitule">
         <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
         <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
@@ -61,8 +62,9 @@
   
     <!-- Filtre par éditeur -->
     <div>
+      <label for="statut"> editeur :</label>
       <select id="editeur" [(ngModel)]="editeur">
-        <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un éditeur --</option>
         <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
           {{ typeJeu.editeur }}
         </option>
