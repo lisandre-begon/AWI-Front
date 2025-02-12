@@ -21,6 +21,7 @@ export class VentesDetailsComponent implements OnInit {
   totalPrix: number = 0;
   showDetails: boolean = false;
   selectedVente: any;
+  gestionnaire: string = '';
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
     // General vente form
@@ -41,6 +42,7 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
+    this.gestionnaire = "67aa28a2a260b786b8a52f20"
   }
 
   loadVentes() {
@@ -106,10 +108,11 @@ export class VentesDetailsComponent implements OnInit {
     this.selectedVente = vente;
     this.showDetails = true;
   }
-  
+
   saveVente() {
     if (this.venteForm.valid && this.newJeux.length > 0) {
       const venteData = {
+        gestionnaire: this.gestionnaire,
         acheteur: this.venteForm.value.acheteur,
         frais: this.venteForm.value.frais,
         remise: this.venteForm.value.remise,
