@@ -35,7 +35,10 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
+
+    console.log("📌 Jeux Disponibles au chargement:", this.jeuxDisponibles);
   }
+
 
   loadVentes() {
     this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => this.ventes = data);
