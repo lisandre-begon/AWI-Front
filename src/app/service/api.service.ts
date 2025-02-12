@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -93,9 +93,12 @@ export class ApiService {
   }
 
   getFilteredJeux(data: any): Observable<any[]> {
-    console.log('recu',data);
-    return this.http.post<any[]>(`${this.apiUrl}/jeu/filtered`, data, this.httpOptions);
+    console.log("📤 Envoi de la requête pour les jeux:", data);
+    return this.http.post<any[]>(`${this.apiUrl}/jeu/filtered`, data, this.httpOptions).pipe(
+        tap(response => console.log("📥 Réponse reçue:", response))
+    );
   }
+
 
 
   updateJeu(id: string, data: any): Observable<any> {

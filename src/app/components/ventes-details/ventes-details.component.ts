@@ -46,9 +46,13 @@ export class VentesDetailsComponent implements OnInit {
 
   loadJeuxDisponibles() {
     this.apiService.getFilteredJeux({ statut: 'disponible' }).subscribe(data => {
-      this.jeuxDisponibles = data.filter(jeu => jeu.statut === 'disponible');
+        console.log("📥 Jeux Disponibles reçus dans Angular:", data);
+        this.jeuxDisponibles = data;
+    }, error => {
+        console.error("❌ Erreur lors du chargement des jeux:", error);
     });
   }
+
 
   loadAcheteurs() {
     this.apiService.getAllAcheteurs().subscribe(data => {
