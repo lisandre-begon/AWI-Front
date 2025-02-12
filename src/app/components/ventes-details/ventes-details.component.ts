@@ -64,18 +64,25 @@ export class VentesDetailsComponent implements OnInit {
   addJeuToVente(jeu: any) {
     if (!jeu || jeu.quantiteSelectionnee === undefined || jeu.quantiteSelectionnee < 1) return;
 
+    // Check if the game is already in newJeux
     const existingJeu = this.newJeux.find(j => j.etiquette === jeu.etiquette);
     if (!existingJeu) {
+        // Add the game with the selected quantity
         this.newJeux.push({
             etiquette: jeu.etiquette,
             intitule: jeu.intitule,
-            quantite: jeu.quantiteSelectionnee,
+            quantite: jeu.quantiteSelectionnee,  // ✅ Quantity is stored here
             prix: jeu.prix
         });
-
-        this.calculateTotalPrix();
     }
+
+    // Reset the quantity selection in "Liste des Jeux Disponibles"
+    jeu.quantiteSelectionnee = 1;
+
+    this.calculateTotalPrix();
   }
+
+
 
 
   updateJeuQuantite(index: number, quantite: string) {
