@@ -87,7 +87,8 @@
       <h3>Résultats</h3>
       <ul>
         <li *ngFor="let transaction of transa">
-          {{ transaction.statut }} - {{ transaction.date_transaction }}€ - {{transaction.proprietaire}} / {{transaction.acheteur}}
+          {{ transaction.statut }} - {{ transaction.date_transaction }} - {{transaction.proprietaire}} / {{transaction.acheteur}} <button click=" details() ">details</button>
+          <div *ngIf="showDetails">{{transaction.prix_total}}€ {{transaction.jeux}}</div>
         </li>
       </ul>
     </div>

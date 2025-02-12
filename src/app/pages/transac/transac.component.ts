@@ -47,6 +47,9 @@ export class TransacComponent implements OnInit {
     this.loadAcheteurs();
   }
 
+  details(){
+    this.showDetails = true;
+  }
   
   loadTrans() {
     this.apiService.getAllTransactions().subscribe(data => {
