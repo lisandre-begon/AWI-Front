@@ -59,21 +59,15 @@
       <thead>
         <tr>
           <th>Intitulé</th>
-          <th>Vendeur</th>
-          <th>Prix Unitaire</th>
           <th>Quantité</th>
-          <th>Total</th>
+          <th>Prix Total</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let jeu of newJeux; let i = index">
           <td>{{ jeu.intitule }}</td>
-          <td>{{ jeu.vendeur }}</td>
-          <td>{{ jeu.prix }}€</td>
-          <td>
-            <input type="number" [(ngModel)]="jeu.quantite" (ngModelChange)="updateJeuQuantite(i, $event)" min="1" />
-          </td>
+          <td>{{ jeu.quantite }}</td>
           <td>{{ jeu.prix * jeu.quantite }}€</td>
           <td>
             <button (click)="removeJeu(i)">Supprimer</button>
@@ -81,9 +75,8 @@
         </tr>
       </tbody>
     </table>
-    
-    <h3>Total Prix: {{ totalPrix }}€</h3>
-    
+    <h3>Total Prix: {{ totalPrix }}€</h3>  
+          
     <button type="submit">Créer Vente</button>
   </form>
 </div>
