@@ -1,10 +1,10 @@
 .page {
   background-color: #f4dce8; /* Fond rose */
   font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   align-items: center;
   justify-content: center;
+  grid-template-columns: 33% 33% 33%;
   height: 100vh;
   margin: 0;
 }
@@ -43,6 +43,36 @@ button:hover {
 button:active {
   transform: scale(1.05);
   background-color: #d75630; /* Rouge/orange */
+}
+
+.depot{
+  grid-column-start: 1;
+  background-color: #509031;
+}
+
+.vend{
+  grid-column-start: 2;
+  background-color: #509031;
+}
+
+.listach{
+  grid-column-start: 3;
+  background-color: #509031;
+}
+
+.stock{
+  grid-column-start: 1;
+  background-color: #e48b31;
+}
+
+.ventes{
+  grid-column-start: 2;
+  background-color: #e48b31;
+}
+
+.trans{
+  grid-column-start: 3;
+  background-color: #e48b31;
 }
 
 /* Attribution des couleurs aux boutons */
