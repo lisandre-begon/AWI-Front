@@ -67,8 +67,8 @@
       <tbody>
         <tr *ngFor="let jeu of newJeux; let i = index">
           <td>{{ jeu.intitule }}</td>
-          <td>{{ jeu.quantite }}</td>
-          <td>{{ jeu.prix * jeu.quantite }}€</td>
+          <td>{{ jeu.quantites }}</td>
+          <td>{{ jeu.prix_unitaire * jeu.quantites }}€</td>
           <td>
             <button (click)="removeJeu(i)">Supprimer</button>
           </td>
@@ -76,7 +76,7 @@
       </tbody>
     </table>
     <h3>Total Prix: {{ totalPrix }}€</h3>  
-          
+
     <button type="submit">Créer Vente</button>
   </form>
 </div>

@@ -69,8 +69,8 @@ export class VentesDetailsComponent implements OnInit {
         this.newJeux.push({
             etiquette: jeu.etiquette,
             intitule: jeu.intitule,
-            quantite: jeu.quantiteSelectionnee,
-            prix: jeu.prix
+            quantites: jeu.quantiteSelectionnee,
+            prix_unitaire: jeu.prix
         });
 
         // Reset quantity selection for the available games
