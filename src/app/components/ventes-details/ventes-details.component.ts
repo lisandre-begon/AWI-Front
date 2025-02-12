@@ -18,6 +18,7 @@ export class VentesDetailsComponent implements OnInit {
   newJeux: any[] = [];
   acheteurs: any[] = [];
   venteForm: FormGroup;
+  gestionnaire: string = '';
   totalPrix: number = 0;
   showDetails: boolean = false;
   selectedVente: any;
@@ -34,6 +35,7 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
+    this.gestionnaire = "67aa28a2a260b786b8a52f20"
   }
 
   loadVentes() {
@@ -71,16 +73,14 @@ export class VentesDetailsComponent implements OnInit {
         this.newJeux.push({
             etiquette: jeu.etiquette,
             intitule: jeu.intitule,
-            quantite: jeu.quantiteSelectionnee,  // ✅ Quantity is stored here
+            quantite: jeu.quantiteSelectionnee,  // ✅ Stores the selected quantity correctly
             prix: jeu.prix
         });
     }
 
-    // Reset the quantity selection in "Liste des Jeux Disponibles"
-    jeu.quantiteSelectionnee = 1;
-
     this.calculateTotalPrix();
   }
+
 
 
 
