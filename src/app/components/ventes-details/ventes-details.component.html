@@ -31,11 +31,11 @@
       <div>
         <label for="jeu">Jeu :</label>
         <select id="jeu" (change)="addJeuToVente($event)">
-            <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
-            <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu._id">
-              {{ jeu.name }}
-            </option>
-          </select>
+          <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
+          <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu.etiquette">
+            {{ jeu.intitule }} - {{ jeu.editeur }} - {{ jeu.vendeur }}
+          </option>
+        </select>
       </div>
   
       <h3>Jeux Ajoutés</h3>
