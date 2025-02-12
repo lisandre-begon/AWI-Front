@@ -9,14 +9,14 @@
     <h2>Créer une Nouvelle Vente</h2>
     <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
       <div>
-        <label for="acheteur">Acheteur :</label>
+        <label for="jeu">Jeu :</label>
         <select id="jeu" (change)="addJeuToVente($event)">
-          <option [ngValue]="null" disabled selected>-- Sélectionnez un jeu --</option>
-          <option *ngFor="let jeu of jeuxDisponibles" [ngValue]="jeu._id">
-            {{ jeu.intitule }} - {{ jeu.prix_unitaire }}€ - ({{ jeu.stock }})
+          <option value="" disabled selected>-- Sélectionnez un jeu --</option>
+          <option *ngFor="let jeu of jeuxDisponibles" [value]="jeu.etiquette">
+            {{ jeu.intitule }} - {{ jeu.editeur }} - {{ jeu.vendeur }}
           </option>
         </select>
-=     </div>
+      </div>
       <div>
         <label for="frais">Frais :</label>
         <input type="number" id="frais" formControlName="frais" />

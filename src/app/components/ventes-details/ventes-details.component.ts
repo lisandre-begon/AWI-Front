@@ -64,19 +64,13 @@ export class VentesDetailsComponent implements OnInit {
   }
 
   addJeuToVente(event: Event): void {
-    const target = event.target as HTMLSelectElement | null;
-    if (!target) return; // Prevents null access
-
+    const target = event.target as HTMLSelectElement;
     const jeuId = target.value;
-    const selectedJeu = this.jeuxDisponibles.find(jeu => jeu._id === jeuId);
-
-    if (selectedJeu && !this.newJeux.some(j => j._id === jeuId)) {
-        this.newJeux.push({ ...selectedJeu, quantite: 1 });
-        this.calculateTotalPrix();
+    const selectedJeu = this.jeuxDisponibles.find(jeu => jeu.etiquette === jeuId);
+    if (selectedJeu) {
+      this.newJeux.push({ ...selectedJeu, quantite: 1 });
+      this.calculateTotalPrix();
     }
-
-    // Reset selection after adding
-    target.value = "";
   }
 
 
