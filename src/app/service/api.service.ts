@@ -93,6 +93,7 @@ export class ApiService {
   }
 
   getFilteredJeux(data: any): Observable<any[]> {
+    console.log('recu',data);
     return this.http.post<any[]>(`${this.apiUrl}/jeu/filtered`, data, this.httpOptions);
   }
 
