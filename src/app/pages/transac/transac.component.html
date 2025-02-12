@@ -1,1 +1,96 @@
-<p>transac works!</p>
+<div class="filter-container">
+    <p>Filtres : </p>
+  
+    <!-- Filtre par propriétaire -->
+    <div>
+      <label for="proprietaire">Vendeur :</label>
+      <select id="proprietaire" [(ngModel)]="proprietaire">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un vendeur --</option>
+        <option *ngFor="let vendeur of vendeurs" [ngValue]="vendeur.id">
+          {{ vendeur.name }}
+        </option>
+      </select>
+    </div>
+
+    <div>
+        <label for="acheteur">Acheteur :</label>
+        <select id="acheteur" [(ngModel)]="proprietaire">
+          <option [ngValue]="null" disabled selected>-- Sélectionnez un acheteur --</option>
+          <option *ngFor="let acheteur of acheteurs" [ngValue]="acheteur.id">
+            {{ acheteur.name }}
+          </option>
+        </select>
+      </div>
+  
+    <!-- Filtre par prix minimum -->
+    <div>
+      <label for="prix_min">Prix minimum :</label>
+      <input type="number" id="prix_min" [(ngModel)]="prix_min" placeholder="Prix min">
+    </div>
+  
+    <!-- Filtre par prix maximum -->
+    <div>
+      <label for="prix_max">Prix maximum :</label>
+      <input type="number" id="prix_max" [(ngModel)]="prix_max" placeholder="Prix max">
+    </div>
+  
+    <!-- Filtre par catégorie -->
+    <div>
+      <label for="categorie">Catégorie :</label>
+      <select id="proprietaire" [(ngModel)]="categorie">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez une catégorie --</option>
+        <option *ngFor="let categorie of categories" [ngValue]="categorie.id">
+          {{ categorie.name }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Filtre par intitulé -->
+    <div>
+      <label for="categorie">Intitulé :</label>
+      <select id="intitule" [(ngModel)]="intitule">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un intitulé --</option>
+        <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
+          {{ typeJeu.intitule }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Filtre par statut -->
+    <div>
+      <label for="statut">Statut :</label>
+      <select id="statut" [(ngModel)]="statut">
+        <option value="">Sélectionner un statut</option>
+        <option value="depot">depot</option>
+        <option value="vente">Vente</option>
+        <option value="">Toutes</option>
+      </select>
+    </div>
+  
+    <!-- Filtre par éditeur -->
+    <div>
+      <label for="statut"> editeur :</label>
+      <select id="editeur" [(ngModel)]="editeur">
+        <option [ngValue]="null" disabled selected>-- Sélectionnez un éditeur --</option>
+        <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
+          {{ typeJeu.editeur }}
+        </option>
+      </select>
+    </div>
+  
+  
+    <!-- Bouton pour filtrer -->
+    <button (click)="filtrer()">Filtrer</button>
+  
+    <!-- Résultats des jeux filtrés -->
+    <div *ngIf="transa.length > 0">
+      <h3>Résultats</h3>
+      <ul>
+        <li *ngFor="let transaction of transa">
+          {{ transaction.statut }} - {{ transaction.date_transaction }}€ - {{transaction.proprietaire}} / {{transaction.acheteur}}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="transa.length === 0">
+      <p>Aucune transaction trouvé avec ces filtres.</p>
+    </div>

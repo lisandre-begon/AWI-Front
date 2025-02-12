@@ -36,6 +36,7 @@ export class JeuDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadVendeurs();
+    this.loadCategories();
     this.loadTypeJeux();
     this.fetchJeux();
   }
