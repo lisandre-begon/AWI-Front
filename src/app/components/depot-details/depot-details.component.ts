@@ -16,7 +16,7 @@ import ObjectId from 'bson-objectid';
 })
 export class DepotDetailsComponent implements OnInit {
   depots: any[] = [];
-
+  router: any;
   vendeurs: any[] = [];
   typeJeux: any[] = [];
   categories: any[] = [];
@@ -164,6 +164,10 @@ export class DepotDetailsComponent implements OnInit {
     this.calculateTotalPrix();
   }
 
+  deshowVenteDetails() {
+    this.showDetails = false;
+  }
+
   calculateTotalPrix() {
     console.log("🔍 Calculating total price with:", this.newJeux);
   
@@ -268,6 +272,10 @@ export class DepotDetailsComponent implements OnInit {
       }
     );
   }
-  
+
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
+  }
+
   
 }

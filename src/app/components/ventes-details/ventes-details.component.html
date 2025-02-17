@@ -2,12 +2,12 @@
   <h2>Liste des Ventes</h2>
   <ul>
     <li *ngFor="let vente of ventes" (click)="showVenteDetails(vente)" class="clickable">
-      <span>{{ vente.acheteur }} - {{ vente.date_transaction }} - {{ vente.prix_total }}€</span>
+      <span>{{ vente.acheteur }} - {{ vente.date_transaction | date:'short' }} - {{ vente.prix_total }}€</span>
     </li>
   </ul>
   <div *ngIf="showDetails">
     <h2>Détails du Dépôt</h2>
-    <p><strong>Propriétaire:</strong> {{ selectedVente.proprietaire }}</p>
+    <p><strong>Propriétaire:</strong> {{ selectedVente.acheteur }}</p>
     <p><strong>Gestionnaire:</strong> {{ selectedVente.gestionnaire }}</p>
     <p><strong>Date:</strong> {{ selectedVente.date_transaction | date:'short' }}</p>
     <p><strong>Prix Total:</strong> {{ selectedVente.prix_total }}€</p>
@@ -23,7 +23,8 @@
     </ul>
   
     <!-- ❌ Delete Button -->
-    <button (click)="deleteTransaction(selectedVente.id)" class="delete-btn">🗑️ Supprimer ce Dépôt</button>
+    <button (click)="deleteTransaction(selectedVente.id)" class="delete-btn">🗑️ Supprimer ce Dépôt</button>loadDeloadDepotspots
+    <button (click)="deshowVenteDetails()">Fermer</button>
   </div>
 
   <h2>Créer une Nouvelle Vente</h2>
@@ -92,3 +93,4 @@
     <button type="submit" [disabled]="newJeux.length === 0">Créer Vente</button>
   </form>
 </div>
+<button (click)="redirectGestionnaire()">Retour</button>  

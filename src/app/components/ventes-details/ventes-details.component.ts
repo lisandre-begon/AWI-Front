@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class VentesDetailsComponent implements OnInit {
+  router: any;
   ventes: any[] = [];
   jeuxDisponibles: any[] = [];
   newJeux: any[] = [];
@@ -108,6 +109,10 @@ export class VentesDetailsComponent implements OnInit {
     this.showDetails = true;
   }
 
+  deshowVenteDetails() {
+    this.showDetails = false;
+  }
+
   saveVente() {
     if (this.venteForm.valid && this.newJeux.length > 0) {
       const venteData = {
@@ -147,6 +152,10 @@ export class VentesDetailsComponent implements OnInit {
         alert("Erreur lors de la suppression de la transaction.");
       }
     );
+  }
+
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
   }
 
 }

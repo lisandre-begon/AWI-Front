@@ -62,7 +62,8 @@
   
     <!-- Filtre par éditeur -->
     <div>
-      <label for="statut"> editeur :</label>
+      <label for="statut"> editeur :</label><button (click)="redirectGestionnaire()">Retour</button>  
+
       <select id="editeur" [(ngModel)]="editeur">
         <option [ngValue]="null" disabled selected>-- Sélectionnez un éditeur --</option>
         <option *ngFor="let typeJeu of typeJeux" [ngValue]="typeJeu.id">
@@ -79,6 +80,8 @@
   
     <!-- Bouton pour filtrer -->
     <button (click)="filtrer()">Filtrer</button>
+    <button (click)="redirectGestionnaire()">Retour</button>  
+
   
     <!-- Résultats des jeux filtrés -->
     <div *ngIf="jeux.length > 0">

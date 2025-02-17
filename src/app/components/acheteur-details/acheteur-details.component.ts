@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class AcheteurDetailsComponent implements OnInit {
+  router: any;
   acheteurs: any[] = [];
   selectedAcheteur: any = null;
   isCreatingNew: boolean = false;
@@ -96,4 +97,10 @@ export class AcheteurDetailsComponent implements OnInit {
       }
     );
   }
+
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
+  }
+
+  
 }

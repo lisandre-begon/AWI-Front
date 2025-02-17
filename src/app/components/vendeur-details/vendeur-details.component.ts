@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class VendeurDetailsComponent implements OnInit {
+  router: any;
   vendeurs: any[] = [];
   selectedVendeur: any = null;
   isCreatingNew: boolean = false;
@@ -95,6 +96,21 @@ export class VendeurDetailsComponent implements OnInit {
       },
       (error) => {
         this.errorMessage = 'Erreur lors de la suppression du vendeur';
+      }
+    );
+  }
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
+  }
+
+  resetSolde() {
+    this.apiService.resetSolde(this.selectedVendeur._id).subscribe(
+      () => {
+        alert('Solde réinitialisé avec succès');
+        this.fetchVendeurs();
+      },
+      (error) => {
+        this.errorMessage = 'Erreur lors de la réinitialisation du solde';
       }
     );
   }
