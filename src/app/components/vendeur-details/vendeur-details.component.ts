@@ -1,8 +1,9 @@
 // Updated vendeur-details.component.ts - Added Delete Functionality
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vendeur-details',
@@ -12,13 +13,14 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class VendeurDetailsComponent implements OnInit {
-  router: any;
   vendeurs: any[] = [];
   selectedVendeur: any = null;
   isCreatingNew: boolean = false;
   vendeurForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+
+  private router = inject(Router); 
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {
     this.vendeurForm = this.fb.group({
