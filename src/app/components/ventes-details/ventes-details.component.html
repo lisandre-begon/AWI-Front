@@ -5,6 +5,26 @@
       <span>{{ vente.acheteur }} - {{ vente.date_transaction }} - {{ vente.prix_total }}€</span>
     </li>
   </ul>
+  <div *ngIf="showDetails">
+    <h2>Détails du Dépôt</h2>
+    <p><strong>Propriétaire:</strong> {{ selectedVente.proprietaire }}</p>
+    <p><strong>Gestionnaire:</strong> {{ selectedVente.gestionnaire }}</p>
+    <p><strong>Date:</strong> {{ selectedVente.date_transaction | date:'short' }}</p>
+    <p><strong>Prix Total:</strong> {{ selectedVente.prix_total }}€</p>
+    <p><strong>Frais:</strong> {{ selectedVente.frais }}€</p>
+    <p><strong>Remise:</strong> {{ selectedVente.remise }}€</p>
+  
+    <h3>Jeux dans ce dépôt:</h3>
+    <ul>
+      <li *ngFor="let jeu of selectedVente.jeux">
+        <strong>{{ jeu.intitule }}</strong> ({{ jeu.editeur }}) - 
+        {{ jeu.prix_unitaire || 'N/A' }}€ x {{ jeu.quantite || 'N/A' }}
+      </li>
+    </ul>
+  
+    <!-- ❌ Delete Button -->
+    <button (click)="deleteTransaction(selectedVente.id)" class="delete-btn">🗑️ Supprimer ce Dépôt</button>
+  </div>
 
   <h2>Créer une Nouvelle Vente</h2>
   <form [formGroup]="venteForm" (ngSubmit)="saveVente()">
