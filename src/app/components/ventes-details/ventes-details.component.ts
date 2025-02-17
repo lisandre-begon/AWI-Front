@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ventes-details',
@@ -12,7 +13,6 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class VentesDetailsComponent implements OnInit {
-  router: any;
   ventes: any[] = [];
   jeuxDisponibles: any[] = [];
   newJeux: any[] = [];
@@ -23,6 +23,8 @@ export class VentesDetailsComponent implements OnInit {
   showDetails: boolean = false;
   selectedVente: any;
   gestionnaire: string = '';
+
+  private router = inject(Router); 
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
     // General vente form

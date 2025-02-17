@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
-// Instead of using 'bson', we use 'bson-objectid' to avoid top-level await issues.
-import ObjectId from 'bson-objectid';
-// import { AuthService } from '../../service/auth.service';  // Uncomment when AuthService is implemented
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-depot-details',
@@ -16,7 +14,6 @@ import ObjectId from 'bson-objectid';
 })
 export class DepotDetailsComponent implements OnInit {
   depots: any[] = [];
-  router: any;
   vendeurs: any[] = [];
   typeJeux: any[] = [];
   categories: any[] = [];
@@ -27,6 +24,8 @@ export class DepotDetailsComponent implements OnInit {
   totalPrix: number = 0;
   selectedDepot: any;
   showDetails: boolean = false;
+
+  private router = inject(Router); 
 
   constructor(
     private fb: FormBuilder,
