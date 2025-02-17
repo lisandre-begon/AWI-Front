@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule  } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-jeu-details',
@@ -12,7 +13,6 @@ import { CommonModule } from '@angular/common';
 })
 export class JeuDetailsComponent implements OnInit {
   jeux: any[] = [];
-  router: any;
   vendeurs: any[] = [];
   categories: any[] = [];
   typeJeux: any[] = [];
@@ -20,6 +20,8 @@ export class JeuDetailsComponent implements OnInit {
   jeuForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+
+  private router = inject(Router);
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {
     this.jeuForm = this.fb.group({
