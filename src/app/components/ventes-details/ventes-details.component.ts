@@ -1,10 +1,8 @@
-// ventes-details.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-ventes-details',
@@ -14,20 +12,30 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class VentesDetailsComponent implements OnInit {
+  router: any;
   ventes: any[] = [];
   jeuxDisponibles: any[] = [];
   newJeux: any[] = [];
   acheteurs: any[] = [];
   venteForm: FormGroup;
+  jeuForm: FormGroup;
   totalPrix: number = 0;
   showDetails: boolean = false;
   selectedVente: any;
+  gestionnaire: string = '';
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
+    // General vente form
     this.venteForm = this.fb.group({
       acheteur: [null, Validators.required],
       frais: [0, [Validators.required, Validators.min(1)]],
       remise: [0, [Validators.required, Validators.min(0)]]
+    });
+
+    // Form for selecting a game
+    this.jeuForm = this.fb.group({
+      jeuId: [null, Validators.required],
+      quantite: [1, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -35,10 +43,8 @@ export class VentesDetailsComponent implements OnInit {
     this.loadVentes();
     this.loadJeuxDisponibles();
     this.loadAcheteurs();
-
-    console.log("📌 Jeux Disponibles au chargement:", this.jeuxDisponibles);
+    this.gestionnaire = "67aa28a2a260b786b8a52f20"
   }
-
 
   loadVentes() {
     this.apiService.getFilteredTransactions({ statut: 'vente' }).subscribe(data => this.ventes = data);
@@ -46,14 +52,11 @@ export class VentesDetailsComponent implements OnInit {
 
   loadJeuxDisponibles() {
     this.apiService.getFilteredJeux({ statut: 'disponible' }).subscribe(data => {
-      console.log("📥 Réponse reçue:", data);
-      this.jeuxDisponibles = data.filter(jeu => jeu.statut === 'disponible');
-      console.log("📥 Jeux Disponibles reçus dans Angular:", this.jeuxDisponibles);
+      this.jeuxDisponibles = data;
     }, error => {
       console.error("❌ Erreur lors du chargement des jeux:", error);
     });
   }
-
 
   loadAcheteurs() {
     this.apiService.getAllAcheteurs().subscribe(data => {
@@ -64,33 +67,33 @@ export class VentesDetailsComponent implements OnInit {
     });
   }
 
-  addJeuToVente(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    const jeuId = target.value;
-    const selectedJeu = this.jeuxDisponibles.find(jeu => jeu.etiquette === jeuId);
-    if (selectedJeu) {
-      this.newJeux.push({ ...selectedJeu, quantite: 1 });
-      this.calculateTotalPrix();
-    }
-  }
+  addJeuToVente() {
+    if (this.jeuForm.invalid) return;
 
+    const jeuId = this.jeuForm.value.jeuId;
+    const quantite = this.jeuForm.value.quantite;
 
-  updateJeuQuantite(index: number, quantite: string) {
-    const parsedQuantite = parseInt(quantite, 10);
-    if (isNaN(parsedQuantite) || parsedQuantite <= 0) return;
-
-    const selectedJeu = this.newJeux[index];
+    // Get the selected game from jeuxDisponibles
+    const selectedJeu = this.jeuxDisponibles.find(j => j.etiquette === jeuId);
     if (!selectedJeu) return;
 
-    const jeuDisponible = this.jeuxDisponibles.find(j => j._id === selectedJeu._id);
-    if (!jeuDisponible) return; // Prevents undefined access
+    // Check if the game is already in newJeux
+    const existingJeu = this.newJeux.find(j => j.jeuId === jeuId);
+    if (!existingJeu) {
+      this.newJeux.push({
+        jeuId: selectedJeu.etiquette,
+        intitule: selectedJeu.intitule,
+        vendeur: selectedJeu.proprietaire, // Automatically linked
+        prix: selectedJeu.prix, // Automatically linked
+        quantite: quantite
+      });
 
-    if (parsedQuantite <= jeuDisponible.quantite) {
-        this.newJeux[index].quantite = parsedQuantite;
-        this.calculateTotalPrix();
+      this.calculateTotalPrix();
     }
-  }
 
+    // Reset the form after adding a game
+    this.jeuForm.reset({ jeuId: null, quantite: 1 });
+  }
 
   removeJeu(index: number) {
     this.newJeux.splice(index, 1);
@@ -98,24 +101,33 @@ export class VentesDetailsComponent implements OnInit {
   }
 
   calculateTotalPrix() {
-    this.totalPrix = this.newJeux.reduce((sum, jeu) => sum + (jeu.prix_unitaire * jeu.quantite), 0);
+    this.totalPrix = this.newJeux.reduce((sum, jeu) => sum + (jeu.prix * jeu.quantite), 0);
   }
 
   showVenteDetails(vente: any) {
-    console.log("📌 Vente sélectionnée:", vente);
     this.selectedVente = vente;
     this.showDetails = true;
+  }
+
+  deshowVenteDetails() {
+    this.showDetails = false;
   }
 
   saveVente() {
     if (this.venteForm.valid && this.newJeux.length > 0) {
       const venteData = {
+        gestionnaire: this.gestionnaire,
         acheteur: this.venteForm.value.acheteur,
         frais: this.venteForm.value.frais,
         remise: this.venteForm.value.remise,
         prix_total: this.totalPrix,
-        jeux: this.newJeux.map(jeu => ({ jeuId: jeu._id, quantite: jeu.quantite, prix_unitaire: jeu.prix_unitaire }))
+        jeux: this.newJeux.map(jeu => ({
+          jeuId: jeu.jeuId,
+          quantite: jeu.quantite,
+          prix_unitaire: jeu.prix
+        }))
       };
+
       this.apiService.createTransaction({ statut: 'vente', ...venteData }).subscribe(() => {
         this.loadVentes();
         this.newJeux = [];
@@ -124,4 +136,26 @@ export class VentesDetailsComponent implements OnInit {
       });
     }
   }
+
+  deleteTransaction(transactionId: string) {
+    if (!confirm("❗ Êtes-vous sûr de vouloir supprimer cette transaction ?")) return;
+  
+    this.apiService.deleteTransaction(transactionId).subscribe(
+      (res) => {
+        console.log("✅ Transaction supprimée :", res);
+        alert("Transaction supprimée avec succès !");
+        this.showDetails = false;  // Hide details after deletion
+        this.loadVentes(); // Refresh the list of depots
+      },
+      (err) => {
+        console.error("❌ Erreur lors de la suppression :", err);
+        alert("Erreur lors de la suppression de la transaction.");
+      }
+    );
+  }
+
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
+  }
+
 }

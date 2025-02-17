@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class JeuDetailsComponent implements OnInit {
   jeux: any[] = [];
+  router: any;
   vendeurs: any[] = [];
   categories: any[] = [];
   typeJeux: any[] = [];
@@ -153,4 +154,9 @@ export class JeuDetailsComponent implements OnInit {
     });    
     console.log('Filtered jeux:', this.jeux);
   }
+
+  redirectGestionnaire() {
+    this.router.navigate(['/gestionnaire']);
+  }
+
 }

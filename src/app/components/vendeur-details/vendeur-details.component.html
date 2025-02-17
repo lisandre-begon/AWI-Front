@@ -62,6 +62,9 @@
     <input id="soldes" type="number" formControlName="soldes" class="form-control" />
     
     <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    <button (click)="resetSolde()" class="btn btn-warning">Réinitialiser le solde</button>
     <button (click)="deleteVendeur(selectedVendeur._id)" class="btn btn-danger">Supprimer</button>
   </form>
 </div>
+<button (click)="redirectGestionnaire()">Retour</button>  
+

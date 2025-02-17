@@ -26,7 +26,8 @@
         </ul>
       
         <!-- ❌ Delete Button -->
-        <button (click)="deleteTransaction(selectedDepot.id)" class="delete-btn">🗑️ Supprimer ce Dépôt</button>
+        <button (click)="deleteTransaction(selectedDepot.id)" class="delete-btn">🗑️ Supprimer ce Dépôt</button>*
+        <button (click)="deshowVenteDetails()">Fermer</button>
       </div>
     <!-- Form to Create a New Depot -->
     <h2>Créer un Nouveau Dépôt</h2>
@@ -92,4 +93,6 @@
       <button type="submit">Créer Dépôt</button>
     </form>
   </div>
+  <button (click)="redirectGestionnaire()">Retour</button>  
+
   
