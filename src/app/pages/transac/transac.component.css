@@ -1,0 +1,92 @@
+/* Style général */
+.filter-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style des filtres */
+.filtres {
+    width: 300px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filtres p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.filtres div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+select, input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Style des résultats */
+.result {
+    flex-grow: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.result ul {
+    list-style: none;
+    padding: 0;
+}
+
+.result li {
+    background: #f1f1f1;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result button {
+    background: #28a745;
+}
+
+.result button:hover {
+    background: #218838;
+}

@@ -1,4 +1,5 @@
 <div class="filter-container">
+    <div class="filtres">
     <p>Filtres : </p>
   
     <!-- Filtre par propriétaire -->
@@ -81,6 +82,8 @@
   
     <!-- Bouton pour filtrer -->
     <button (click)="filtrer()">Filtrer</button>
+  </div>
+  <div class="result">
   
     <!-- Résultats des jeux filtrés -->
     <div *ngIf="transa.length > 0">
@@ -94,4 +97,5 @@
     </div>
     <div *ngIf="transa.length === 0">
       <p>Aucune transaction trouvé avec ces filtres.</p>
+    </div>
     </div>
