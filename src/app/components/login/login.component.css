@@ -8,7 +8,7 @@
     align-content : center;
 }
 .login {
-    background-color:#509031;
+    background-color:#9dc08c;
     margin-top: 50px;
     padding: 30px;
     border-radius: 8px;
@@ -22,7 +22,7 @@
 /* Titre */
 h1 {
     font-size: 24px;
-    color: #d75630;
+    color: #f4dce8;
     margin-bottom: 20px;
 }
 
@@ -80,5 +80,5 @@ button:hover {
 
 /* Animation de focus pour les champs */
 mat-form-field input:focus {
-    border-color:rgb(248, 212, 230);
+    border-color:rgba(212, 248, 215, 0.623);
 }
