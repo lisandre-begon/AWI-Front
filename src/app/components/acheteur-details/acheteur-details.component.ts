@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-acheteur-details',
@@ -11,13 +12,14 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class AcheteurDetailsComponent implements OnInit {
-  router: any;
   acheteurs: any[] = [];
   selectedAcheteur: any = null;
   isCreatingNew: boolean = false;
   acheteurForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+
+  private router = inject(Router); 
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {
     this.acheteurForm = this.fb.group({
